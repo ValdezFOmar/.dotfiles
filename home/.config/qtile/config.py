@@ -29,11 +29,13 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
+alt = "mod1"
 mod = "mod4"
 
 terminal = "kitty"
 browser = "firefox"
-file_exp = "pcmanfm-qt"
+file_exp = "pcmanfm"
+screen_lock= "light-locker-command -l"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -79,6 +81,7 @@ keys = [
     # Custom keybinds
     Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
     Key([mod], "e", lazy.spawn(file_exp), desc="Launch a file explorer"),
+    Key([mod], "q", lazy.spawn(screen_lock), "Activate screen locker"),
 ]
 
 groups = [Group(i) for i in "asdfuiop"]

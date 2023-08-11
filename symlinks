@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Create symlinks for the config files
+
+DOTFILES="$HOME/.dotfiles"
+
+symlink()
+{
+    ln -s "$1" "$2"
+    echo "=> Created symlink from $1 to $2"
+}
+
+
+symhome()
+{
+    shopt -s dotglob # Include hidden files in glob
+
+    for file_path in "$DOTFILES/home"/*
+    do
+        if [[ -f "$file_path" ]]
+        then
+            file_name=$(basename "$file_path")
+            echo "$file_path : $HOME/$file_name"
+        fi
+    done
+
+    shopt -u dotglob # Disable hidden files in glob
+}
+
+symdirs()
+{
+    shopt -s
+}
+
+symhome
+
+#sym .bashrc
+#sym .gitconfig
+#sym .xprofile
+#sym  /kitty
+#sym  /neofetch
+#sym  /picom
+#sym  /qtile
