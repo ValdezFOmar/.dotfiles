@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Installation script
-
-# TODO. Auto install packages
-
-# Symbolic links for config files
-. ./symlinks

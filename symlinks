@@ -1,43 +1,84 @@
 #!/bin/bash
-
 # Create symlinks for the config files
 
-DOTFILES="$HOME/.dotfiles"
+
+title()
+{
+    echo
+    echo "--------------------------"
+    echo "Creating symbolic links..."
+    echo "--------------------------"
+    echo
+}
+
 
 symlink()
 {
     ln -s "$1" "$2"
-    echo "=> Created symlink from $1 to $2"
+    echo ":: Created symlink from '$1' to '$2'"
 }
 
 
 symhome()
 {
-    shopt -s dotglob # Include hidden files in glob
+    shopt -s dotglob # Include hidden files in glob (*)
 
     for file_path in "$DOTFILES/home"/*
     do
-        if [[ -f "$file_path" ]]
+        # Skip directories
+        [[ -f "$file_path" ]] || continue
+        file_name=$(basename "$file_path")
+        
+        dest_path="$HOME/$file_name"
+
+        # If file exists, ask to remove it
+        if [[ -e $dest_path ]]
         then
-            file_name=$(basename "$file_path")
-            echo "$file_path : $HOME/$file_name"
+            echo
+            echo "==> WARNING: '$dest_path' alredy exist!"
+            rm -i -v "$dest_path"
+            [[ -e $dest_path ]] && continue
         fi
+        echo "$file_path : $dest_path"
     done
 
-    shopt -u dotglob # Disable hidden files in glob
+    shopt -u dotglob # Disable hidden files in glob (*)
 }
 
-symdirs()
+symconfig()
 {
-    shopt -s
+    shopt -s dotglob # Include hidden files in glob (*)
+
+    for dir_path in "$DOTFILES/home/.config"/*
+    do
+        # Only check for firectories
+        [[ -d "$dir_path" ]] || continue
+        dir_name=$(basename "$dir_path")
+        
+        dest_path="$HOME/.config/$dir_name"
+        
+        # If file exists, ask to remove it
+        if [[ -e $dest_path ]]
+        then
+            echo
+            echo "==> WARNING: '$dest_path' alredy exist!"
+            rm -i -v "$dest_path"
+            [[ -e $dest_path ]] && continue
+        fi
+
+        symlink "$dir_path" "$dest_path"
+    done
+
+    shopt -u dotglob # Disable hidden files in glob (*)
 }
 
-symhome
 
-#sym .bashrc
-#sym .gitconfig
-#sym .xprofile
-#sym  /kitty
-#sym  /neofetch
-#sym  /picom
-#sym  /qtile
+main()
+{
+    title
+    symhome
+    symconfig
+    echo "Symlinks Done!"
+}
+
+main

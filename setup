@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Installation script
+
+# TODO. Auto install packages
+export DOTFILES="$HOME/.dotfiles"
+
+pacman -Syu
+pacman -S --needed - < ./pkglist.txt
+
+# Symbolic links for config files
+. ./symlinks
+
+# enabling services
+systemctl enable lightdm.service
+systemctl enable NetworkManager.service
