@@ -12,13 +12,6 @@ title()
 }
 
 
-symlink()
-{
-    ln -s "$1" "$2"
-    echo ":: Created symlink '$1' -> '$2'"
-}
-
-
 symfiles()
 {
     dir_path="$1"
@@ -32,14 +25,8 @@ symfiles()
         dest_path="$dest_dir_path/$file_name"
 
         # If file exists, ask to remove it
-        if [[ -e $dest_path ]]
-        then
-            echo
-            echo "==> WARNING: '$dest_path' alredy exist!"
-            rm -i -v "$dest_path"
-            [[ -e $dest_path ]] && continue
-        fi
-        symlink "$file_path" "$dest_path"
+        [ -e "$dest_path" ] && echo "==> WARNING: '$dest_path' alredy exist!"
+        ln -s -f -i -v "$file_path" "$dest_path"
     done
 
     shopt -u dotglob # Disable hidden files in glob (*)

@@ -2,7 +2,6 @@
 
 # Installation script
 
-# TODO. Auto install packages
 export DOTFILES="$HOME/.dotfiles"
 
 # Symbolic links for config files
