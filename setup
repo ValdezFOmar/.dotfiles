@@ -5,12 +5,13 @@
 # TODO. Auto install packages
 export DOTFILES="$HOME/.dotfiles"
 
-pacman -Syu
-pacman -S --needed - < ./pkglist.txt
-
 # Symbolic links for config files
 . ./symlinks
 
+# Install packages
+pacman -Syu
+pacman -S --needed - < ./pkglist.txt
+
 # enabling services
-systemctl enable lightdm.service
-systemctl enable NetworkManager.service
+# systemctl enable lightdm.service
+# systemctl enable NetworkManager.service

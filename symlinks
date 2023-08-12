@@ -15,21 +15,21 @@ title()
 symlink()
 {
     ln -s "$1" "$2"
-    echo ":: Created symlink from '$1' to '$2'"
+    echo ":: Created symlink '$1' -> '$2'"
 }
 
 
-symhome()
+symfiles()
 {
+    dir_path="$1"
+    dest_dir_path="$2"
+
     shopt -s dotglob # Include hidden files in glob (*)
 
-    for file_path in "$DOTFILES/home"/*
+    for file_path in "$dir_path"/*
     do
-        # Skip directories
-        [[ -f "$file_path" ]] || continue
         file_name=$(basename "$file_path")
-        
-        dest_path="$HOME/$file_name"
+        dest_path="$dest_dir_path/$file_name"
 
         # If file exists, ask to remove it
         if [[ -e $dest_path ]]
@@ -39,46 +39,17 @@ symhome()
             rm -i -v "$dest_path"
             [[ -e $dest_path ]] && continue
         fi
-        echo "$file_path : $dest_path"
+        symlink "$file_path" "$dest_path"
     done
 
     shopt -u dotglob # Disable hidden files in glob (*)
 }
-
-symconfig()
-{
-    shopt -s dotglob # Include hidden files in glob (*)
-
-    for dir_path in "$DOTFILES/home/.config"/*
-    do
-        # Only check for firectories
-        [[ -d "$dir_path" ]] || continue
-        dir_name=$(basename "$dir_path")
-        
-        dest_path="$HOME/.config/$dir_name"
-        
-        # If file exists, ask to remove it
-        if [[ -e $dest_path ]]
-        then
-            echo
-            echo "==> WARNING: '$dest_path' alredy exist!"
-            rm -i -v "$dest_path"
-            [[ -e $dest_path ]] && continue
-        fi
-
-        symlink "$dir_path" "$dest_path"
-    done
-
-    shopt -u dotglob # Disable hidden files in glob (*)
-}
-
 
 main()
 {
     title
-    symhome
-    symconfig
-    echo "Symlinks Done!"
+    symfiles "$DOTFILES/home" "$HOME"
+    symfiles "$DOTFILES/.config" "$HOME/.config"
 }
 
 main
