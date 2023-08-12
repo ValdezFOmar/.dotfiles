@@ -1,3 +1,2 @@
-picom -b
-
+picom -b &
 light-locker --lock-after-screensaver=60 --lock-on-suspend --lock-on-lid &
