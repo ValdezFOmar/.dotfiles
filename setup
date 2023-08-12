@@ -8,9 +8,11 @@ export DOTFILES="$HOME/.dotfiles"
 . ./symlinks
 
 # Install packages
-pacman -Syu
-pacman -S --needed - < ./pkglist.txt
+pacman -Syu && pacman -S --needed - < ./pkglist.txt
 
 # enabling services
-# systemctl enable lightdm.service
-# systemctl enable NetworkManager.service
+systemctl enable lightdm.service
+systemctl enable NetworkManager.service
+
+# X11 persistent keyboard layout
+localectl set-x11-keymap latam
