@@ -35,7 +35,12 @@ symfiles()
 main()
 {
     title
+
+    DOTFILES="$HOME/.dotfiles"
     symfiles "$DOTFILES/home" "$HOME"
+
+    # Create ~/.config if it doesn't exists
+    [ -d "$HOME/.config" ] || mkdir "$HOME/.config"
     symfiles "$DOTFILES/.config" "$HOME/.config"
 }
 

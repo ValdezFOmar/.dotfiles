@@ -1,8 +1,5 @@
 #!/bin/bash
-
 # Installation script
-
-export DOTFILES="$HOME/.dotfiles"
 
 # Symbolic links for config files
 . ./symlinks
