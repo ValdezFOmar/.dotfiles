@@ -21,6 +21,7 @@ Source the install script.
 
     pacman -S grub efibootmgr
     grub-install /dev/[device]
+    grub-mkconfig -o /boot/grub/grub.cfg
 
 ### Drivers
 

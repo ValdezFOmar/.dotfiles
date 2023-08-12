@@ -11,7 +11,6 @@ neofetch
 pcmanfm-gtk3
 picom
 qtile
-sudo
 terminus-font
 ttf-cascadia-code
 unzip
