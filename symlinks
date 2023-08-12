@@ -25,7 +25,17 @@ symfiles()
         dest_path="$dest_dir_path/$file_name"
 
         # If file exists, ask to remove it
-        [ -e "$dest_path" ] && echo "==> WARNING: '$dest_path' alredy exist!"
+        if [ -e "$dest_path" ]
+        then
+            # if the symbolic link to this file alredy exists, skip it
+            if [[ -L "$dest_path" && $(readlink -f "$dest_path" = "$file_path") ]]
+            then
+                continue
+            else
+                echo "==> WARNING: '$dest_path' alredy exist!"
+            fi
+        fi
+        
         ln -s -f -i -v "$file_path" "$dest_path"
     done
 
