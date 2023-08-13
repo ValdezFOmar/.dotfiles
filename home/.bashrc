@@ -9,6 +9,6 @@
 [[ -e "$HOME/.bash_aliases" ]] && . "$HOME/.bash_aliases"
 
 # Prompt
-PS1='\u@\h \w/> '
+PS1='\u@\h \w > '
 
 shopt -s autocd

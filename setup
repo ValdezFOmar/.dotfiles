@@ -1,6 +1,7 @@
 #!/bin/bash
 # Installation script
 
+
 # Symbolic links for config files
 . ./symlinks
 
@@ -13,3 +14,5 @@ systemctl enable NetworkManager.service
 
 # X11 persistent keyboard layout
 localectl set-x11-keymap latam
+
+[ -e "$HOME/projects"] || mkdir "$HOME/projects"
