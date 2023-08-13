@@ -1,0 +1,37 @@
+# WiFi Connection
+
+## Using iwctl (Live boot)
+
+Type `iwctl` and the interactive prompt should start:
+
+    $ iwctl
+    [iwd]#
+
+> To see all available commands, type: `[iwd]# help`
+
+List all available WiFi devices:
+
+    [iwd]# device list
+
+Initiate a scan for networks:
+
+    [iwd]# station [device] scan
+
+To list all the networks:
+
+    [iwd]# station [device] get-networks
+
+Connect to a network:
+
+    [iwd]# station [device] connect [SSID]
+
+
+## Using NetworkManager
+
+List nearby Wi-Fi networks:
+
+    nmcli device wifi list
+
+Connect to a Wi-Fi network:
+
+    nmcli device wifi connect [SSID] password [password]
