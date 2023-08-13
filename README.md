@@ -1,8 +1,12 @@
 # Dotfiles
 
-Dotfiles for my arch linux distro
+Dotfiles for my Arch linux distro.
 
-## Install
+## Setup
+
+> For Additional installation info, check [notes](./notes/intallation-guide.md).
+
+### Clone and source setup script
 
 First clone the repository.
 
@@ -15,35 +19,15 @@ Source the install script.
 . ~/.dotfiles/setup
 ```
 
-## Important!
-
-### Bootloader
-
-    pacman -S grub efibootmgr
-    grub-install /dev/[device]
-    grub-mkconfig -o /boot/grub/grub.cfg
-
-### Drivers
-
-Drivers for the graphics card are required to use Xorg, to see a list of drivers:
-
-    pacman -Ss xf86-video
-
-### Microcode
-
-A microcode package for the CPU is required.
-
-- `amd-ucode` for AMD processors,
-- `intel-ucode` for Intel processors.
-
 ### Enable services
 
-This services need to be enable sot they can run at startup:
+This services need to be enable so they can run at startup:
 
 ```sh
 systemctl enable lightdm.service
 systemctl enable NetworkManager.service
 ```
+
 
 ## Greeter
 
