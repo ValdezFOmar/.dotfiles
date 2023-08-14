@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Aliases
+
+#   Aliases
+#   =======
 
 # Space for expanding command aliases when using sudo
 alias sudo='sudo '
@@ -17,7 +19,10 @@ alias cd..='cd ..'
 
 #alias nano="nano --rcfile $HOME/.nanorc"
 
-# Functions
+
+
+#   Functions
+#   =========
 
 cl()
 {

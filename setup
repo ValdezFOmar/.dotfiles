@@ -5,6 +5,9 @@
 # Symbolic links for config files
 . ./symlinks
 
+# git
+git config --global core.excludesfile ~/.gitignore_global
+
 # Install packages
 pacman -Syu && pacman -S --needed - < ./pkglist.txt
 
@@ -15,4 +18,8 @@ systemctl enable NetworkManager.service
 # X11 persistent keyboard layout
 localectl set-x11-keymap latam
 
-[ -e "$HOME/projects"] || mkdir "$HOME/projects"
+# Especial directories
+[ -d "$HOME/projects"] || mkdir "$HOME/projects"
+[ -d "$HOME/bin"] || mkdir "$HOME/bin"
+[ -d "$HOME/.local/bin"] || mkdir -p "$HOME/.local/bin"
+

@@ -1,0 +1,29 @@
+# Global .gitignore file for excluding 
+# files/directories on all repositories
+
+# For setting this file as the global .gitignore:
+# git config --global core.excludesfile ~/.gitignore_global
+
+
+# pyenv
+.python-version
+
+# PyCharm
+.idea/
+
+# visual studio code
+.vscode/
+
+# LibreOffice temporal files
+.~lock.*
+
+# For testing code that isn't supposed to be commited
+.ignore_code/
+ignore_code/
+.forget_code/
+forget_code/
+
+
+# enviromental variables files
+.env
+.env.local
