@@ -139,7 +139,7 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper="/home/omar/Pictures/wallpapers/linux-tux-grey-1280x800.png",
+        wallpaper="/usr/share/backgrounds/archlinux/wave.png",
         wallpaper_mode="fill",
         bottom=bar.Bar(
             [

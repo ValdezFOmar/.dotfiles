@@ -2,6 +2,10 @@
 
 ## Terminal
 
+### Generate a list of installed packages
+
+    pacman -Qet
+
 ### Custom Prompt
 
 | ~/.bashrc
