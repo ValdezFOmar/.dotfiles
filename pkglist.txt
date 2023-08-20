@@ -9,9 +9,11 @@ lightdm-slick-greeter 1.8.2-1
 nano-syntax-highlighting 2020.10.10-1
 neofetch 7.1.0-2
 nsxiv 31-4
+openssh 9.4p1-2
 pcmanfm-gtk3 1.3.2-1
 picom 10.2-1
 qtile 0.22.1-4
+rofi 1.7.5-2
 terminus-font 4.49.1-5
 ttf-cascadia-code 2111.01-1
 unzip 6.0-19

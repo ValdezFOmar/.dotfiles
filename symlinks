@@ -35,7 +35,7 @@ symfiles()
                 echo "==> WARNING: '$dest_path' alredy exist!"
             fi
         fi
-        
+
         ln -s -f -i -v "$file_path" "$dest_path"
     done
 

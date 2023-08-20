@@ -1,0 +1,13 @@
+configuration {
+    modes: [combi];
+    combi-mode: [run, drun, window];
+
+    display-drun: "Open:";
+    show-icon: true;
+    icon-theme: "Papirus";
+    font: "Cascadia Code";
+}
+
+// @theme "/dev/null"
+@theme "arthur"
+

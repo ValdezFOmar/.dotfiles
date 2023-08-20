@@ -35,7 +35,8 @@ mod = "mod4"
 terminal = "kitty"
 browser = "firefox"
 file_exp = "pcmanfm"
-screen_lock= "light-locker-command -l"
+screen_lock = "light-locker-command -l"
+menu_launcher = "rofi -show drun"
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -81,7 +82,8 @@ keys = [
     # Custom keybinds
     Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
     Key([mod], "e", lazy.spawn(file_exp), desc="Launch a file explorer"),
-    Key([mod], "q", lazy.spawn(screen_lock), "Activate screen locker"),
+    Key([mod], "q", lazy.spawn(screen_lock), desc="Activate screen locker"),
+    Key([mod], "m", lazy.spawn(menu_launcher), desc="Open menu launcher for programs"),
 ]
 
 groups = [Group(i) for i in "asdfuiop"]

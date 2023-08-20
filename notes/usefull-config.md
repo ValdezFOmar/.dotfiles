@@ -25,7 +25,7 @@ PS1='\u@\h \w> '
 shopt -s autcd
 ```
 
-## Listing contents of a directory
+### Listing contents of a directory
 
 This alias shows all the files of the current directory, listing dotfiles first.
 
@@ -34,3 +34,12 @@ This alias shows all the files of the current directory, listing dotfiles first.
 ```sh
 alias ll='ls -Alv'
 ```
+
+
+## Graphical
+
+### Image Viewer
+
+See images in a directory by `cd`'ing into it and typing:
+
+    nsxiv . &
