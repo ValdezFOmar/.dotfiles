@@ -155,12 +155,17 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#66d9ef"),
+                #widget.TextBox("default config", name="default"),
+                #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#66d9ef"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
                 widget.Systray(),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Battery(
+                    format="{char} {percent:2.0%}",
+                    update_interval=1, # seconds
+                    foreground="#fd971f"
+                ),
                 widget.QuickExit(),
             ],
             24,
