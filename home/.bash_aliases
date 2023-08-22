@@ -5,20 +5,17 @@
 #   =======
 
 # Space for expanding command aliases when using sudo
-alias sudo='sudo '
+#alias sudo='sudo '
 
 alias grep='grep --color=auto'
-alias ls='ls --color=auto'
-alias la='ls -Av1'
-alias ll='ls -Alv'
+alias ls='ls --color=auto --group-directories-first'
+alias la='ls -Av1F'
+alias ll='ls -AlvGh'
 
 alias rm='rm -i '
 alias md='mkdir '
 
 alias cd..='cd ..'
-
-#alias nano="nano --rcfile $HOME/.nanorc"
-
 
 
 #   Functions

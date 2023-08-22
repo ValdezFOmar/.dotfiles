@@ -16,8 +16,11 @@ export DOTFILES="$HOME/.dotfiles"
 
 
 # Prompt
-PS1='\u@\h \w > '
+#PS1='\u@\h \w > '
+PS1="\e[35m\e[3m\u\e[23m \e[34m\w\e[32m$\e(B\e[m "
 
+
+# Auto cd when typing a directory
 shopt -s autocd
 
 
