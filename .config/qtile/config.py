@@ -139,9 +139,12 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+
+monitor_wallpaper="/usr/share/backgrounds/archlinux/wave.png"
+
 screens = [
     Screen(
-        wallpaper="/usr/share/backgrounds/archlinux/wave.png",
+        wallpaper=monitor_wallpaper,
         wallpaper_mode="fill",
         bottom=bar.Bar(
             [
@@ -168,10 +171,15 @@ screens = [
                 ),
                 widget.QuickExit(),
             ],
-            24,
+            28,
             border_width=[2, 0, 3, 0],  # Draw top and bottom borders
-            border_color=["777777", "000000", "000000", "000000"]  # Borders colors
+            border_color=["#241233", "000000", "#241233", "000000"],  # Borders colors
+            background="#241233",
         ),
+    ),
+    Screen(
+        wallpaper=monitor_wallpaper,
+        wallpaper_mode="fill",
     ),
 ]
 

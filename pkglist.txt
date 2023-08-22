@@ -1,5 +1,6 @@
 amd-ucode
 archlinux-wallpaper
+autorandr
 base
 base-devel
 efibootmgr
