@@ -1,3 +1,4 @@
+acpilight
 amd-ucode
 archlinux-wallpaper
 autorandr
@@ -40,7 +41,6 @@ xorg-server-xvfb
 xorg-sessreg
 xorg-smproxy
 xorg-x11perf
-xorg-xbacklight
 xorg-xcmsdb
 xorg-xcursorgen
 xorg-xdriinfo
@@ -60,3 +60,4 @@ xorg-xsetroot
 xorg-xvinfo
 xorg-xwd
 xorg-xwud
+xterm

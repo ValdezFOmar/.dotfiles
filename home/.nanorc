@@ -1,4 +1,5 @@
 set tabsize 4
 set tabstospaces
+set autoindent
 
 include /usr/share/nano-syntax-highlighting/*.nanorc
