@@ -12,6 +12,27 @@ title()
 }
 
 
+symlink()
+{
+    file_path=$1
+    dest_path=$2
+
+    # If file exists, ask to remove it
+    if [ -e "$dest_path" ]
+    then
+        # if the symbolic link to this file alredy exists, skip it
+        if [[ -L "$dest_path" && $(readlink -f "$dest_path" = "$file_path") ]]
+        then
+            return
+        else
+            echo "==> WARNING: '$dest_path' alredy exist!"
+        fi
+    fi
+
+    ln -s -f -i -v "$file_path" "$dest_path"
+}
+
+
 symfiles()
 {
     dir_path="$1"
@@ -24,19 +45,7 @@ symfiles()
         file_name=$(basename "$file_path")
         dest_path="$dest_dir_path/$file_name"
 
-        # If file exists, ask to remove it
-        if [ -e "$dest_path" ]
-        then
-            # if the symbolic link to this file alredy exists, skip it
-            if [[ -L "$dest_path" && $(readlink -f "$dest_path" = "$file_path") ]]
-            then
-                continue
-            else
-                echo "==> WARNING: '$dest_path' alredy exist!"
-            fi
-        fi
-
-        ln -s -f -i -v "$file_path" "$dest_path"
+        symlink "$file_path" "$dest_path"
     done
 
     shopt -u dotglob # Disable hidden files in glob (*)
@@ -46,12 +55,17 @@ main()
 {
     title
 
-    DOTFILES="$HOME/.dotfiles"
+    # Config files in home dir
+    export DOTFILES="$HOME/.dotfiles"
     symfiles "$DOTFILES/home" "$HOME"
 
     # Create ~/.config if it doesn't exists
     [ -d "$HOME/.config" ] || mkdir "$HOME/.config"
     symfiles "$DOTFILES/.config" "$HOME/.config"
+
+    # Pacman hooks
+    symfiles "$DOTFILES/etc/pacman.d" "/etc/pacman.d"
+    symlink  "$DOTFILES/pkglist.txt" "/etc/pkglist.txt"
 }
 
 main

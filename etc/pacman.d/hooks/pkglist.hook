@@ -1,0 +1,11 @@
+# Hook for updating a package list when a package is added/remove with pacman
+
+[Trigger]
+Operation = Install
+Operation = Remove
+Type = Package
+Target = *
+
+[Action]
+When = PostTransaction
+Exec = /bin/sh -c '/usr/bin/pacman -Qqen > /etc/pkglist.txt'
