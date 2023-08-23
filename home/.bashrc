@@ -21,18 +21,15 @@ export DOTFILES="$HOME/.dotfiles"
 # ======
 
 ## Colors
-black="\[$(tput setaf 0)\]"
-red="\[$(tput setaf 1)\]"
-green="\[$(tput setaf 2)\]"
-orange="\[$(tput setaf 3)\]"
-blue="\[$(tput setaf 4)\]"
-purple="\[$(tput setaf 5)\]"
-cyan="\[$(tput setaf 6)\]"
-white="\[$(tput setaf 7)\]"
-
-normal="\[$(tput sgr0)\]"
-italic_start='\[\e[3m\]'
-italic_end='\[\e[23m\]'
+black=$(tput setaf 0)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+orange=$(tput setaf 3)
+blue=$(tput setaf 4)
+purple=$(tput setaf 5)
+cyan=$(tput setaf 6)
+white=$(tput setaf 7)
+normal=$(tput sgr0)
 
 color_exit_status()
 {
@@ -52,10 +49,9 @@ color_exit_status()
 # Add git prompt if it exists
 if [[ -f ~/git-prompt.sh ]]; then
     . ~/git-prompt.sh
-    git_prompt='$(__git_ps1 " (%s)")'
-    PS1="${purple}${italic_start}\u${italic_end} ${blue}\w${orange}${git_prompt}$(color_exit_status)\$${normal} "
+    PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[${orange}\]$(__git_ps1 " (%s)")\[$(color_exit_status)\]\$\[${normal}\] '
 else
-    PS1="${purple}${italic_start}\u${italic_end} ${blue}\w$(color_exit_status)\$${normal} "
+    PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(color_exit_status)\]\$\[${normal}\] '
 fi
 
 
