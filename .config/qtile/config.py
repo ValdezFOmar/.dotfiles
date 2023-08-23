@@ -84,6 +84,10 @@ keys = [
     Key([mod], "e", lazy.spawn(file_exp), desc="Launch a file explorer"),
     Key([mod], "q", lazy.spawn(screen_lock), desc="Activate screen locker"),
     Key([mod], "m", lazy.spawn(menu_launcher), desc="Open menu launcher for programs"),
+
+    # Hardware Keybinds
+    Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 7.5"), desc="Increse screen lightness"),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 7.5"), desc="Decrese screen lightness"),
 ]
 
 groups = [Group(i) for i in "asdfuiop"]
@@ -163,7 +167,8 @@ screens = [
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
                 widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Clock(format="%Y-%m-%d %a"),
+                widget.Clock(format="%I:%M %p", foreground="#66d9ef"),
                 widget.Battery(
                     format="{char} {percent:2.0%}",
                     update_interval=1, # seconds
