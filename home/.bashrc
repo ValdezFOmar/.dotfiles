@@ -7,15 +7,18 @@
 
 
 # Enviroment Variables
+# ====================
 export EDITOR="nano"
 export DOTFILES="$HOME/.dotfiles"
 
 
 # Source aliases
+# ==============
 [[ -e "$HOME/.bash_aliases" ]] && . "$HOME/.bash_aliases"
 
 
 # Prompt
+# ======
 
 ## Colors
 black=$(tput setaf 0)
@@ -42,8 +45,21 @@ color_exit_status()
 
 # User name in italics
 # '$' is green if there's no errors, otherwise red
-PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(color_exit_status)\]$\[${normal}\] '
 
+# Add git prompt if it exists
+if [[ -f ~/git-prompt.sh ]]; then
+    . ~/git-prompt.sh
+    PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[${orange}\]$(__git_ps1 " (%s)")\[$(color_exit_status)\]\$\[${normal}\] '
+else
+    PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(color_exit_status)\]\$\[${normal}\] '
+fi
+
+
+# Completition
+# ============
+
+# git bash completion
+[ -f ~/git-completion.bash ] && . ~/git-completion.bash
 
 # Auto cd when typing a directory
 shopt -s autocd

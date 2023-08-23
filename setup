@@ -18,6 +18,10 @@ systemctl enable NetworkManager.service
 # X11 persistent keyboard layout
 localectl set-x11-keymap latam
 
+# Especial git files
+[ -f /usr/share/git/completion/git-completion.bash ] && cp /usr/share/git/completion/git-completion.bash ~/
+[ -f /usr/share/git/completion/git-prompt.sh ] && cp /usr/share/git/completion/git-prompt.sh ~/
+
 # Especial directories
 [ -d "$HOME/projects"] || mkdir "$HOME/projects"
 [ -d "$HOME/bin"] || mkdir "$HOME/bin"
