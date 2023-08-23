@@ -1,4 +1,5 @@
 acpilight
+alsa-utils
 amd-ucode
 archlinux-wallpaper
 autorandr
@@ -20,8 +21,12 @@ networkmanager
 nsxiv
 openssh
 os-prober
+pamixer
 pcmanfm-gtk3
 picom
+pulseaudio
+pulseaudio-alsa
+pulseaudio-bluetooth
 qtile
 rofi
 terminus-font

@@ -88,6 +88,9 @@ keys = [
     # Hardware Keybinds
     Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 7.5"), desc="Increse screen lightness"),
     Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 7.5"), desc="Decrese screen lightness"),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc="Increase volume"),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 10"), desc="Decrease volume"),
+    Key([], "XF86AudioMute", lazy.spawn("pamixer -t"), desc="Increase volume")
 ]
 
 groups = [Group(i) for i in "asdfuiop"]
@@ -116,24 +119,28 @@ for i in groups:
         ]
     )
 
+
+# Layouts
+layouts_config = {
+    "border_width":2,
+    #"border_normal":"#1b1d1e",
+    "border_focus":"#66d9ef",
+}
+
 layouts = [
-    layout.Columns(
-        border_width=2,
-        border_normal="1b1d1e",
-        border_focus="#66d9ef"
-    ),
-    # layout.Max(),
-    # Try more layouts by unleashing below layouts.
+    layout.Columns(**layouts_config),
+    # layout.Max(**layouts_config),
+    # 6;13uTry more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=4),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    layout.VerticalTile(),
-    # layout.Zoomy(),
+    # layout.Bsp(**layouts_config),
+    # layout.Matrix(**layouts_config),
+    layout.MonadTall(**layouts_config),
+    layout.MonadWide(**layouts_config),
+    # layout.RatioTile(**layouts_config),
+    # layout.Tile(**layouts_config),
+    # layout.TreeTab(**layouts_config),
+    layout.VerticalTile(**layouts_config),
+    layout.Zoomy(**layouts_config),
 ]
 
 widget_defaults = dict(
@@ -144,6 +151,7 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 
+# Screens
 monitor_wallpaper="/usr/share/backgrounds/archlinux/wave.png"
 
 screens = [
@@ -185,6 +193,23 @@ screens = [
     Screen(
         wallpaper=monitor_wallpaper,
         wallpaper_mode="fill",
+        bottom=bar.Bar(
+            [
+                widget.CurrentLayout(),
+                widget.GroupBox(),
+                widget.WindowName(),
+                widget.Clock(format="%I:%M %p", foreground="#66d9ef"),
+                widget.Battery(
+                    format="{char} {percent:2.0%}",
+                    update_interval=1, # seconds
+                    foreground="#fd971f"
+                ),
+            ],
+            28,
+            border_width=[2, 0, 3, 0],  # Draw top and bottom borders
+            border_color=["#241233", "000000", "#241233", "000000"],  # Borders colors
+            background="#241233",
+        ),
     ),
 ]
 
