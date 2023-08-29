@@ -25,18 +25,41 @@
 # SOFTWARE.
 
 from libqtile import bar, layout, widget
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
+#from libqtile.utils import guess_terminal
 
+
+# Mod keys
 alt = "mod1"
 mod = "mod4"
 
+# Programs
 terminal = "kitty"
-browser = "firefox"
 file_exp = "pcmanfm"
 screen_lock = "light-locker-command -l"
 menu_launcher = "rofi -show drun"
+
+# Color Theme
+color_theme = {
+    "black": "#1b1d1e",
+    "light black": "#505354",
+    "red": "#f92672",
+    "light red": "#ff669d",
+    "green": "#a6e22e",
+    "light green": "#beed5f",
+    "yellow": "#fd971f",
+    "light yellow": "#e6db74",
+    "blue": "#66d9ef",
+    "light blue": "#66d9ef",
+    "magenta": "#9e6ffe",
+    "light magenta": "#66d9ef",
+    "cyan": "#5e7175",
+    "light cyan": "#a3babf",
+    "white": "#ccccc6",
+    "light white": "#f8f8f2",
+}
+
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -76,14 +99,22 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    #Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
 
     # Custom keybinds
-    Key([mod], "b", lazy.spawn(browser), desc="Launch browser"),
+    Key([mod], "b", lazy.spawn("firefox"), desc="Launch firefox browser"),
+    Key([mod, alt], "b", lazy.spawn("firefox -P School"), desc="Launch firefox browser with school profile"),
     Key([mod], "e", lazy.spawn(file_exp), desc="Launch a file explorer"),
     Key([mod], "q", lazy.spawn(screen_lock), desc="Activate screen locker"),
     Key([mod], "m", lazy.spawn(menu_launcher), desc="Open menu launcher for programs"),
+
+    # Tooling (mod + T + <key>), for using general purpose tools
+    KeyChord([mod], "t", [
+            Key([], "c", lazy.spawn("xcolor -f HEX -P 155 -s clipboard"), desc="Colo picker"),
+        ],
+        name="tool"
+    ),
 
     # Hardware Keybinds
     Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 7.5"), desc="Increse screen lightness"),
@@ -122,37 +153,82 @@ for i in groups:
 
 # Layouts
 layouts_config = {
-    "border_width":2,
-    #"border_normal":"#1b1d1e",
-    "border_focus":"#66d9ef",
+    'margin': 4,
+    'margin_on_single': False,
+    'border_width': 2,
+    'border_normal': color_theme["light black"], # Gray
+    'border_focus': color_theme["magenta"], # Pink-ish
+    'border_on_single': False,
+}
+
+monad_layout_config = {
+    'ratio': 0.55,
+    'single_margin': 0,
+    'single_border_width': 0,
 }
 
 layouts = [
+    layout.MonadTall(**layouts_config, **monad_layout_config),
+    layout.MonadWide(**layouts_config, **monad_layout_config),
+    layout.Zoomy(**layouts_config),
     layout.Columns(**layouts_config),
+    layout.VerticalTile(**layouts_config),
+    # Try more layouts by unleashing below layouts.
     # layout.Max(**layouts_config),
-    # 6;13uTry more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=4),
     # layout.Bsp(**layouts_config),
     # layout.Matrix(**layouts_config),
-    layout.MonadTall(**layouts_config),
-    layout.MonadWide(**layouts_config),
     # layout.RatioTile(**layouts_config),
     # layout.Tile(**layouts_config),
     # layout.TreeTab(**layouts_config),
-    layout.VerticalTile(**layouts_config),
-    layout.Zoomy(**layouts_config),
 ]
 
+# Widgets
 widget_defaults = dict(
     font="sans",
-    fontsize=20,
-    padding=3,
+    fontsize=16,
+    padding=6,
+    foreground=color_theme["light white"],
 )
 extension_defaults = widget_defaults.copy()
 
+w_layout = widget.CurrentLayoutIcon(scale=0.8)
+w_group = widget.GroupBox(
+    active=color_theme["white"],
+    highlight_method="block",
+    this_screen_border=color_theme["red"],
+    this_current_screen_border=color_theme["red"],
+    block_highlight_text_color=color_theme["white"],
+    inactive=color_theme["light black"],
+    spacing=3,
+)
+#widget.Prompt()
+w_window_name = widget.WindowName()
+w_chord = widget.Chord(
+    chords_colors={
+        "launch": (color_theme["red"], color_theme["white"]),
+        "tool": (color_theme["red"], color_theme["white"]),
+    },
+    name_transform=lambda name: name.title(),
+)
+# NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+# widget.StatusNotifier()
+#widget.Systray()
+w_volume = widget.Volume(fmt='Vol: {}', foreground=color_theme["magenta"])
+w_battery = widget.Battery(
+    update_interval=1, # seconds
+    format="{char} {percent:2.0%}",
+    discharge_char="B",
+    low_foreground=color_theme["light red"],
+    low_percentage=0.2,
+    foreground=color_theme["yellow"],
+)
+w_date = widget.Clock(format="%a %d/%m/%Y", foreground=color_theme["blue"])
+w_time = widget.Clock(format="%I:%M %p", foreground=color_theme["green"])
+
 
 # Screens
-monitor_wallpaper="/usr/share/backgrounds/archlinux/wave.png"
+monitor_wallpaper="/usr/share/backgrounds/archlinux/awesome.png"
 
 screens = [
     Screen(
@@ -160,34 +236,19 @@ screens = [
         wallpaper_mode="fill",
         bottom=bar.Bar(
             [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                #widget.TextBox("default config", name="default"),
-                #widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#66d9ef"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a"),
-                widget.Clock(format="%I:%M %p", foreground="#66d9ef"),
-                widget.Battery(
-                    format="{char} {percent:2.0%}",
-                    update_interval=1, # seconds
-                    foreground="#fd971f"
-                ),
-                widget.QuickExit(),
+                w_layout,
+                w_group,
+                w_window_name,
+                w_chord,
+                w_volume,
+                w_battery,
+                w_date,
+                w_time,
             ],
             28,
-            border_width=[2, 0, 3, 0],  # Draw top and bottom borders
-            border_color=["#241233", "000000", "#241233", "000000"],  # Borders colors
-            background="#241233",
+            #border_width=[2, 0, 3, 0],  # Draw top and bottom borders
+            #border_color=["#241233", "000000", "#241233", "000000"],  # Borders colors
+            background=color_theme["black"],
         ),
     ),
     Screen(
@@ -195,20 +256,19 @@ screens = [
         wallpaper_mode="fill",
         bottom=bar.Bar(
             [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.WindowName(),
-                widget.Clock(format="%I:%M %p", foreground="#66d9ef"),
-                widget.Battery(
-                    format="{char} {percent:2.0%}",
-                    update_interval=1, # seconds
-                    foreground="#fd971f"
-                ),
+                w_layout,
+                w_group,
+                w_window_name,
+                w_chord,
+                w_volume,
+                w_battery,
+                w_date,
+                w_time,
             ],
             28,
-            border_width=[2, 0, 3, 0],  # Draw top and bottom borders
-            border_color=["#241233", "000000", "#241233", "000000"],  # Borders colors
-            background="#241233",
+            #border_width=[0, 0, 0, 0],  # top, right, bottom, left
+            #border_color=["", "", "", ""],
+            background=color_theme["black"],
         ),
     ),
 ]

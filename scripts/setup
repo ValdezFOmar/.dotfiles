@@ -3,13 +3,16 @@
 
 
 # Symbolic links for config files
-. ./symlinks
+. ~/.dotfiles/scripts/symlinks
 
 # git
 git config --global core.excludesfile ~/.gitignore_global
 
 # Install packages
-pacman -Syu && pacman -S --needed - < ./pkglist.txt
+pacman -Syu && pacman -S --needed - < ~/.dotfiles/pkglist.txt
+
+# setup lightdm-slick-greeter
+. ~/.dotfiles/scripts/slick_greeter_config
 
 # enabling services
 systemctl enable lightdm.service

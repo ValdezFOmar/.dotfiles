@@ -52,12 +52,3 @@ This alias shows all the files of the current directory, listing dotfiles first.
 ```sh
 alias ll='ls -Alv'
 ```
-
-
-## Graphical
-
-### Image Viewer
-
-See images in a directory by `cd`'ing into it and typing:
-
-    nsxiv . &
