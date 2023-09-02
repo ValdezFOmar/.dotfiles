@@ -63,8 +63,8 @@ main()
     [ -d "$HOME/.config" ] || mkdir "$HOME/.config"
     symfiles "$DOTFILES/.config" "$HOME/.config"
 
-    # Pacman hooks
     symfiles "$DOTFILES/etc/pacman.d" "/etc/pacman.d"
+    symfiles "$DOTFILES/etc/lightdm" "/etc/lightdm"
     symlink  "$DOTFILES/pkglist.txt" "/etc/pkglist.txt"
 }
 

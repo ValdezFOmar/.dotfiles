@@ -16,6 +16,13 @@ alias rm='rm -i '
 alias md='mkdir '
 
 alias cd..='cd ..'
+alias py='python -q'
+alias vim='nvim '
+alias kssh='kitty +kitten ssh'
+
+alias cal='cal --monday'
+alias month='cal --one'
+alias calendar='cal --year'
 
 
 #   Functions

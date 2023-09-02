@@ -8,7 +8,7 @@
 
 # Enviroment Variables
 # ====================
-export EDITOR="nano"
+export EDITOR="nvim"
 export DOTFILES="$HOME/.dotfiles"
 
 
@@ -47,8 +47,8 @@ color_exit_status()
 # '$' is green if there's no errors, otherwise red
 
 # Add git prompt if it exists
-if [[ -f ~/git-prompt.sh ]]; then
-    . ~/git-prompt.sh
+if [[ -f ~/.git-prompt.sh ]]; then
+    . ~/.git-prompt.sh
     PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[${orange}\]$(__git_ps1 " (%s)")\[$(color_exit_status)\]\$\[${normal}\] '
 else
     PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(color_exit_status)\]\$\[${normal}\] '
@@ -59,7 +59,7 @@ fi
 # ============
 
 # git bash completion
-[ -f ~/git-completion.bash ] && . ~/git-completion.bash
+[ -f ~/.git-completion.bash ] && . ~/.git-completion.bash
 
 # Auto cd when typing a directory
 shopt -s autocd
