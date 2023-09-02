@@ -13,6 +13,7 @@ firefox
 freerdp
 git
 gnome-keyring
+gnome-screenshot
 grub
 htop
 kitty
@@ -40,10 +41,12 @@ picom
 pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
+pyenv
 qtile
 remmina
 rofi
 terminus-font
+tk
 ttf-cascadia-code
 unzip
 vlc

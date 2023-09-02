@@ -50,7 +50,7 @@ color_theme = {
     "light green": "#beed5f",
     "yellow": "#fd971f",
     "light yellow": "#e6db74",
-    "blue": "#66d9ef",
+    "blue": "#1989EB",
     "light blue": "#66d9ef",
     "magenta": "#9e6ffe",
     "light magenta": "#66d9ef",
@@ -121,10 +121,11 @@ keys = [
     Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 7.5"), desc="Decrese screen lightness"),
     Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc="Increase volume"),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 10"), desc="Decrease volume"),
-    Key([], "XF86AudioMute", lazy.spawn("pamixer -t"), desc="Increase volume")
+    Key([], "XF86AudioMute", lazy.spawn("pamixer -t"), desc="Increase volume"),
+    Key([], "Print", lazy.spawn("gnome-screenshot --area --interactive"), desc="Launch snipping tool")
 ]
 
-groups = [Group(i) for i in "asdfuiop"]
+groups = [Group(name=i, label=i.upper()) for i in "asdfuiop"]
 
 for i in groups:
     keys.extend(
@@ -192,18 +193,17 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-w_layout = widget.CurrentLayoutIcon(scale=0.8)
-w_group = widget.GroupBox(
-    active=color_theme["white"],
-    highlight_method="block",
-    this_screen_border=color_theme["red"],
-    this_current_screen_border=color_theme["red"],
-    block_highlight_text_color=color_theme["white"],
-    inactive=color_theme["light black"],
-    spacing=3,
-)
+
+w_group_config = {
+    "active":color_theme["white"],
+    "highlight_method":"block",
+    "this_screen_border":color_theme["blue"],
+    "this_current_screen_border":color_theme["blue"],
+    "block_highlight_text_color":color_theme["black"],
+    "inactive":color_theme["light black"],
+    "spacing":3,
+}
 #widget.Prompt()
-w_window_name = widget.WindowName()
 w_chord = widget.Chord(
     chords_colors={
         "launch": (color_theme["red"], color_theme["white"]),
@@ -223,7 +223,7 @@ w_battery = widget.Battery(
     low_percentage=0.2,
     foreground=color_theme["yellow"],
 )
-w_date = widget.Clock(format="%a %d/%m/%Y", foreground=color_theme["blue"])
+w_date = widget.Clock(format="%a %d/%m/%Y", foreground=color_theme["light blue"])
 w_time = widget.Clock(format="%I:%M %p", foreground=color_theme["green"])
 
 
@@ -236,29 +236,9 @@ screens = [
         wallpaper_mode="fill",
         bottom=bar.Bar(
             [
-                w_layout,
-                w_group,
-                w_window_name,
-                w_chord,
-                w_volume,
-                w_battery,
-                w_date,
-                w_time,
-            ],
-            28,
-            #border_width=[2, 0, 3, 0],  # Draw top and bottom borders
-            #border_color=["#241233", "000000", "#241233", "000000"],  # Borders colors
-            background=color_theme["black"],
-        ),
-    ),
-    Screen(
-        wallpaper=monitor_wallpaper,
-        wallpaper_mode="fill",
-        bottom=bar.Bar(
-            [
-                w_layout,
-                w_group,
-                w_window_name,
+                widget.CurrentLayoutIcon(scale=0.8),
+                widget.GroupBox(**w_group_config),
+                widget.WindowName(),
                 w_chord,
                 w_volume,
                 w_battery,
@@ -268,6 +248,24 @@ screens = [
             28,
             #border_width=[0, 0, 0, 0],  # top, right, bottom, left
             #border_color=["", "", "", ""],
+            background=color_theme["black"],
+        ),
+    ),
+    Screen(
+        wallpaper=monitor_wallpaper,
+        wallpaper_mode="fill",
+        bottom=bar.Bar(
+            [
+                widget.CurrentLayoutIcon(scale=0.8),
+                widget.GroupBox(**w_group_config),
+                widget.WindowName(),
+                w_chord,
+                w_volume,
+                w_battery,
+                w_date,
+                w_time,
+            ],
+            28,
             background=color_theme["black"],
         ),
     ),
@@ -283,9 +281,12 @@ mouse = [
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
-bring_front_click = False
-cursor_warp = False
+bring_front_click = "floating_only"
+cursor_warp = True
 floating_layout = layout.Floating(
+    border_width=1,
+    border_focus=color_theme["white"],
+    border_normal="#000000",
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
@@ -293,6 +294,7 @@ floating_layout = layout.Floating(
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk
         Match(wm_class="ssh-askpass"),  # ssh-askpass
+        Match(wm_class="gnome-screenshot"), # Preview screenshot window
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
     ]
