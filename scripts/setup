@@ -28,5 +28,4 @@ localectl set-x11-keymap latam
 # Especial directories
 [ -d "$HOME/projects"] || mkdir "$HOME/projects"
 [ -d "$HOME/bin"] || mkdir "$HOME/bin"
-[ -d "$HOME/.local/bin"] || mkdir -p "$HOME/.local/bin"
 

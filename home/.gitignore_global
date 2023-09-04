@@ -23,6 +23,8 @@ ignore_code/
 .forget_code/
 forget_code/
 
+# HTML genrated by md4c / md2html
+.markdown/
 
 # enviromental variables files
 .env
