@@ -49,9 +49,9 @@ color_exit_status()
 # Add git prompt if it exists
 if [[ -f ~/.git-prompt.sh ]]; then
     . ~/.git-prompt.sh
-    PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[${orange}\]$(__git_ps1 " (%s)")\[$(color_exit_status)\]\$\[${normal}\] '
+    PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[${orange}\]$(__git_ps1 " (%s)")\[$(color_exit_status)\]❯\[${normal}\] '
 else
-    PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(color_exit_status)\]\$\[${normal}\] '
+    PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(color_exit_status)\]❯\[${normal}\] '
 fi
 
 
@@ -80,3 +80,9 @@ fi
 # Set path so it includes /bin and /.local/bin if it exists
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
+
+
+# pyenv shell integration
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"

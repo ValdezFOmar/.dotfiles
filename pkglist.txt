@@ -7,8 +7,10 @@ archlinux-wallpaper
 autorandr
 base
 base-devel
+cmake
 deepin-gtk-theme
 efibootmgr
+fd
 firefox
 freerdp
 git
@@ -28,9 +30,11 @@ nano-syntax-highlighting
 neofetch
 neovim
 networkmanager
+nodejs
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
+npm
 nsxiv
 openssh
 os-prober
@@ -44,6 +48,7 @@ pulseaudio-bluetooth
 pyenv
 qtile
 remmina
+ripgrep
 rofi
 terminus-font
 tk
