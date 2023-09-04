@@ -111,7 +111,7 @@ keys = [
 
     # Tooling (mod + T + <key>), for using general purpose tools
     KeyChord([mod], "t", [
-            Key([], "c", lazy.spawn("xcolor -f HEX -P 155 -s clipboard"), desc="Colo picker"),
+            Key([], "c", lazy.spawn("xcolor -f HEX -P 155 -s clipboard"), desc="Color picker"),
         ],
         name="tool"
     ),
