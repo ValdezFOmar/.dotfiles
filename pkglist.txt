@@ -16,6 +16,7 @@ freerdp
 git
 gnome-keyring
 gnome-screenshot
+gpaste
 grub
 htop
 kitty

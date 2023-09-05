@@ -3,14 +3,14 @@ return {
     branch = 'v2.x',
     dependencies = {
         -- LSP Support
-        {'neovim/nvim-lspconfig'},             -- Required
-        {'williamboman/mason.nvim'},           -- Optional
-        {'williamboman/mason-lspconfig.nvim'}, -- Optional
+        { 'neovim/nvim-lspconfig' },           -- Required
+        { 'williamboman/mason.nvim' },         -- Optional
+        { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
         -- Autocompletion
-        {'hrsh7th/nvim-cmp'},     -- Required
-        {'hrsh7th/cmp-nvim-lsp'}, -- Required
-        {'L3MON4D3/LuaSnip'},     -- Required
+        { 'hrsh7th/nvim-cmp' },   -- Required
+        { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+        { 'L3MON4D3/LuaSnip' },   -- Required
     },
     config = function()
         local lsp = require('lsp-zero').preset({})
@@ -18,7 +18,7 @@ return {
         lsp.on_attach(function(client, bufnr)
             -- see :help lsp-zero-keybindings
             -- to learn the available actions
-            lsp.default_keymaps({buffer = bufnr})
+            lsp.default_keymaps({ buffer = bufnr })
         end)
 
         -- More language servers:
@@ -53,7 +53,7 @@ return {
 
         cmp.setup({
             mapping = {
-                -- This little snippet will confirm with tab, and 
+                -- This little snippet will confirm with tab, and
                 -- if no entry is selected, will confirm the first item
                 ["<Tab>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
@@ -67,7 +67,7 @@ return {
                     else
                         fallback()
                     end
-                end, {"i","s"}),
+                end, { "i", "s" }),
 
                 -- If something has explicitly been selected by the user, select it.
                 -- Else, just enter a new line.
@@ -90,7 +90,7 @@ return {
                     else
                         fallback()
                     end
-                end, {"i","s"}),
+                end, { "i", "s" }),
 
                 -- Navigate sugestions down
                 ["<C-j>"] = cmp.mapping(function(fallback)
@@ -99,7 +99,7 @@ return {
                     else
                         fallback()
                     end
-                end, {"i","s"}),
+                end, { "i", "s" }),
 
                 -- Ctrl+Space to trigger completion menu
                 ['<C-Space>'] = cmp.mapping.complete(),

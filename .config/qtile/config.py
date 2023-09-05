@@ -223,7 +223,7 @@ w_battery = widget.Battery(
     low_percentage=0.2,
     foreground=color_theme["yellow"],
 )
-w_date = widget.Clock(format="%a %d/%m/%Y", foreground=color_theme["light blue"])
+w_date = widget.Clock(format="%A %d/%b/%Y", foreground=color_theme["light blue"])
 w_time = widget.Clock(format="%I:%M %p", foreground=color_theme["green"])
 
 

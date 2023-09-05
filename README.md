@@ -4,7 +4,7 @@ Dotfiles for my Arch linux distro.
 
 ## Setup
 
-> For Additional installation info, check [notes](./notes/intallation-guide.md).
+> For Additional installation info, check [notes](./notes/installation-guide.md).
 
 ### Clone and source setup script
 
