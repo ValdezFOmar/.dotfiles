@@ -66,4 +66,5 @@ venv()
 
     python -m venv "./$venv_name" --prompt "\[$(tput setaf 2)\]$venv_name\[$(tput sgr0)\]"
     activate
+    pip -V
 }

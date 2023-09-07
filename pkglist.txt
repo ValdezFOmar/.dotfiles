@@ -13,6 +13,7 @@ efibootmgr
 fd
 firefox
 freerdp
+gimp
 git
 gnome-keyring
 gnome-screenshot

@@ -54,6 +54,8 @@ else
     PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(color_exit_status)\]❯\[${normal}\] '
 fi
 
+PS2='\[${green}\]❯\[${normal}\] '
+
 
 # Completition
 # ============
