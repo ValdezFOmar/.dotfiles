@@ -5,3 +5,5 @@
     defaultBranch = main
 [core]
 	excludesfile = /home/omar/.gitignore_global
+[push]
+	autoSetupRemote = true

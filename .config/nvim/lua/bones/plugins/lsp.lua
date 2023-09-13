@@ -109,5 +109,11 @@ return {
                 ['<C-b>'] = cmp_action.luasnip_jump_backward(),
             }
         })
+
+        -- Formatter keybind
+        vim.keymap.set("n", "<leader>ff", function ()
+            vim.cmd("!black %")
+            vim.cmd("!isort %")
+        end, { silent = true })
     end,
 }
