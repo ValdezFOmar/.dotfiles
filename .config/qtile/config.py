@@ -111,7 +111,8 @@ keys = [
 
     # Tooling (mod + T + <key>), for using general purpose tools
     KeyChord([mod], "t", [
-            Key([], "c", lazy.spawn("xcolor -f HEX -P 155 -s clipboard"), desc="Color picker"),
+            Key([], "p", lazy.spawn("xcolor -f HEX -P 155 -s clipboard"), desc="Color picker"),
+            Key([], "h", lazy.spawn("gpaste-client ui"), desc="Clipboard history"),
         ],
         name="tool"
     ),
@@ -157,8 +158,8 @@ layouts_config = {
     'margin': 4,
     'margin_on_single': False,
     'border_width': 2,
-    'border_normal': color_theme["light black"], # Gray
-    'border_focus': color_theme["magenta"], # Pink-ish
+    'border_normal': color_theme["light black"],
+    'border_focus': color_theme["magenta"],
     'border_on_single': False,
 }
 

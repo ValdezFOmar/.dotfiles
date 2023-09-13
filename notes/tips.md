@@ -17,7 +17,7 @@ cli client:
 
 paste output of command `foo` to `gpaste`:
 
-    foo | gpaste
+    foo | gpaste-client
 
 
 Or use the keybind `mod4 + T + C` from Qtile custom config.

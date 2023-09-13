@@ -7,6 +7,7 @@ archlinux-wallpaper
 autorandr
 base
 base-devel
+bind
 cmake
 deepin-gtk-theme
 efibootmgr
@@ -53,10 +54,12 @@ remmina
 ripgrep
 rofi
 terminus-font
+tesseract
 tk
 ttf-cascadia-code
 unzip
 vlc
+xclip
 xcolor
 xf86-video-amdgpu
 xorg-bdftopcf
