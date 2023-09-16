@@ -13,6 +13,7 @@
     black:       #3d352a;
     lightblack:  #554444;
     tlightblack:  #554444cc;
+    blacklist: #1c1c1c;
     //
     // Red
     red:         #cd5c5c;
@@ -78,12 +79,12 @@ message {
     color: @black;
 }
 inputbar {
-    color: @lightgreen;
+    color: @lightblue;
     padding: 11px;
-    background-color: @tlightblack;
+    background-color: @lightblack;
     border: 2px 2px 2px 2px;
     border-radius:  15px 15px 0px 0px;
-    border-color: @foreground;
+    border-color: @lightblack;
     font: "Source Code Pro 18";
 }
 entry,prompt,case-indicator {
@@ -96,9 +97,9 @@ prompt {
 listview {
     padding: 8px;
     border-radius: 0px 0px 15px 15px;
-    border-color: @foreground;
+    border-color: @blacklist;
     border: 0px 2px 2px 2px;
-    background-color: #1c1c1ccc;
+    background-color: @blacklist;
     dynamic: false;
     lines: 10;
 }
@@ -116,7 +117,7 @@ element-text {
     text-color:       inherit;
 }
 element selected.normal {
-    background-color: @blue;
+    background-color: @lightblack;
 }
 element normal active {
     foreground: @lightblue;

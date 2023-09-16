@@ -43,3 +43,13 @@ and then saved them with `autorandr`
 
 > this overrides the default behavior that makes `autorandr` keep the current
 configuration even when monitors are connected/disconnected
+
+# Git
+
+Delete local branch
+
+    git branch -d <branch-name>
+
+Delete remote branch
+
+    git push -d origin <remote-branch-name>

@@ -118,11 +118,12 @@ keys = [
     ),
 
     # Hardware Keybinds
-    Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 7.5"), desc="Increse screen lightness"),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 7.5"), desc="Decrese screen lightness"),
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 10"), desc="Increase volume"),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 10"), desc="Decrease volume"),
-    Key([], "XF86AudioMute", lazy.spawn("pamixer -t"), desc="Increase volume"),
+    # Note: Both volume and backlight are configure to be more accuarate to human perception
+    Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -perceived -inc 5"), desc="Increse screen lightness"),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -perceived -dec 5"), desc="Decrese screen lightness"),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 5 --gamma 2"), desc="Increase volume"),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 5 --gamma 2"), desc="Decrease volume"),
+    Key([], "XF86AudioMute", lazy.spawn("pamixer -t"), desc="Toggle mute"),
     Key([], "Print", lazy.spawn("gnome-screenshot --area --interactive"), desc="Launch snipping tool")
 ]
 
