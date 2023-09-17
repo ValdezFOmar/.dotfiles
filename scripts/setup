@@ -11,9 +11,6 @@ git config --global core.excludesfile ~/.gitignore_global
 # Install packages
 pacman -Syu && pacman -S --needed - < ~/.dotfiles/pkglist.txt
 
-# setup lightdm-slick-greeter
-. ~/.dotfiles/scripts/slick_greeter_config
-
 # enabling services
 systemctl enable lightdm.service
 systemctl enable NetworkManager.service
@@ -28,4 +25,8 @@ localectl set-x11-keymap latam
 # Especial directories
 [ -d "$HOME/projects"] || mkdir "$HOME/projects"
 [ -d "$HOME/bin"] || mkdir "$HOME/bin"
+
+# Additional config
+. ~/.dotfiles/scripts/slick_greeter_config
+. ~/.dotfiles/scripts/repos
 

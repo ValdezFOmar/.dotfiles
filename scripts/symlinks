@@ -66,9 +66,6 @@ main()
     symfiles "$DOTFILES/etc/pacman.d" "/etc/pacman.d"
     symfiles "$DOTFILES/etc/lightdm" "/etc/lightdm"
     symlink  "$DOTFILES/pkglist.txt" "/etc/pkglist.txt"
-    
-    [ -d "$HOME/.local"] || mkdir "$HOME/.local"
-    symlink "$DOTFILES/.local/bin" "$HOME/.local"
 }
 
 main

@@ -20,6 +20,7 @@ gnome-keyring
 gnome-screenshot
 gpaste
 grub
+gvfs
 htop
 kitty
 libreoffice-fresh
@@ -57,6 +58,8 @@ terminus-font
 tesseract
 tk
 ttf-cascadia-code
+udiskie
+udisks2
 unzip
 vlc
 xclip

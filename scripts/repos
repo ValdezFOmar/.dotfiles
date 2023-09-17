@@ -1,0 +1,10 @@
+#!/bin/bash
+# Some useful git repositories
+
+repos_dest="$HOME/repos"
+
+[ -d "$repos_dest"] || mkdir "$repos_dest"
+
+# Cursor theme
+git clone -C "$repos_dest" https://github.com/vinceliuice/Qogir-icon-theme && \
+    . "$repos_dest/Qogir-icon-theme/src/cursors/install.sh"

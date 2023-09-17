@@ -1,4 +1,6 @@
 picom -b &
+udiskie &
+pcmanfm --daemon-mode
 light-locker --lock-after-screensaver=60 --lock-on-suspend --lock-on-lid &
-gnome-keyring-daemon --start -daemonize --login --components=pkcs11,secrets,ssh
+gnome-keyring-daemon --start --daemonize --components=pkcs11,secrets,ssh
 gpaste-client start
