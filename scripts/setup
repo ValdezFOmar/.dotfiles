@@ -1,6 +1,6 @@
 #!/bin/bash
 # Installation script
-
+# shellcheck source=/dev/null
 
 # Symbolic links for config files
 . ~/.dotfiles/scripts/symlinks
@@ -23,8 +23,8 @@ localectl set-x11-keymap latam
 [ -f /usr/share/git/completion/git-prompt.sh ] && cp /usr/share/git/completion/git-prompt.sh ~/
 
 # Especial directories
-[ -d "$HOME/projects"] || mkdir "$HOME/projects"
-[ -d "$HOME/bin"] || mkdir "$HOME/bin"
+[ -d "$HOME/projects" ] || mkdir "$HOME/projects"
+[ -d "$HOME/bin" ] || mkdir "$HOME/bin"
 
 # Additional config
 . ~/.dotfiles/scripts/slick_greeter_config

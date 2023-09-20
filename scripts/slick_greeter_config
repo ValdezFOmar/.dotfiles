@@ -6,6 +6,6 @@
 # This script allows the lightdm greeter config file to be in the home
 # directory and let lightdm read it so it can be properly setup
 
-usermod -aG $(whoami) lightdm
+usermod -aG "$(whoami)" lightdm
 chmod g+rx ~
 ln -s ~/.dotfiles/etc/lightdm/slick-greeter.conf /etc/lightdm/slick-greeter.conf

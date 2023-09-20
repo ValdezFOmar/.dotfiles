@@ -1,5 +1,19 @@
 # General tips
 
+## Change cursor
+
+After downloading and extracting the cursor theme, copy its contents to:
+
+    ~/.local/share/icons
+
+Then to select it as the current cursor theme, launch `lxappearance` and apply the theme.
+Finally, to have it automatically be set up at loging, simply symlink the `cursors` directory
+from the cursors' theme directory to `~/.icons/default/cursors`. An example might be:
+
+```sh
+ln -s ~/.local/share/icons/[theme_name]/cursors ~/.icons/default/cursors
+```
+
 ## Color picker
 
 To select a color with a color picker use:
