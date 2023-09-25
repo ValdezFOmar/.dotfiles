@@ -1,13 +1,74 @@
 configuration {
     modes: [combi];
     combi-mode: [run, drun, window];
+    terminal: "kitty";
 
     display-drun: "Open:";
-    show-icon: true;
+    show-icons: true;
     icon-theme: "Papirus";
-    font: "Cascadia Code";
 }
 
 // @theme "/dev/null"
 @theme "arthur"
+
+* {
+    font: "sans 12";
+    blacklist: #1c1c1c;
+    black-mate: #1b1d1e;
+    lightblue: rgb(102, 217, 239);
+    semi-transparent: rgba(27, 29, 30, 55%);
+    semi-transparent-select: rgb(69, 76, 79);
+    blue-highlight: bold rgb(102, 217, 239);
+}
+
+window {
+    padding: 0px;
+    width: calc( 40% min 600px );
+    border-radius: 0px;
+    transparency: "real";
+}
+
+inputbar {
+    border: 0px;
+    border-radius: 5px 5px 0px 0px;
+    border-color: @lightblack;
+    background-color: @black-mate;
+    color: @lightblue;
+}
+
+prompt, entry {
+    font: "sans 14";
+}
+
+listview {
+    lines: 6;
+    cycle: false;
+    padding: 0px;
+    border: 0px;
+    border-radius: 0px 0px 5px 5px;
+    border-color: @blacklist;
+    background-color: @semi-transparent;
+}
+
+element {
+    orientation: horizontal;
+    children: [ element-icon, element-text ];
+    spacing: 10px;
+    padding: 5px 8px;
+    border-radius: 0px;
+}
+
+element selected.normal {
+    background-color: @semi-transparent-select;
+}
+
+element-icon {
+    size: 1.5em;
+}
+
+element-text {
+    vertical-align: 0.5;
+    background-color: @transparent;
+    highlight: @blue-highlight;
+}
 

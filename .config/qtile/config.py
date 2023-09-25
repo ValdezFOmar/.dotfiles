@@ -230,7 +230,7 @@ w_time = widget.Clock(format="%I:%M %p", foreground=color_theme["green"])
 
 
 # Screens
-monitor_wallpaper="/usr/share/backgrounds/archlinux/awesome.png"
+monitor_wallpaper="/usr/share/backgrounds/archlinux/archwave.png"
 
 screens = [
     Screen(

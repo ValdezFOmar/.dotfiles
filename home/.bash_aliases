@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# shellcheck source=/dev/null
 
 #   Aliases
 #   =======
@@ -32,12 +33,12 @@ alias calendar='cal --year'
 
 cl()
 {
-    la -- $1 && cd -- $1
+    la -- "$1" && cd -- "$1" || return
 }
 
 mcd()
 {
-    mkdir -p -- $1 && cd -P -- $1
+    mkdir -p -- "$1" && cd -P -- "$1" || return
 }
 
 # activate virtual env
