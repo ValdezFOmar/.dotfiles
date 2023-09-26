@@ -9,6 +9,7 @@ base
 base-devel
 bind
 cmake
+cpupower
 deepin-gtk-theme
 efibootmgr
 fd

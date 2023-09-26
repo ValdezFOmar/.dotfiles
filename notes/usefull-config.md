@@ -3,6 +3,26 @@
 
 ## Laptop Hardware
 
+### CPU Frequency Scaling
+
+See the archlinux wiki for controlling the CPU [Frequency](https://wiki.archlinux.org/title/CPU_frequency_scaling).
+Use `cpupower` to do all the configurations.
+
+Check the [Power Governors](https://wiki.archlinux.org/title/CPU_frequency_scaling#Scaling_governors)
+for diferent power modes.
+
+### Shutdown button suspends the computer
+
+Edit the file `/etc/systemd/logind.conf` and add the following configuration:
+
+    HandlePowerKey=suspend
+    HandlePowerKeyLongPress=poweroff
+
+Then, to apply the changes, run:
+
+    sudo systemctl kill -s HUP systemd-logind
+
+
 ### Backlight / Screen Brightness
 
 Install this package:
