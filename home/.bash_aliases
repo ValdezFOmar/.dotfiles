@@ -70,8 +70,13 @@ venv()
     venv_name=".venv"
 
     if [ -d "$venv_name" ]; then
-        echo "'$venv_name' already exists"
-        return
+        echo "===> '$venv_name' already exists"
+        return 1
+    fi
+
+    if ! pyenv local &> /dev/null; then
+        echo "===> No local python version detected"
+        return 1
     fi
 
     echo "Creating virtual enviroment..."

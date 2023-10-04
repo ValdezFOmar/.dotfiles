@@ -2,11 +2,13 @@
 # Installation script
 # shellcheck source=/dev/null
 
-# Symbolic links for config files
-. ~/.dotfiles/scripts/symlinks
+if (( EUID != 0 )); then
+    echo "This file needs to be run with root permissions."
+    exit 1
+fi
 
-# git
-git config --global core.excludesfile ~/.gitignore_global
+# Symbolic links for config files
+~/.dotfiles/scripts/symlinks
 
 # Install packages
 pacman -Syu && pacman -S --needed - < ~/.dotfiles/pkglist.txt
@@ -16,18 +18,29 @@ systemctl enable lightdm.service
 systemctl enable NetworkManager.service
 systemctl enable cpupower.service
 
+# Special configs
+~/.dotfiles/scripts/slick_greeter_config
+~/.dotfiles/scripts/repos
+
 # X11 persistent keyboard layout
 localectl set-x11-keymap latam
 
-# Especial git files
+# git
+git config --global core.excludesfile ~/.gitignore_global
+
 [ -f /usr/share/git/completion/git-completion.bash ] && cp /usr/share/git/completion/git-completion.bash ~/
 [ -f /usr/share/git/completion/git-prompt.sh ] && cp /usr/share/git/completion/git-prompt.sh ~/
 
 # Especial directories
-[ -d "$HOME/projects" ] || mkdir "$HOME/projects"
-[ -d "$HOME/bin" ] || mkdir "$HOME/bin"
+directories=(
+    "projects"
+    ".local/bin"
+    "bin"
+    "archives"
+)
 
-# Additional config
-. ~/.dotfiles/scripts/slick_greeter_config
-. ~/.dotfiles/scripts/repos
+for directory in "${directories[@]}";
+do
+    [ -d "$HOME/$directory" ] || mkdir "$HOME/$directory"
+done
 

@@ -29,7 +29,7 @@ symlink()
         fi
     fi
 
-    ln -s -f -i -v "$file_path" "$dest_path"
+    ln -s -i -v "$file_path" "$dest_path"
 }
 
 
@@ -51,6 +51,7 @@ symfiles()
     shopt -u dotglob # Disable hidden files in glob (*)
 }
 
+
 main()
 {
     title
@@ -66,9 +67,17 @@ main()
     [ -d "$HOME/.icons/default" ] || mkdir "$HOME/.icons/default"
     symlink "$DOTFILES/.icons/default/index.theme" "$HOME/.icons/default"
 
-    symfiles "$DOTFILES/etc/pacman.d" "/etc/pacman.d"
-    symfiles "$DOTFILES/etc/lightdm" "/etc/lightdm"
-    symlink  "$DOTFILES/pkglist.txt" "/etc/pkglist.txt"
+    [ -d "$HOME/.local" ] || mkdir "$HOME/.local"
+    symlink "$DOTFILES/.local/bin" "$HOME/.local/bin"
+
+    if (( EUID == 0 )); then
+        symfiles "$DOTFILES/etc/pacman.d" "/etc/pacman.d"
+        symfiles "$DOTFILES/etc/lightdm" "/etc/lightdm"
+        symlink  "$DOTFILES/pkglist.txt" "/etc/pkglist.txt"
+    else
+        echo "Some symbolic links need root permission..."
+    fi
 }
+
 
 main

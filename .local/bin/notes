@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+
+import sys
+from pathlib import Path
+
+NOTES_FILE = Path(sys.argv[0]).parent / "notes_db.txt"
+
+
+def get_notes(path):
+    with open(path, "r", encoding="utf-8") as file:
+        for line in file:
+            yield line.removesuffix("\n")
+
+
+def add_note(path, note):
+    with open(path, "a", encoding="utf-8") as file:
+        file.write(note + "\n")
+
+
+def delete_all_notes(path):
+    with open(path, "w", encoding="utf-8"):
+        pass
+
+
+def main():
+    if len(sys.argv) < 2:
+        for note in get_notes(NOTES_FILE):
+            print(note)
+        return
+
+    match sys.argv[1:]:
+        case ["add", note]:
+            add_note(NOTES_FILE, note)
+        case ["del", "all"]:
+            delete_all_notes(NOTES_FILE)
+        case _:
+            print(f"{Path(sys.argv[0]).stem}: Invalid options", file=sys.stderr)
+            sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
