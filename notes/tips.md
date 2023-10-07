@@ -1,5 +1,10 @@
 # General tips
 
+## Reload Xresources Configuration
+To reload the `~/.Xresources` configuration file, do:
+
+    xrdb ~/.Xresources
+
 ## Change cursor
 
 After downloading and extracting the cursor theme, copy its contents to:

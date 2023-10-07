@@ -22,22 +22,22 @@ export DOTFILES="$HOME/.dotfiles"
 # ======
 
 ## Colors
-black=$(tput setaf 0)
+# black=$(tput setaf 0)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 orange=$(tput setaf 3)
 blue=$(tput setaf 4)
 purple=$(tput setaf 5)
-cyan=$(tput setaf 6)
-white=$(tput setaf 7)
+# cyan=$(tput setaf 6)
+# white=$(tput setaf 7)
 normal=$(tput sgr0)
 
 color_exit_status()
 {
     if [[ $? == 0 ]]; then
-        echo $green
+        echo "$green"
     else
-        echo $red
+        echo "$red"
     fi
 }
 
@@ -45,7 +45,7 @@ color_exit_status()
 #PS1='\u@\h \w$ '
 
 # User name in italics
-# '$' is green if there's no errors, otherwise red
+# '❯' is green if there's no errors, otherwise red
 
 # Add git prompt if it exists
 if [[ -f ~/.git-prompt.sh ]]; then
@@ -55,7 +55,7 @@ else
     PS1='\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(color_exit_status)\]❯\[${normal}\] '
 fi
 
-PS2='\[${green}\]❯\[${normal}\] '
+PS2="\[${green}\]❯\[${normal}\] "
 
 
 # Completition

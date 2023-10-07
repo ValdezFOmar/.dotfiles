@@ -65,7 +65,7 @@ main()
     symfiles "$DOTFILES/.config" "$HOME/.config"
 
     [ -d "$HOME/.icons/default" ] || mkdir "$HOME/.icons/default"
-    symlink "$DOTFILES/.icons/default/index.theme" "$HOME/.icons/default"
+    symlink "$DOTFILES/.icons/default/index.theme" "$HOME/.icons/default/index.theme"
 
     [ -d "$HOME/.local" ] || mkdir "$HOME/.local"
     symlink "$DOTFILES/.local/bin" "$HOME/.local/bin"
