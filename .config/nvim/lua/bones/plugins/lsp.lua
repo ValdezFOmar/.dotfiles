@@ -32,8 +32,8 @@ return {
             "tsserver",
             "lua_ls",
             "marksman",
-            "pyright",
             "volar",
+            "pyright"
         })
 
         -- Settings specific to Neovim for the lua language server, lua_ls
@@ -52,6 +52,9 @@ return {
         )
 
         cmp.setup({
+            window = {
+                completition = cmp.config.window.bordered(),
+            },
             mapping = {
                 -- This little snippet will confirm with tab, and
                 -- if no entry is selected, will confirm the first item
@@ -74,7 +77,7 @@ return {
                 ["<CR>"] = cmp.mapping({
                     i = function(fallback)
                         if cmp.visible() and cmp.get_active_entry() then
-                            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+                            cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
                         else
                             fallback()
                         end
@@ -109,11 +112,5 @@ return {
                 ['<C-b>'] = cmp_action.luasnip_jump_backward(),
             }
         })
-
-        -- Formatter keybind
-        vim.keymap.set("n", "<leader>ff", function ()
-            vim.cmd("!black %")
-            vim.cmd("!isort %")
-        end, { silent = true })
-    end,
+   end,
 }
