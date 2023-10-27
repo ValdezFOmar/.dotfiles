@@ -83,7 +83,7 @@ fi
 # Set path so it includes /bin and /.local/bin if it exists
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
-
+# command -v notes >/dev/null && notes
 
 # pyenv shell integration
 export PYENV_ROOT="$HOME/.pyenv"

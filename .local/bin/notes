@@ -24,8 +24,8 @@ def delete_all_notes(path):
 
 def main():
     if len(sys.argv) < 2:
-        for note in get_notes(NOTES_FILE):
-            print(note)
+        for i, note in enumerate(get_notes(NOTES_FILE)):
+            print(f"{i:<4}{note}")
         return
 
     match sys.argv[1:]:

@@ -14,10 +14,13 @@ configuration {
 * {
     font: "sans 12";
     blacklist: #1c1c1c;
-    black-mate: #1b1d1e;
+    inputbar-color: rgb(61, 63, 76);
     lightblue: rgb(102, 217, 239);
-    semi-transparent: rgba(27, 29, 30, 55%);
-    semi-transparent-select: rgb(69, 76, 79);
+
+    semi-transparent: rgba(21, 23, 36, 70%);
+    select-color: rgb(21, 23, 36);
+    select-border-color: rgb(71, 73, 86);
+
     blue-highlight: bold rgb(102, 217, 239);
 }
 
@@ -32,7 +35,7 @@ inputbar {
     border: 0px;
     border-radius: 5px 5px 0px 0px;
     border-color: @lightblack;
-    background-color: @black-mate;
+    background-color: @inputbar-color;
     color: @lightblue;
 }
 
@@ -43,7 +46,7 @@ prompt, entry {
 listview {
     lines: 6;
     cycle: false;
-    padding: 0px;
+    padding: 5px;
     border: 0px;
     border-radius: 0px 0px 5px 5px;
     border-color: @blacklist;
@@ -59,7 +62,10 @@ element {
 }
 
 element selected.normal {
-    background-color: @semi-transparent-select;
+    background-color: @select-color;
+    border-color: @select-border-color;
+    border-radius: 5px;
+    border: 2px;
 }
 
 element-icon {

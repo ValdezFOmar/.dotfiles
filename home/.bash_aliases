@@ -19,6 +19,7 @@ alias md='mkdir '
 alias cd..='cd ..'
 alias vim='nvim '
 alias kssh='kitty +kitten ssh'
+alias nsxivf='nsxiv --class float'
 
 alias py='python'
 alias pip='pip --require-virtualenv'

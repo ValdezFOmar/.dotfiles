@@ -23,7 +23,9 @@ gnome-screenshot
 gpaste
 grub
 gvfs
+gvfs-mtp
 htop
+jdk-openjdk
 kitty
 libreoffice-fresh
 light-locker
@@ -31,6 +33,7 @@ lightdm-slick-greeter
 linux
 linux-firmware
 lxappearance-gtk3
+mtpfs
 nano
 nano-syntax-highlighting
 neofetch
