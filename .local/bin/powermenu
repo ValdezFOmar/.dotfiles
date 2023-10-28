@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+option=$(printf "Lock Screen\nSuspend\nRestart\nShutdown" \
+    | rofi -dmenu -i -theme-str '@import "powermenu"')
+
+case "$option" in
+    "Lock Screen") light-locker-command -l ;;
+    "Suspend") systemctl suspend ;;
+    "Restart") reboot ;;
+    "Shutdown") poweroff ;;
+    *) exit 1 ;;
+esac

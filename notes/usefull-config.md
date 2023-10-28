@@ -11,6 +11,20 @@ Use `cpupower` to do all the configurations.
 Check the [Power Governors](https://wiki.archlinux.org/title/CPU_frequency_scaling#Scaling_governors)
 for diferent power modes.
 
+### Run `cpupower` without password prompt
+
+Edit `/etc/sudoers` with the `visudo` command:
+
+```sh
+sudo visudo /etc/sudoers
+```
+
+Add the following lines at the end of the file:
+
+```
+user_name ALL=(ALL) NOPASSWD: /usr/bin/cpupower frequency-set*
+```
+
 ### Shutdown button suspends the computer
 
 Edit the file `/etc/systemd/logind.conf` and add the following configuration:

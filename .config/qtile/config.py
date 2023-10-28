@@ -23,10 +23,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+# fmt: off
+
+from pathlib import Path
 
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
+
 #from libqtile.utils import guess_terminal
 
 
@@ -37,28 +41,31 @@ mod = "mod4"
 # Programs
 terminal = "kitty"
 file_exp = "pcmanfm"
-screen_lock = "light-locker-command -l"
 menu_launcher = "rofi -show drun"
 
-# Color Theme
-color_theme = {
-    "black": "#1b1d1e",
-    "light black": "#505354",
-    "red": "#f92672",
-    "light red": "#ff669d",
-    "green": "#a6e22e",
-    "light green": "#beed5f",
-    "yellow": "#fd971f",
-    "light yellow": "#e6db74",
-    "blue": "#1989EB",
-    "light blue": "#66d9ef",
-    "magenta": "#9e6ffe",
-    "light magenta": "#66d9ef",
-    "cyan": "#5e7175",
-    "light cyan": "#a3babf",
-    "white": "#ccccc6",
-    "light white": "#f8f8f2",
-}
+scripts_dir = Path.home() / ".local" / "bin"
+power_menu = str(scripts_dir / "powermenu")
+frequency_menu = str(scripts_dir / "frequencymenu")
+
+
+class ColorTheme:
+    LITERAL_BLACK   = "#000000"
+    BLACK           = "#1b1d1e"
+    LIGHT_BLACK     = "#505354"
+    RED             = "#f92672"
+    LIGHT_RED       = "#ff669d"
+    GREEN           = "#a6e22e"
+    LIGHT_GREEN     = "#beed5f"
+    YELLOW          = "#fd971f"
+    LIGHT_YELLOW    = "#e6db74"
+    BLUE            = "#1989EB"
+    LIGHT_BLUE      = "#66d9ef"
+    MAGENTA         = "#9e6ffe"
+    LIGHT_MAGENTA   = "#66d9ef"
+    CYAN            = "#5e7175"
+    LIGHT_CYAN      = "#a3babf"
+    WHITE           = "#ccccc6"
+    LIGHT_WHITE     = "#f8f8f2"
 
 
 keys = [
@@ -98,15 +105,16 @@ keys = [
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    #Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     #Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
 
     # Custom keybinds
+    Key([mod, alt], "f", lazy.window.toggle_floating(), desc="Switch between float a tiling window"),
     Key([mod], "b", lazy.spawn("firefox"), desc="Launch firefox browser"),
     Key([mod, alt], "b", lazy.spawn("firefox -P School"), desc="Launch firefox browser with school profile"),
     Key([mod], "e", lazy.spawn(file_exp), desc="Launch a file explorer"),
-    Key([mod], "q", lazy.spawn(screen_lock), desc="Activate screen locker"),
+    Key([mod], "q", lazy.spawn(power_menu), desc="Launch power menu"),
     Key([mod], "m", lazy.spawn(menu_launcher), desc="Open menu launcher for programs"),
 
     # Tooling (mod + T + <key>), for using general purpose tools
@@ -159,8 +167,8 @@ layouts_config = {
     'margin': 4,
     'margin_on_single': False,
     'border_width': 2,
-    'border_normal': color_theme["light black"],
-    'border_focus': color_theme["magenta"],
+    'border_normal': ColorTheme.LIGHT_BLACK,
+    'border_focus': ColorTheme.MAGENTA,
     'border_on_single': False,
 }
 
@@ -191,42 +199,45 @@ widget_defaults = dict(
     font="sans",
     fontsize=16,
     padding=6,
-    foreground=color_theme["light white"],
+    foreground=ColorTheme.LIGHT_WHITE,
 )
 extension_defaults = widget_defaults.copy()
 
 
 w_group_config = {
-    "active":color_theme["white"],
-    "highlight_method":"block",
-    "this_screen_border":color_theme["blue"],
-    "this_current_screen_border":color_theme["blue"],
-    "block_highlight_text_color":color_theme["black"],
-    "inactive":color_theme["light black"],
+    "active": ColorTheme.WHITE,
+    "highlight_method": "block",
+    "this_screen_border": ColorTheme.BLUE,
+    "this_current_screen_border": ColorTheme.BLUE,
+    "block_highlight_text_color": ColorTheme.BLACK,
+    "inactive": ColorTheme.LIGHT_BLACK,
     "spacing":3,
 }
 #widget.Prompt()
 w_chord = widget.Chord(
     chords_colors={
-        "launch": (color_theme["red"], color_theme["white"]),
-        "tool": (color_theme["red"], color_theme["white"]),
+        "launch": (ColorTheme.RED, ColorTheme.WHITE),
+        "tool": (ColorTheme.RED, ColorTheme.WHITE),
     },
     name_transform=lambda name: name.title(),
 )
 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
 # widget.StatusNotifier()
 #widget.Systray()
-w_volume = widget.Volume(fmt='Vol: {}', foreground=color_theme["magenta"])
+w_volume = widget.Volume(fmt='Vol: {}', foreground=ColorTheme.MAGENTA)
 w_battery = widget.Battery(
     update_interval=1, # seconds
     format="{char} {percent:2.0%}",
     discharge_char="B",
-    low_foreground=color_theme["light red"],
+    low_foreground=ColorTheme.LIGHT_RED,
     low_percentage=0.2,
-    foreground=color_theme["yellow"],
+    foreground=ColorTheme.YELLOW,
+    mouse_callbacks={
+        "Button1": lazy.spawn(frequency_menu),
+    },
 )
-w_date = widget.Clock(format="%A %d/%b/%Y", foreground=color_theme["light blue"])
-w_time = widget.Clock(format="%I:%M %p", foreground=color_theme["green"])
+w_date = widget.Clock(format="%A %d/%b/%Y", foreground=ColorTheme.LIGHT_BLUE)
+w_time = widget.Clock(format="%I:%M %p", foreground=ColorTheme.GREEN)
 
 
 # Screens
@@ -249,8 +260,8 @@ screens = [
             ],
             28,
             #border_width=[0, 0, 0, 0],  # top, right, bottom, left
-            #border_color=["", "", "", ""],
-            background=color_theme["black"],
+            #border_color=["", "", "", ",
+            background=ColorTheme.BLACK,
         ),
     ),
     Screen(
@@ -268,7 +279,7 @@ screens = [
                 w_time,
             ],
             28,
-            background=color_theme["black"],
+            background=ColorTheme.BLACK,
         ),
     ),
 ]
@@ -287,8 +298,8 @@ bring_front_click = "floating_only"
 cursor_warp = True
 floating_layout = layout.Floating(
     border_width=1,
-    border_focus=color_theme["white"],
-    border_normal="#000000",
+    border_focus=ColorTheme.WHITE,
+    border_normal=ColorTheme.LITERAL_BLACK,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
@@ -296,9 +307,17 @@ floating_layout = layout.Floating(
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk
         Match(wm_class="ssh-askpass"),  # ssh-askpass
-        Match(wm_class="gnome-screenshot"), # Preview screenshot window
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
+
+        Match(title="V Bibliography Database", wm_class="libreoffice"),
+        Match(wm_instance_class="Toplevel", wm_class="Zotero"), # Zotero dialogs on LibreOffice
+        Match(title="Library", wm_class="Places"),  # firefox downloads menu
+        Match(title="nsxiv", wm_class="float"),
+        Match(wm_class="gnome-screenshot"), # Preview screenshot window
+
+        # Float all windows that are the child of a parent window
+        # Match(func=lambda c: bool(c.is_transient_for())),
     ]
 )
 auto_fullscreen = True

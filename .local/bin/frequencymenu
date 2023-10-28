@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+
+"""
+Script for setting the CPU Frequency Governor using the `rofi` launcher and
+the `cpupower` utility.
+
+For running this script, you will either need to execute it with root privileges
+or set a rule in the `/etc/sudoers` file for `cpupower frequency-set` command.
+"""
+
+import subprocess
+import sys
+from pathlib import Path
+from typing import Iterable
+
+PATH_TO_GOVERNORS = Path(
+    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors"
+)
+ROFI_CONFIG = Path(Path.home() / ".config" / "rofi")
+
+
+def get_governors(path: Path) -> tuple[str, ...]:
+    if not path.exists():
+        sys.exit(1)
+    with open(path, "r", encoding="utf-8") as file:
+        governors = file.read()
+    return tuple(governors.split())
+
+
+def set_gorvernor(governor: str) -> None:
+    try:
+        subprocess.run(
+            ["sudo", "cpupower", "frequency-set", "--governor", governor],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+        )
+    except subprocess.CalledProcessError:
+        sys.exit("frequencymenu: You need root privileges to change the CPU frequency.")
+
+
+def launch_rofi_menu(options: Iterable[str]) -> str:
+    formated_options = "\n".join(options)
+    options_args = ["printf", formated_options]
+    rofi_args = ["rofi", "-dmenu", "-theme-str"]
+
+    theme = (
+        path
+        if (path := ROFI_CONFIG / "frequencymenu.rasi").exists()
+        else path
+        if (path := ROFI_CONFIG / "config.rasi").exists()
+        else None
+    )
+
+    if theme is not None:
+        rofi_args.append(f'@import "{theme}"')
+
+    # https://docs.python.org/3.11/library/subprocess.html#replacing-shell-pipeline
+    pipe_options = subprocess.Popen(options_args, stdout=subprocess.PIPE)
+    rofi_process = subprocess.run(
+        rofi_args,
+        stdin=pipe_options.stdout,
+        universal_newlines=True,
+        capture_output=True,
+    )
+    return rofi_process.stdout.strip()
+
+
+def main():
+    governors = get_governors(PATH_TO_GOVERNORS)
+    selected_governor = launch_rofi_menu(governors)
+
+    if selected_governor not in governors:
+        sys.exit(1)
+
+    set_gorvernor(selected_governor)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,28 @@
+configuration {
+    dmenu {
+        display-name: "</>";
+    }
+    show-icons: false;
+}
+
+
+* {
+    font: "sans 16";
+}
+
+window {
+    width: calc( 40% min 300px );
+}
+
+listview {
+    lines: 4;
+}
+
+prompt, entry {
+    font: "sans 14";
+}
+
+element {
+    children: [ element-text ];
+}
+
