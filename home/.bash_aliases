@@ -20,6 +20,7 @@ alias cd..='cd ..'
 alias vim='nvim '
 alias kssh='kitty +kitten ssh'
 alias nsxivf='nsxiv --class float'
+alias gitree='tree -a --prune --gitignore -I .git/'
 
 alias py='python'
 alias pip='pip --require-virtualenv'

@@ -62,6 +62,8 @@ rofi
 terminus-font
 tesseract
 tk
+tmux
+tree
 ttf-cascadia-code
 udiskie
 udisks2

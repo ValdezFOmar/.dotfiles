@@ -42,7 +42,7 @@ def set_gorvernor(governor: str) -> None:
 def launch_rofi_menu(options: Iterable[str]) -> str:
     formated_options = "\n".join(options)
     options_args = ["printf", formated_options]
-    rofi_args = ["rofi", "-dmenu", "-theme-str"]
+    rofi_args = ["rofi", "-dmenu"]
 
     theme = (
         path
@@ -53,7 +53,7 @@ def launch_rofi_menu(options: Iterable[str]) -> str:
     )
 
     if theme is not None:
-        rofi_args.append(f'@import "{theme}"')
+        rofi_args.extend(["-theme-str", f'@import "{theme}"'])
 
     # https://docs.python.org/3.11/library/subprocess.html#replacing-shell-pipeline
     pipe_options = subprocess.Popen(options_args, stdout=subprocess.PIPE)

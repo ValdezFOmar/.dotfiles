@@ -314,6 +314,7 @@ floating_layout = layout.Floating(
         Match(wm_instance_class="Toplevel", wm_class="Zotero"), # Zotero dialogs on LibreOffice
         Match(title="Library", wm_class="Places"),  # firefox downloads menu
         Match(title="nsxiv", wm_class="float"),
+        Match(title="Dear PyGui", wm_class="Dear PyGui"),
         Match(wm_class="gnome-screenshot"), # Preview screenshot window
 
         # Float all windows that are the child of a parent window
