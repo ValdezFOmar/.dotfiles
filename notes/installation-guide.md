@@ -52,7 +52,7 @@ Check the network interface is enable.
     
     ip link
 
-For wireless and WWAN, make sure the card is not blocked with `rfkill`.
+For wireless and WLAN, make sure the card is not blocked with `rfkill`.
 
     rfkill
     rfkill unblock wlan
@@ -68,7 +68,7 @@ Finally, check internet connection with:
 
 Use timedatectl to ensure the system clock is accurate:
 
-    $ timedatectl
+    timedatectl
 
 ## Partition the disks
 
@@ -127,7 +127,7 @@ List of packages to install
 - `grub`
 - `efibootmgr`
 - `networkmanager`
-- `nano`
+- `nvim`
 - `git`
 
 ### Drivers
@@ -163,7 +163,7 @@ Change root into the new system
 
 ### Localization
 
-Edit `/etc/locale.gen` and uncomment `en_US.UTF-8 UTF-8`, the generate the locales:
+Edit `/etc/locale.gen` and uncomment `en_US.UTF-8 UTF-8`, then generate the locales:
 
     locale-gen
 
@@ -204,7 +204,7 @@ Set password for the user:
 
 Edit the sudoers file so any user of the group `wheel` would be able to run `sudo` commands. 
 
-    EDITOR=nano visudo
+    EDITOR=nvim visudo
 
 Uncomment the following line:
 
