@@ -55,15 +55,17 @@ mcd()
 # activate virtual env
 activate()
 {
-    if [[ -d ./.venv ]]; then
-        if [[ -f ./.venv/bin/activate ]]; then
-            . ./.venv/bin/activate
-        else
-            echo "Theres no file for virtual enviroment"
-        fi
-    else
+    if [[ ! -d ./.venv ]]; then
         echo "Theres no '.venv' directory"
+        return 1
     fi
+
+    if [[ ! -f ./.venv/bin/activate ]]; then
+        echo "Theres no file for virtual enviroment"
+        return 1
+    fi
+
+    . ./.venv/bin/activate
 }
 
 # Create virtual env

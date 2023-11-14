@@ -3,6 +3,8 @@ local keymap = vim.keymap.set
 vim.g.mapleader = " "
 keymap("n", "<leader>e", vim.cmd.Ex)
 
+keymap("n", "<leader>g", "<C-]>")
+
 -- Prevents for accidentally suspending neovim
 keymap({ "n", "v", "i" }, "<C-z>", "<Nop>")
 
@@ -19,7 +21,7 @@ keymap("v", "<leader>Y", [["+y]])
 keymap("n", "<C-a>", "ggVG")
 
 -- Add new line under the cursor
-keymap("n", "<Enter>", "o<Esc>0d$")
+keymap("n", "<leader><Enter>", "o<Esc>0d$")
 
 -- Add new line above the cursor
 keymap("n", "<S-Enter>", "O<Esc>0d$")
