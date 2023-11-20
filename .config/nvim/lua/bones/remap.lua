@@ -3,6 +3,7 @@ local keymap = vim.keymap.set
 vim.g.mapleader = " "
 keymap("n", "<leader>e", vim.cmd.Ex)
 
+-- Navigate to content in vim `:help topic`
 keymap("n", "<leader>g", "<C-]>")
 
 -- Prevents for accidentally suspending neovim
