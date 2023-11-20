@@ -1,4 +1,3 @@
-
 local set = vim.opt
 
 set.guicursor = ""
