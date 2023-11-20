@@ -1,6 +1,6 @@
 return {
   'akinsho/toggleterm.nvim',
-  version = "v2.8*",
+  version = "*",
   opts = {
     open_mapping = "<C-s>",
     hide_numbers = true,

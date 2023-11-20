@@ -1,83 +1,125 @@
+local function has_words_before()
+  unpack = unpack or table.unpack
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
 return {
   'VonHeikemen/lsp-zero.nvim',
-  branch = 'v2.x',
+  branch = 'v3.x',
   dependencies = {
     -- LSP Support
-    { 'neovim/nvim-lspconfig' },                 -- Required
-    { 'williamboman/mason.nvim' },               -- Optional
-    { 'williamboman/mason-lspconfig.nvim' },     -- Optional
+    { 'neovim/nvim-lspconfig' },             -- Required
+    { 'williamboman/mason.nvim' },           -- Optional
+    { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+    { 'folke/neodev.nvim' },                 -- Optional (For Neovim Lua API)
 
     -- Autocompletion
-    { 'hrsh7th/nvim-cmp' },         -- Required
-    { 'hrsh7th/cmp-nvim-lsp' },     -- Required
-    { 'L3MON4D3/LuaSnip' },         -- Required
+    { 'hrsh7th/nvim-cmp' },     -- Required
+    { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+    {
+      'L3MON4D3/LuaSnip',       -- Required
+      dependencies = {
+        'rafamadriz/friendly-snippets',
+        'saadparwaiz1/cmp_luasnip'
+      },
+    }
   },
   config = function()
-    local lsp = require('lsp-zero').preset({})
+    require('neodev').setup({}) -- Neodev should be loaded before `lspconfig`
+    local lsp_zero = require('lsp-zero').preset({})
 
-    lsp.on_attach(function(client, bufnr)
+    lsp_zero.on_attach(function(client, bufnr)
       -- see :help lsp-zero-keybindings
       -- to learn the available actions
-      lsp.default_keymaps({ buffer = bufnr })
+      lsp_zero.default_keymaps({ buffer = bufnr })
     end)
 
-    -- More language servers:
-    -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
-    lsp.ensure_installed({
-      "bashls",
-      "cssls",
-      "emmet_ls",
-      "html",
-      "jsonls",
-      "tsserver",
-      "lua_ls",
-      "marksman",
-      "volar",
-      "pyright"
+    -- LSP --
+    require('mason').setup({})
+    require('mason-lspconfig').setup({
+      -- More language servers:
+      -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
+      ensure_installed = {
+        "bashls",
+        "cssls",
+        "emmet_ls",
+        "html",
+        "jsonls",
+        "tsserver",
+        "lua_ls",
+        "marksman",
+        "volar",
+        "pyright"
+      },
+      handlers = {
+        lsp_zero.default_setup,
+        lua_ls = function()
+          -- Settings specific to Neovim for the lua language server, lua_ls
+          local lua_opts = lsp_zero.nvim_lua_ls()
+          require("lspconfig").lua_ls.setup(lua_opts)
+        end
+      }
     })
 
-    -- Settings specific to Neovim for the lua language server, lua_ls
-    require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+    -- Snippets --
+    require("luasnip.loaders.from_vscode").lazy_load()
+    local luasnip = require("luasnip")
+    luasnip.filetype_extend("python", { "django" })
+    -- add framewor's snippets: https://github.com/rafamadriz/friendly-snippets#add-snippets-from-a-framework-to-a-filetype
 
-    lsp.setup()
-
+    -- Autocomplete --
     local cmp = require("cmp")
-    local cmp_action = require("lsp-zero").cmp_action()
-    local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+    local cmp_action = lsp_zero.cmp_action()
+    local cmp_format = lsp_zero.cmp_format()
 
-    -- If you want insert `(` after select function or method item
-    cmp.event:on(
-      'confirm_done',
-      cmp_autopairs.on_confirm_done()
-    )
+    -- If you want to insert `(` after select function or method item
+    local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+    cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
     cmp.setup({
-      window = {
-        completition = cmp.config.window.bordered(),
+      formatting = cmp_format,
+      snippet = {
+        expand = function(args)
+          require('luasnip').lsp_expand(args.body)
+        end
       },
-      mapping = {
-        -- This little snippet will confirm with tab, and
-        -- if no entry is selected, will confirm the first item
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      },
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+      }, {
+        { name = 'buffer' },
+      }),
+      mapping = cmp.mapping.preset.insert({
+        -- This little snippet will:
+        -- 1. Confirm with tab, and if no entry is selected, will confirm the first item
+        -- 2. Will jump between the editable parts of a snippet
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             local entry = cmp.get_selected_entry()
             if not entry then
               cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-              cmp.confirm()
-            else
-              cmp.confirm()
             end
+            cmp.confirm()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          elseif has_words_before() then
+            cmp.complete()
           else
             fallback()
           end
         end, { "i", "s" }),
 
+        -- If nothing is selected (including preselections) add a newline as usual.
         -- If something has explicitly been selected by the user, select it.
-        -- Else, just enter a new line.
         ["<CR>"] = cmp.mapping({
           i = function(fallback)
             if cmp.visible() and cmp.get_active_entry() then
-              cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })
+              cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
             else
               fallback()
             end
@@ -110,7 +152,7 @@ return {
         -- Navigate between snippet placeholder
         ['<C-f>'] = cmp_action.luasnip_jump_forward(),
         ['<C-b>'] = cmp_action.luasnip_jump_backward(),
-      }
+      }),
     })
   end,
 }

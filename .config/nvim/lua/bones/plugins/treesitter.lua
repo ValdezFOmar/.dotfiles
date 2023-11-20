@@ -16,6 +16,7 @@ return {
         "javascript",
         "typescript",
         "html",
+        "htmldjango",
         "css",
         "json",
         "jsdoc",
