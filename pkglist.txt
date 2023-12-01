@@ -58,7 +58,6 @@ pyenv
 python-docs
 qtile
 reflector
-remmina
 ripgrep
 rofi
 terminus-font
