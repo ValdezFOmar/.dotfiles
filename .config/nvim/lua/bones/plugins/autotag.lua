@@ -1,6 +1,3 @@
--- docs for usage
--- :h nvim-surround.usage
-
 local ft = {
   'html',
   'htmldjango',

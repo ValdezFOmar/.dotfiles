@@ -3,6 +3,8 @@ return {
   opts = {
     filetypes = {
       "*",
+      "!lazy",
+      "!mason",
       css = {
         rgb_fn = true,
         hsl_fn = true,

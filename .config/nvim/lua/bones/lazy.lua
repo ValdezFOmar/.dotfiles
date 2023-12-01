@@ -11,4 +11,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("bones.plugins")
+require("lazy").setup("bones.plugins", {
+  ui = {
+    border = "rounded"
+  },
+  checker = {
+    enabled = true,
+    concurrency = 1,
+  }
+})

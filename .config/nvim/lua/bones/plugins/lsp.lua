@@ -1,9 +1,3 @@
-local function has_words_before()
-  unpack = unpack or table.unpack
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
-
 return {
   'VonHeikemen/lsp-zero.nvim',
   branch = 'v3.x',
@@ -36,7 +30,16 @@ return {
     end)
 
     -- LSP --
-    require('mason').setup({})
+    require('mason').setup({
+      ui = {
+        border = "rounded",
+        icons = {
+          package_installed = "✔ ",
+          package_pending = "",
+          package_uninstalled = "✗"
+        }
+      }
+    })
     require('mason-lspconfig').setup({
       -- More language servers:
       -- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
@@ -59,7 +62,7 @@ return {
           local lua_opts = lsp_zero.nvim_lua_ls()
           require("lspconfig").lua_ls.setup(lua_opts)
         end
-      }
+      },
     })
 
     -- Snippets --
@@ -75,7 +78,7 @@ return {
 
     -- If you want to insert `(` after select function or method item
     local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-    cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+    cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done { filetypes = { sh = false } })
 
     cmp.setup({
       formatting = cmp_format,
@@ -107,12 +110,19 @@ return {
             cmp.confirm()
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
-          elseif has_words_before() then
-            cmp.complete()
           else
             fallback()
           end
         end, { "i", "s" }),
+
+        -- This will force jump or expand
+        ["<A-Tab>"] = cmp.mapping(function (fallback)
+          if luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end),
 
         -- If nothing is selected (including preselections) add a newline as usual.
         -- If something has explicitly been selected by the user, select it.

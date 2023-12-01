@@ -8,34 +8,28 @@ return {
   config = function()
     require("catppuccin").setup({
       flavor = "mocha",
-      background = {
-        dark = "mocha",
-      },
-      -- transparent_background = true,
+      background = { dark = "mocha", },
+      transparent_background = true,
       styles = {
         conditionals = { "italic" },
         loops = { "italic" },
         keywords = { "italic" },
-        booleans = { "italic" }
+        booleans = { "italic" },
       },
-      integrations = {
-        mason = true,
-        cmp = true,
-        gitsigns = true,
-        nvimtree = true,
-        treesitter = true,
-        notify = false,
-        mini = false,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
-          },
-        },
-      },
+      custom_highlights = function(colors)
+        return {
+          Number = { fg = colors.mauve },
+          DevIconPy = { fg = colors.blue },
+          ["@keyword.operator"] = { style = { "italic" } },
+          ["@constant.builtin"] = { fg = colors.pink },
+          ["@function.builtin"] = { fg = built_in_function },
+          ["@text.uri"] = { fg = colors.sapphire, style = { "underline" } },
+          -- HTML
+          ["@tag.attribute"] = { fg = colors.yellow },
+          ["@tag.delimeter"] = { fg = colors.overlay2 },
+          ["@tag.delimiter"] = { fg = colors.overlay2 },
+        }
+      end,
       color_overrides = {
         mocha = {
           rosewater = "#efc9c2",
@@ -66,18 +60,22 @@ return {
           crust = "#161618",
         }
       },
-      highlight_overrides = {
-        all = function(colors)
-          local mocha = require("catppuccin.palettes").get_palette "mocha"
-
-          return {
-            Boolean = { fg = mocha.pink },
-            Number = { fg = mocha.mauve },
-            ["@constant.builtin"] = { fg = mocha.pink },
-            ["@function.builtin"] = { fg = built_in_function },
-          }
-        end
-      }
+      integrations = {
+        mason = true,
+        cmp = true,
+        gitsigns = true,
+        nvimtree = true,
+        treesitter = true,
+        native_lsp = {
+          enabled = true,
+          underlines = {
+            errors = { "undercurl" },
+            hints = { "undercurl" },
+            warnings = { "undercurl" },
+            information = { "undercurl" },
+          },
+        },
+      },
     })
     vim.cmd.colorscheme "catppuccin"
   end,
