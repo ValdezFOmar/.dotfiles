@@ -12,10 +12,12 @@ bind
 cmake
 cpupower
 deepin-gtk-theme
+dunst
 efibootmgr
 fd
 firefox
 freerdp
+fzf
 gimp
 git
 gnome-keyring
@@ -56,6 +58,7 @@ pulseaudio-alsa
 pulseaudio-bluetooth
 pyenv
 python-docs
+python-pipx
 qtile
 reflector
 ripgrep

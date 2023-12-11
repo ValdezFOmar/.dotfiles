@@ -7,25 +7,40 @@
 [[ $- != *i* ]] && return
 
 
-# Enviroment Variables
-# ====================
+#
+#   Enviroment Variables
+#
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 export VISUAL="nvim"
 export DOTFILES="$HOME/.dotfiles"
+
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
+export PIPX_BIN_DIR="$HOME/bin"
+export POETRY_VIRTUALENVS_IN_PROJECT=true
+export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true
+export POETRY_VIRTUALENVS_PROMPT=  # Set at prompt section
 
 
-# Source aliases
-# ==============
-[[ -e "$HOME/.bash_aliases" ]] && . "$HOME/.bash_aliases"
+#
+#   Path
+#
+[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+# command -v notes >/dev/null && notes
 
 
-# Prompt
-# ======
+#
+#   Source aliases
+#
+[[ -e "$HOME/.bash_aliases" ]] && source "$HOME/.bash_aliases"
 
-## Colors
+
+#
+#   Prompt
+#
+
 # black=$(tput setaf 0)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
@@ -35,6 +50,8 @@ purple=$(tput setaf 5)
 # cyan=$(tput setaf 6)
 # white=$(tput setaf 7)
 normal=$(tput sgr0)
+
+POETRY_VIRTUALENVS_PROMPT="\[${green}\]poetry-{python_version}\[${normal}\]"
 
 color_exit_status()
 {
@@ -62,18 +79,17 @@ fi
 PS2="\[${green}\]❯\[${normal}\] "
 
 
-# Completition
-# ============
+#
+#   Completion
+#
+[ -f "$HOME/.bash_completion" ] && source "$HOME/.bash_completion"
 
-# git bash completion
-[ -f ~/.git-completion.bash ] && . ~/.git-completion.bash
 
-# Auto cd when typing a directory
-shopt -s autocd
-
+#
+#   Programs Integrations
+#
 
 # ssh-agent
-# =========
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
 fi
@@ -82,17 +98,7 @@ if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
 fi
 
 
-# Path
-# ====
-# Set path so it includes /bin and /.local/bin if it exists
-[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
-[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
-# command -v notes >/dev/null && notes
-
-# pyenv shell integration
+# pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
-
-# Ruby shell inetgration TO BE REMOVE
-eval "$(~/.rbenv/bin/rbenv init - bash)"

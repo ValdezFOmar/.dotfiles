@@ -3,3 +3,5 @@ udiskie &
 light-locker --lock-after-screensaver=60 --lock-on-suspend --lock-on-lid &
 gnome-keyring-daemon --start --daemonize --components=pkcs11,secrets,ssh
 gpaste-client start
+dunst &
+# vim: set ft=sh:

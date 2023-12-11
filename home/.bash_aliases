@@ -1,9 +1,8 @@
-#!/bin/bash
-
 # shellcheck source=/dev/null
 
+#
 #   Aliases
-#   =======
+#
 
 # Space for expanding command aliases when using sudo
 #alias sudo='sudo '
@@ -32,8 +31,9 @@ alias calendar='cal --year'
 alias disk='df -H --type=ext4'
 
 
+#
 #   Functions
-#   =========
+#
 
 cl()
 {
@@ -97,3 +97,6 @@ venv()
         fi
     fi
 }
+
+
+# vim: set ft=sh:
