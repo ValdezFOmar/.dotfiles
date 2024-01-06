@@ -1,4 +1,4 @@
-vim.api.nvim_create_user_command("DiagnosticToggle", function()
+vim.api.nvim_create_user_command("ToggleDiagnostics", function()
 	local config = vim.diagnostic.config
 	local vt = config().virtual_text
 	config {

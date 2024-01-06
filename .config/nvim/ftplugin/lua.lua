@@ -1,16 +1,12 @@
-local set = vim.opt
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
 
-set.tabstop = 2
-set.softtabstop = 2
-set.shiftwidth = 2
-set.expandtab = true
-
-vim.api.nvim_create_autocmd(
-  "BufWritePost",
-  {
-    pattern = "*.lua",
-    callback = function() vim.lsp.buf.format() end,
-    group = vim.api.nvim_create_augroup("lua_formatter", { clear = true }),
-    desc = "Run formatter for lua",
-  }
-)
+local group = vim.api.nvim_create_augroup("lua_formatter", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePost", {
+  desc = "Run formatter for lua",
+  group = group,
+  callback = function() vim.lsp.buf.format() end,
+  buffer = 0,
+})

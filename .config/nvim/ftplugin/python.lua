@@ -1,21 +1,20 @@
-local set = vim.opt
-local keymap = vim.keymap.set
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
 
-set.tabstop = 4
-set.softtabstop = 4
-set.shiftwidth = 4
-set.expandtab = true
+vim.keymap.set("n", "<leader>r", "<cmd>!python %<Enter>", {
+  buffer = 0, -- current buffer
+  desc = "Run current python file."
+})
 
--- Run current python file
-keymap("n", "<leader>r", "<cmd>!python %<Enter>", { buffer = true })
+-- group options prevents multiple executions.
+-- See https://neovim.discourse.group/t/vimscript-autocmd-to-lua/2932
+local py_group = vim.api.nvim_create_augroup("python_formatter", { clear = true })
 
--- group options prevents multiple executions. See https://neovim.discourse.group/t/vimscript-autocmd-to-lua/2932
-vim.api.nvim_create_autocmd(
-  "BufWritePost",
-  {
-    pattern = "*.py",
-    command = "silent! !black %; isort %",
-    group = vim.api.nvim_create_augroup("python_formatter", { clear = true }),
-    desc = "Run formatter for python",
-  }
-)
+vim.api.nvim_create_autocmd("BufWritePost", {
+  desc = "Run formatter for python",
+  group = py_group,
+  command = "silent! !black %; isort %",
+  buffer = 0,
+})
