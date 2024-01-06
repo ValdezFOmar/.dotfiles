@@ -25,4 +25,3 @@ prompt, entry {
 element {
     children: [ element-text ];
 }
-

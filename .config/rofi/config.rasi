@@ -77,4 +77,3 @@ element-text {
     background-color: @transparent;
     highlight: @blue-highlight;
 }
-

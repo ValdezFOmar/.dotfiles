@@ -5,32 +5,35 @@ PLUGIN.branch = "0.1.x"
 PLUGIN.dependencies = {
   "nvim-lua/plenary.nvim",
   "BurntSushi/ripgrep",
+  -- Extensions
+  "nvim-telescope/telescope-file-browser.nvim",
 }
 
 function PLUGIN.config()
   local actions = require "telescope.actions"
   local actions_layout = require "telescope.actions.layout"
-  local vimgrep_args = { unpack(require "telescope.config".values.vimgrep_arguments) }
+  local vimgrep_args = { unpack(require("telescope.config").values.vimgrep_arguments) }
 
-  -- Allows `find_files` to list hidden files, but still ignore diectories
+  -- Allows `find_files` to list hidden files
   table.insert(vimgrep_args, "--hidden")
   table.insert(vimgrep_args, "--glob")
   table.insert(vimgrep_args, "!**/.git/*")
   table.insert(vimgrep_args, "--glob")
   table.insert(vimgrep_args, "!**/.venv/*")
 
-  require "telescope".setup {
+  local telescope = require "telescope"
+  local fb_actions = telescope.extensions.file_browser.actions
+  telescope.setup {
     defaults = {
       -- winblend = 20, -- Transparency messes up icons sizes
       vimgrep_arguments = vimgrep_args,
       sorting_strategy = "ascending",
       results_title = false,
-      -- dynamic_preview_title = true,
       prompt_prefix = "❯ ",
       selection_caret = "❯ ",
       borderchars = {
         { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-        prompt  = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         results = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
       },
@@ -62,7 +65,13 @@ function PLUGIN.config()
     pickers = {
       find_files = {
         find_command = {
-          "rg", "--files", "--hidden", "--glob", "!**/.git/*", "--glob", "!**/.venv/*"
+          "rg",
+          "--files",
+          "--hidden",
+          "--glob",
+          "!**/.git/*",
+          "--glob",
+          "!**/.venv/*",
         },
       },
       buffers = {
@@ -85,8 +94,31 @@ function PLUGIN.config()
         previewer = false,
         layout_config = { width = 0.6, height = 0.6 },
       },
-    }
+    },
+    extensions = {
+      file_browser = {
+        initial_mode = "normal",
+        hijack_netrw = true,
+        hidden = true,
+        previewer = false,
+        results_title = false,
+        prompt_path = true,
+        grouped = true,
+        display_stat = { mode = true, size = true },
+        layout_config = { width = 0.6, height = 0.7 },
+        mappings = {
+          n = {
+            D = fb_actions.remove,
+            r = fb_actions.rename,
+            p = fb_actions.goto_parent_dir,
+            cd = fb_actions.goto_cwd,
+            n = fb_actions.create,
+          },
+        },
+      },
+    },
   }
+  telescope.load_extension "file_browser"
 
   local builtin = require "telescope.builtin"
 
@@ -99,21 +131,23 @@ function PLUGIN.config()
   end
 
   local function search_pattern()
-    local pattern = vim.fn.input("Grep ❯ ")
-    if #pattern == 0 then return end
-    builtin.grep_string({ search = pattern })
+    local pattern = vim.fn.input "Grep ❯ "
+    if #pattern == 0 then
+      return
+    end
+    builtin.grep_string { search = pattern }
   end
 
   local function current_diagnostics()
-    builtin.diagnostics({ bufnr = 0 })
+    builtin.diagnostics { bufnr = 0 }
   end
 
   local function file_siblings()
-    builtin.find_files({
+    telescope.extensions.file_browser.file_browser {
       prompt_title = "File Sibligs",
-      initial_mode = "normal",
-      cwd = vim.fn.expand("%:p:h"),
-    })
+      select_buffer = true,
+      path = "%:p:h",
+    }
   end
 
   local remap = vim.keymap.set

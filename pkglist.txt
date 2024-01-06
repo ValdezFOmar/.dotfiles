@@ -36,8 +36,6 @@ linux
 linux-firmware
 lxappearance-gtk3
 mtpfs
-nano
-nano-syntax-highlighting
 neofetch
 neovim
 networkmanager

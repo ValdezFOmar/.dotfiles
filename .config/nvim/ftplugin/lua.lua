@@ -7,6 +7,8 @@ local group = vim.api.nvim_create_augroup("lua_formatter", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePost", {
   desc = "Run formatter for lua",
   group = group,
-  callback = function() vim.lsp.buf.format() end,
+  callback = function()
+    vim.lsp.buf.format()
+  end,
   buffer = 0,
 })

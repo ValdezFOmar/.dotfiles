@@ -15,4 +15,3 @@ set.expandtab = true
 set.smartindent = true
 
 set.incsearch = true
-

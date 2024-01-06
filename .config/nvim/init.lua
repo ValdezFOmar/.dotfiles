@@ -1,1 +1,1 @@
-require("bones")
+require "bones"

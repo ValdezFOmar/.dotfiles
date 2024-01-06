@@ -1,0 +1,19 @@
+exclude: '^(etc/)|(\.icons/)|(pkglist\.txt)|(\.config/nvim/lazy-lock\.json)|(home/\.dmrc)'
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v0.19.1
+    hooks:
+      - id: stylua # or stylua-system / stylua-github
+        alias: stylua
+        files: '\.config/nvim/.*'
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3.11

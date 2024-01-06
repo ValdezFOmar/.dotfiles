@@ -40,7 +40,7 @@ Setting fonts:
 
 ## Verify the boot mode
 
-This command should return `64`, if not or the directory doesn't exists at all, 
+This command should return `64`, if not or the directory doesn't exists at all,
 then you aren't booting in UEFI mode.
 
     cat /sys/firmware/efi/fw_platform_size
@@ -49,7 +49,7 @@ then you aren't booting in UEFI mode.
 ## Connect to the internet
 
 Check the network interface is enable.
-    
+
     ip link
 
 For wireless and WLAN, make sure the card is not blocked with `rfkill`.
@@ -115,12 +115,12 @@ For the swap, just turn it on.
 
 Command for installing packages
 
-    pacstrap -K /mnt [pkg_1] [pkg_2] ... 
+    pacstrap -K /mnt [pkg_1] [pkg_2] ...
 
 List of packages to install
 
 - `base`
-- `base-devel` 
+- `base-devel`
 - `linux`
 - `linux-firmware`
 - `os-prober`
@@ -190,7 +190,7 @@ Set the root password with
 
     passwd
 
-### Create user 
+### Create user
 
 Create new user:
 
@@ -202,7 +202,7 @@ Set password for the user:
 
 ### Sudoers file
 
-Edit the sudoers file so any user of the group `wheel` would be able to run `sudo` commands. 
+Edit the sudoers file so any user of the group `wheel` would be able to run `sudo` commands.
 
     EDITOR=nvim visudo
 
@@ -231,7 +231,7 @@ Install and configure grub for EFI mode.
 
 ## Post installation
 
-Refer to [README](../README.md) to see the instructions for adding all 
+Refer to [README](../README.md) to see the instructions for adding all
 the additional software after sucesfully installing the system.
 
 For internet connection, refer to [how to connect to WiFi with NetworkManager](./connect-wifi.md#using-networkmanager).

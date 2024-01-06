@@ -31,7 +31,7 @@ systemctl enable NetworkManager.service
 
 ## Greeter
 
-To set up the session greeter for LightDM, edit 
+To set up the session greeter for LightDM, edit
 `/etc/lightdm/lightdm.conf`:
 
     [Seat:*]
@@ -42,7 +42,7 @@ To set up the session greeter for LightDM, edit
 
 ### Config greeter
 
-Configurations for the greeter can be found under 
+Configurations for the greeter can be found under
 `/etc/lightdm/`. Look for:
 
     [name]-greeter.conf

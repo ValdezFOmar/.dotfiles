@@ -47,7 +47,7 @@ main()
     if [ ! -f "$default_dir/style.css" ]; then
         ln -s "$stylesheet" "$default_dir/style.css"
     fi
-    
+
     tmpfile=$(mktemp)
     md2html --github --output="$tmpfile" "$md_file"
 
@@ -65,4 +65,3 @@ main()
 }
 
 main
-

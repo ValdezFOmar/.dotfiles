@@ -15,20 +15,25 @@ local function trykey(key, fallback)
   return key
 end
 
-local function ExCWD()
-  vim.cmd.Ex(vim.fn.getcwd())
+---Options for cmd keymaps
+---@param desc string|nil
+---@return table
+local function cmd_opts(desc)
+  local default = { silent = true, noremap = true }
+  desc = desc or ""
+  default.desc = desc
+  return default
 end
 
 vim.g.mapleader = " "
 
 local remap = vim.keymap.set
-remap("n", "<leader><leader>", "<Cmd>Lazy<Enter>", { silent = true })
-remap("n", "<leader>ls", "<Cmd>Mason<Enter>", { silent = true })
-remap("n", "<leader>e", vim.cmd.Ex, { desc = "Vim Explorer" })
-remap("n", "<leader>d", ExCWD, { desc = "Open explorer in root directory" })
-remap("n", "<leader>g", "<C-]>", { desc = "Navigate to content in vim `:help topic`" })
-remap("n", "<leader>i", "<Cmd>Inspect<Enter>")
-remap("n", "<leader>nh", "<Cmd>noh<Enter>", { desc = "Remove search highlighting" })
+remap("n", "<leader><leader>", "<Cmd>Lazy<Enter>", cmd_opts())
+remap("n", "<leader>ls", "<Cmd>Mason<Enter>", cmd_opts())
+remap("n", "<leader>e", "<Cmd>Telescope file_browser<Enter>", cmd_opts())
+remap("n", "gd", "<C-]>", { desc = "Navigate to content in vim `:help topic`" })
+remap("n", "<leader>i", "<Cmd>Inspect<Enter>", cmd_opts "Treesitter tokens")
+remap("n", "<leader>nh", "<Cmd>noh<Enter>", cmd_opts "Remove search highlighting")
 remap({ "n", "v", "i" }, "<C-z>", "<Nop>", { desc = "Prevents for accidentally suspending neovim" })
 
 remap("n", "<C-a>", "ggVG", { desc = "Select all text" })
@@ -37,15 +42,23 @@ remap("n", "<leader>Y", [["+Y]], { desc = "Copy line to clipboard" })
 remap("v", "<leader>Y", [["+y]], { desc = "Copy selected text to clipboard" })
 remap({ "n", "v" }, "<leader>P", [["+p]], { desc = "Paste from clipboard" })
 
-remap("n", "<leader>w", "<Cmd>w<Enter>", { desc = "Save current buffer" })
-remap("n", "<M-q>", "<Cmd>q<Enter>", { desc = "Quit Neovim" })
+remap("n", "<leader>w", "<Cmd>w<Enter>", cmd_opts "Save current buffer")
+remap("n", "<leader>q", "<Cmd>q<Enter>", cmd_opts "Quit Neovim")
 remap("n", "U", "<C-r>", { desc = "Redo changes with U" })
 remap("n", "J", "mzJ`z", { desc = "Same as `J`, but doesn't move the cursor" })
 
-remap("n", "<S-Enter>", function() return trykey("O<Esc>0D", "<S-Enter") end,
-  { expr = true, desc = "Add new line above the cursor" })
-remap("n", "<Enter>", function() return trykey("o<Esc>0D", "<Enter>") end,
-  { expr = true, desc = "Add new line under the cursor" })
+remap("n", "<S-Enter>", function()
+  return trykey("O<Esc>0D", "<S-Enter")
+end, {
+  expr = true,
+  desc = "Add new line above the cursor",
+})
+remap("n", "<Enter>", function()
+  return trykey("o<Esc>0D", "<Enter>")
+end, {
+  expr = true,
+  desc = "Add new line under the cursor",
+})
 
 remap("n", "<Tab>", ">>", { desc = "Add 1 level of indentation" })
 remap("v", "<Tab>", ">gv", { desc = "Add 1 level of indentation" })
@@ -56,21 +69,6 @@ remap("v", "<BS>", "<gv", { desc = "Remove 1 level of indentation" })
 
 remap("n", "<leader>x", "<Cmd>!chmod u+x %<Enter>", { desc = "Make file executable", silent = true })
 
-
--- barbar.nvim keymaps
-local barbar_opts = { silent = true, noremap = true }
-remap("n", "<M-h>", "<Cmd>BufferPrevious<Enter>", barbar_opts)
-remap("n", "<M-l>", "<Cmd>BufferNext<Enter>", barbar_opts)
-remap('n', '<leader>q', '<Cmd>BufferClose<Enter>', barbar_opts)
-remap('n', '<leader>s', '<Cmd>BufferPick<Enter>', barbar_opts)
--- Goto buffer in position...
-remap('n', '<M-1>', '<Cmd>BufferGoto 1<Enter>', barbar_opts)
-remap('n', '<M-2>', '<Cmd>BufferGoto 2<Enter>', barbar_opts)
-remap('n', '<M-3>', '<Cmd>BufferGoto 3<Enter>', barbar_opts)
-remap('n', '<M-4>', '<Cmd>BufferGoto 4<Enter>', barbar_opts)
-remap('n', '<M-5>', '<Cmd>BufferGoto 5<Enter>', barbar_opts)
-remap('n', '<M-6>', '<Cmd>BufferGoto 6<Enter>', barbar_opts)
-remap('n', '<M-7>', '<Cmd>BufferGoto 7<Enter>', barbar_opts)
-remap('n', '<M-8>', '<Cmd>BufferGoto 8<Enter>', barbar_opts)
-remap('n', '<M-9>', '<Cmd>BufferGoto 9<Enter>', barbar_opts)
-remap('n', '<M-0>', '<Cmd>BufferLast<Enter>', barbar_opts)
+-- Moving between tabs
+remap("n", "<M-h>", "<Cmd>tabprevious<Enter>", cmd_opts())
+remap("n", "<M-l>", "<Cmd>tabnext<Enter>", cmd_opts())

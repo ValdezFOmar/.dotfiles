@@ -1,21 +1,23 @@
+local PLUGIN = { "windwp/nvim-ts-autotag" }
+
 local ft = {
-  'html',
-  'htmldjango',
-  'javascript',
-  'javascriptreact',
-  'jsx',
-  'markdown',
-  'tsx',
-  'typescript',
-  'typescriptreact',
-  'vue',
-  'xml',
+  "html",
+  "htmldjango",
+  "javascript",
+  "javascriptreact",
+  "jsx",
+  "markdown",
+  "tsx",
+  "typescript",
+  "typescriptreact",
+  "vue",
+  "xml",
 }
 
-return {
-  "windwp/nvim-ts-autotag",
-  opts = {
-    filetypes = ft
-  },
-  ft = ft
+PLUGIN.ft = ft
+
+PLUGIN.opts = {
+  filetypes = ft,
 }
+
+return PLUGIN

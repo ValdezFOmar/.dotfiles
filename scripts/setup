@@ -43,4 +43,3 @@ for directory in "${directories[@]}";
 do
     [ -d "$HOME/$directory" ] || mkdir "$HOME/$directory"
 done
-

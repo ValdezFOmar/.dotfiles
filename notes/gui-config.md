@@ -1,4 +1,4 @@
-# Graphical User Interface 
+# Graphical User Interface
 
 Steps for configuring a GUI
 
@@ -20,7 +20,7 @@ sudo pacman -S xorg
 ```
 
 ### Temporal X11 keyboard configuration
-To see a full list of keyboard models, layouts, variants and options for X11, 
+To see a full list of keyboard models, layouts, variants and options for X11,
 along with a short description, do the following:
 
 ```sh
@@ -30,9 +30,9 @@ cat /usr/share/X11/xkb/rules/base.lst | less
 To set up the configuration, use the following commands:
 
 ```sh
-setxkbmap -model xkb_model 
-setxkbmap -layout xkb_layout 
-setxkbmap -variant xkb_variant 
+setxkbmap -model xkb_model
+setxkbmap -layout xkb_layout
+setxkbmap -variant xkb_variant
 setxkbmap -option xkb_options
 ```
 
