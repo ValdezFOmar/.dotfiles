@@ -35,6 +35,7 @@ lightdm-slick-greeter
 linux
 linux-firmware
 lxappearance-gtk3
+mdcat
 mtpfs
 neofetch
 neovim

@@ -67,8 +67,9 @@ remap("n", "<BS>", "<<", { desc = "Remove 1 level of indentation" })
 remap("v", "<S-Tab>", "<gv", { desc = "Remove 1 level of indentation" })
 remap("v", "<BS>", "<gv", { desc = "Remove 1 level of indentation" })
 
-remap("n", "<leader>x", "<Cmd>!chmod u+x %<Enter>", { desc = "Make file executable", silent = true })
+remap("n", "<leader>xx", "<Cmd>!chmod u+x %<Enter>", { desc = "Make file executable", silent = true })
 
 -- Moving between tabs
 remap("n", "<M-h>", "<Cmd>tabprevious<Enter>", cmd_opts())
 remap("n", "<M-l>", "<Cmd>tabnext<Enter>", cmd_opts())
+remap("n", "<leader>cb", "<Cmd>bdelete<Enter>", cmd_opts "Close the current buffer")

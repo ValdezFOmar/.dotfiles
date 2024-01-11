@@ -21,6 +21,9 @@ function PLUGIN.config()
         ["@constant.builtin"] = { fg = colors.pink },
         ["@function.builtin"] = { fg = "#7d7ddb" }, -- Original function.builtin #8888C6
         ["@text.uri"] = { fg = colors.sapphire, style = { "underline" } },
+        -- Markfdown
+        ["@text.quote.markdown"] = { fg = colors.mauve, style = { "italic" } },
+        -- Vimdoc
         ["@text.reference.vimdoc"] = { fg = colors.pink, style = { "underline" } },
         -- Python
         DevIconPy = { fg = colors.blue },
