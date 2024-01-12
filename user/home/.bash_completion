@@ -11,7 +11,7 @@ shopt -s autocd
 [ -f "$HOME/.git-completion.bash" ] && source "$HOME/.git-completion.bash"
 
 # pipx
-eval "$(register-python-argcomplete pipx)"
+command -v pipx >/dev/null && eval "$(register-python-argcomplete pipx)"
 
 # poetry
 [ -f "$HOME/.poetry-completion.bash" ] && source "$HOME/.poetry-completion.bash"

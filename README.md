@@ -15,7 +15,7 @@ git clone https://github.com/ValdezFOmar/.dotfiles.git && cd .dotfiles/
 Install the system configurations:
 
 ```sh
-./install/system-config.sh
+./install/system-config.py --all
 ```
 
 Install the user configurations:

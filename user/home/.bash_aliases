@@ -66,15 +66,15 @@ activate()
         return 1
     fi
 
-    . ./.venv/bin/activate
+    source ./.venv/bin/activate
 }
 
 # Create virtual env
 venv()
 {
-    venv_name=".venv"
+    local venv_name=".venv/"
 
-    if [ -d "$venv_name" ]; then
+    if [ -d $venv_name ]; then
         echo "===> '$venv_name' already exists"
         return 1
     fi
@@ -90,9 +90,8 @@ venv()
     pip -V
 
     if [ -f ./requirements.txt ]; then
-        printf "Install from 'requirements.txt' file? (y/n) "
-        read -r answer
-        if [ "$answer" = "y" ]; then
+        read -p "Install from 'requirements.txt' file? (Y/n) " -r answer
+        if [[ -z $answer || $answer = "y" || $answer = "yes" ]]; then
             pip install -r ./requirements.txt
         fi
     fi
