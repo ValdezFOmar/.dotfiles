@@ -231,7 +231,7 @@ Install and configure grub for EFI mode.
 
 ## Post installation
 
-Refer to [README](../README.md) to see the instructions for adding all
-the additional software after sucesfully installing the system.
+Refer to [README](../README.md) to see the instructions for adding all the additional software after
+successfully installing the system.
 
 For internet connection, refer to [how to connect to WiFi with NetworkManager](./connect-wifi.md#using-networkmanager).

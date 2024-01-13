@@ -25,7 +25,7 @@ import subprocess as shell
 import sys
 from pathlib import Path
 
-from utils import handle_symlink, symlink_config, DOTFILES
+from utils import DOTFILES, handle_symlink, symlink_config
 
 USER_CONFIG = DOTFILES / "user"
 
@@ -40,9 +40,7 @@ def set_theme():
     symlink_config(USER_CONFIG / ".icons" / "default", default_icons)
 
     repos_dir = Path.home() / "repos"
-    local_icons = Path.home() / ".local" / "share" / "icons"
     repos_dir.mkdir(exist_ok=True)
-    local_icons.mkdir(parents=True, exist_ok=True)
 
     cursors_repo_url = "https://github.com/vinceliuice/Qogir-icon-theme"
     cloned_repo = shell.run(
@@ -50,6 +48,9 @@ def set_theme():
         capture_output=True,
         encoding="utf-8",
     )
+
+    local_icons = Path.home() / ".local" / "share" / "icons"
+    local_icons.mkdir(parents=True, exist_ok=True)
 
     if cloned_repo.returncode == 0:
         shell.run([f"{repos_dir}/Qogir-icon-theme/src/cursors/install.sh"], stdout=shell.DEVNULL)
@@ -72,7 +73,7 @@ def git_config():
         shutil.copy(prompt, home)
 
     shell.run(
-        ["git", "config", "--global", "core.excludesfile", f"{home}/.gitignore_global"],
+        ["/usr/bin/git", "config", "--global", "core.excludesfile", f"{home}/.gitignore_global"],
         stdout=shell.DEVNULL,
     )
 

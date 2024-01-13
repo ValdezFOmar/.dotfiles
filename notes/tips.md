@@ -1,74 +1,88 @@
 # General tips
 
-## Reload Xresources Configuration
-To reload the `~/.Xresources` configuration file, do:
 
-    xrdb ~/.Xresources
+## Git
 
-## Change cursor
+### Branchs
 
-After downloading and extracting the cursor theme, copy its contents to:
-
-    ~/.local/share/icons
-
-Then to select it as the current cursor theme, launch `lxappearance` and apply the theme.
-Finally, to have it automatically be set up at loging, simply symlink the `cursors` directory
-from the cursors' theme directory to `~/.icons/default/cursors`. An example might be:
+Delete local branch
 
 ```sh
-ln -s ~/.local/share/icons/[theme_name]/cursors ~/.icons/default/cursors
+git branch -d <branch-name>
 ```
 
-## Color picker
+Delete remote branch
 
-To select a color with a color picker use:
+```sh
+git push -d origin <remote-branch-name>
+```
 
-    xcolor
+
+## Keyboard Configuration
+
+### Temporal
+
+To see a full list of keyboard models, layouts, variants and options for X11, along with a short description,
+do the following:
+
+```sh
+less /usr/share/X11/xkb/rules/base.lst
+```
+
+To set up the configuration, use the following commands:
+
+> [X11 Keyboard config](https://wiki.archlinux.org/title/Xorg/Keyboard_configuration)
+
+```sh
+setxkbmap -model xkb_model
+setxkbmap -layout xkb_layout
+setxkbmap -variant xkb_variant
+setxkbmap -option xkb_options
+```
+
+> For latin american keyboard layout use: `setxkbmap -layout latam`.
+
+### Persistent
+
+For a persisten keyboard layout configuration use this command instead (reboot to see changes):
+
+```sh
+localectl set-x11-keymap skb_layout
+```
+
+> The same layouts from `setxkbmap` apply.
+
+
+## Reload Xresources Configuration
+
+To reload the `~/.Xresources` configuration file, do:
+
+```sh
+xrdb ~/.Xresources
+```
 
 
 ## Clipboard
 
-Use `gpaste` to manage the clipboard contents.
+Use `gpaste` to manage the clipboard contents. CLI client:
 
-cli client:
+```sh
+gpaste-client -h
+```
 
-    gpaste-client -h
+Paste output of command `foo` to `gpaste`:
 
-paste output of command `foo` to `gpaste`:
+```sh
+foo | gpaste-client
+```
 
-    foo | gpaste-client
-
-
-Or use the keybind `mod4 + T + C` from Qtile custom config.
+> Use the keybind `mod4 + T + H` from the Qtile custom config to see the clipboard history.
 
 
 ## Image Viewer
 
 See images in a directory by `cd`'ing into it and typing:
 
-    nsxiv . &
-
-
-## Auto monitor layout
-
-Use `autorandr` for configuring multimonitors, use the
-following options:
-
-> You still need to preconfigured the displays with `xrandr`
-and then saved them with `autorandr`
-
-- `autorandr --save <config-name>` For saving the current configuration
-- `autorandr --default <config-name>` For making a configuration default when not other is detected
-
-> this overrides the default behavior that makes `autorandr` keep the current
-configuration even when monitors are connected/disconnected
-
-# Git
-
-Delete local branch
-
-    git branch -d <branch-name>
-
-Delete remote branch
-
-    git push -d origin <remote-branch-name>
+```sh
+nsxiv .
+```

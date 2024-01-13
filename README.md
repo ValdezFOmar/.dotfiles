@@ -1,8 +1,12 @@
 # Dotfiles
 
-Dotfiles for my Arch linux distro.
+Dotfiles and installation scripts for my Arch Linux setup.
 
-> For Additional installation info, check the [installation guide](./notes/installation-guide.md).
+For Additional installation info:
+1. [Arch Linux installation guide](/notes/installation-guide.md).
+2. [Wi-Fi Connection](/notes/connect-wifi.md)
+3. [GUI setup](/notes/gui-config.md)
+
 
 ## Setup
 
@@ -25,15 +29,3 @@ Install the user configurations:
 ```
 
 > NOTE: This will install all the config files. To see more options use the flag `--help`.
-
-
-## Greeter
-
-To set up the session greeter for LightDM, edit the following line in `/etc/lightdm/lightdm.conf`:
-
-```
-[Seat:*]
-...
-greeter-session=lightdm-slick-greeter
-...
-```

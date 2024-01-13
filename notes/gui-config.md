@@ -1,80 +1,54 @@
-# Graphical User Interface
+# GUI
 
-Steps for configuring a GUI
 
-Table of contents
+## Display Manager (DM) and Session Greeter
 
-- [KDE Plasma](#kde-plasma)
--
+This setup uses `lightdm` as the DM and `lightdm-slick-greeter` as the session greeter.
+To set up the session greeter for LightDM, edit the following line in `/etc/lightdm/lightdm.conf`:
 
-# KDE Plasma
+```
+[Seat:*]
+...
+greeter-session=lightdm-slick-greeter
+...
+```
 
-## 1. Install X11
+> **NOTE:** its important to set this attribute to be able to login.
 
-> Resources<br>
-> [X11 Keyboard config](https://wiki.archlinux.org/title/Xorg/Keyboard_configuration)
 
-installation
+## Qtile
+
+Install `qtile` and a compositor (for managing transparecy) like `picom`. To have a Qtile logo appear on
+`lightdm-slick-greeter`'s list of sessions, place a `.png` image under `/usr/share/slick-greeter/badges/`
+matching the name of the session's `.desktop` entry in `/usr/share/xsessions/`. In this case, the icon name
+should be `qtile.png`.
+
+> Check [slick-greeter source code](https://github.com/linuxmint/slick-greeter/blob/master/src/session-list.vala#L109)
+> for this behavior.
+
+
+## Change cursor
+
+After downloading and extracting the cursor theme, copy its contents to `~/.local/share/icons`.
+Then to select it as the current cursor theme, launch `lxappearance` and apply the theme.
+Finally, to have it automatically be set up at logging, simply symlink the `cursors` directory
+from the cursors' theme directory to `~/.icons/default/cursors`. An example might be:
+
 ```sh
-sudo pacman -S xorg
-```
-
-### Temporal X11 keyboard configuration
-To see a full list of keyboard models, layouts, variants and options for X11,
-along with a short description, do the following:
-
-```sh
-cat /usr/share/X11/xkb/rules/base.lst | less
-```
-
-To set up the configuration, use the following commands:
-
-```sh
-setxkbmap -model xkb_model
-setxkbmap -layout xkb_layout
-setxkbmap -variant xkb_variant
-setxkbmap -option xkb_options
-```
-
-> For latin american keyboard layout use: `setxkbmap -layout latam`.
-
-### Persistent keyboard configuration
-
-For a persisten keyboard layout configuration use this command
-instead (reboot to see changes):
-
-    localectl set-x11-keymap skb_layout
-
-> The same layouts from `setxkbmap` apply.
-
-## 2. Install a display manager / login manager
-```sh
-# sddm is recommended for KDE plasma
-sudo pacman -S sddm
+ln -s ~/.local/share/icons/[theme_name]/cursors ~/.icons/default/cursors
 ```
 
 
-## 3. Enable services on startup
-```sh
-systemctl enable sddm.service
-systemctl enable NetworkManager.service
-```
+## Monitor Layout
 
-`wireplumber`
+> **NOTE:** Consider using `lxrandr` instead (`lxrandr-gtk3` package).
 
-- [KDE Plasma for Arch Linux](https://www.debugpoint.com/kde-plasma-arch-linux-install/)
+Use `autorandr` for configuring multimonitors, use the following options:
 
+> You still need to preconfigured the displays with `xrandr` and then saved them with `autorandr`
 
-For a autologin session, edit:
+- `autorandr --save <config-name>` For saving the current configuration
+- `autorandr --default <config-name>` For making a configuration default when not other is detected
 
-| /etc/sddm.conf.d/autologin.conf |
---
-```
-[Autologin]
-User=user_name
-Session=plasma
-```
-
-# Qtile
-
-install `qtile` and a compositor (for managing transparecy) like `picom`, also install `kitty`
+> This overrides the default behavior that makes `autorandr` keep the current
+> configuration even when monitors are connected/disconnected

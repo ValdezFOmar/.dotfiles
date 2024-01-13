@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-For installing system configurration (assumed to be running on Arch Linux).
+For installing system configurations (assumed to be running on Arch Linux).
 
 Requirements:
 - python >=3.11
@@ -9,6 +9,7 @@ Requirements:
 This script takes care of:
 - Downloading all the necessary packages using pacman.
 - Copying system configuration files.
+- Enabling system services.
 
 NOTE: This script needs to be run as root
 """
@@ -26,10 +27,10 @@ SYSTEM_CONFIG = utils.DOTFILES / "system"
 
 
 def install_packages():
-    shell.run(["pacman", "-Syu"], check=True)
+    shell.run(["/usr/bin/pacman", "-Syu"], check=True)
     with open(SYSTEM_CONFIG / "pkglist.txt", "r", encoding="utf-8") as file:
         packages = file.read()
-    shell.run(["pacman", "-S", "--needed", "-"], input=packages, encoding="utf-8", check=True)
+    shell.run(["/usr/bin/pacman", "-S", "--needed", "-"], input=packages, encoding="utf-8", check=True)
 
 
 def enable_services():
@@ -39,7 +40,18 @@ def enable_services():
         "cpupower",
     ]
     for service in services:
-        shell.run(["systemctl", "enable", f"{service}.service"])
+        shell.run(["/usr/bin/systemctl", "enable", f"{service}.service"])
+
+
+def setup_reflector():
+    shutil.copy(SYSTEM_CONFIG / "reflector.conf", "/etc/xdg/reflector")
+    mirrorlist = Path("/etc/pacman.d/mirrorlist")
+    mirrorlist_backup = mirrorlist.with_name(mirrorlist.name + "~")
+
+    if not mirrorlist_backup.exists():
+        shutil.copy(mirrorlist, mirrorlist_backup)
+
+    shell.run(["/usr/bin/systemctl", "enable", "reflector.timer", "--now"])
 
 
 def install_files():
@@ -57,8 +69,6 @@ def install_files():
     utils.handle_symlink(qtile_icon, badges / "qtile-wayland.png")
 
 
-# TODO: Add setup for mirror list (package reflector)
-#   https://wiki.archlinux.org/title/Reflector
 def main() -> int:
     parser = argparse.ArgumentParser(description="Install system configuration/settoings files.")
     parser.add_argument("--all", action="store_true", help="install everything")
@@ -75,6 +85,7 @@ def main() -> int:
     if args.all:
         install_packages()
         enable_services()
+        setup_reflector()
         install_files()
     elif args.files:
         install_files()

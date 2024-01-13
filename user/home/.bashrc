@@ -13,6 +13,8 @@
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 export VISUAL="nvim"
+export MANPAGER="nvim +Man!"
+
 export DOTFILES="$HOME/.dotfiles"
 
 export GIT_PS1_SHOWDIRTYSTATE=true
