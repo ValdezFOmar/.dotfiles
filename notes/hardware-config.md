@@ -9,7 +9,7 @@ Use `cpupower` to do all the configurations.
 Check the [Power Governors](https://wiki.archlinux.org/title/CPU_frequency_scaling#Scaling_governors)
 for diferent power modes.
 
-> A [script for controlling the CPU frequency](/../user/.local/bin/frequencymenu) is provided, but needs
+> A [script for controlling the CPU frequency](../user/.local/bin/frequencymenu) is provided, but needs
 > needs permission to [run `cpupower`](#run-cpupower-without-password-prompt).
 
 
@@ -39,7 +39,7 @@ HandlePowerKeyLongPress=poweroff
 
 Then, to apply the changes, run:
 
-```
+```sh
 sudo systemctl kill -s HUP systemd-logind
 ```
 

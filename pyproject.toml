@@ -1,3 +1,10 @@
+[tool.isort]
+profile = "black"
+line_length = 110
+skip_gitignore = true
+known_third_party = ["libqtile"]
+
+
 [tool.black]
 line-length = 110
 target-version = ["py311"]

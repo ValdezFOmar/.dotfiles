@@ -107,4 +107,3 @@ xorg-xsetroot
 xorg-xvinfo
 xorg-xwd
 xorg-xwud
-xterm

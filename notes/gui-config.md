@@ -18,7 +18,11 @@ greeter-session=lightdm-slick-greeter
 
 ## Qtile
 
-Install `qtile` and a compositor (for managing transparecy) like `picom`. To have a Qtile logo appear on
+Install `qtile` and a compositor (for managing transparecy) like `picom`.
+
+> Qtile **log messages** can be found at `~/.local/share/qtile/qtile.log`.
+
+To have a Qtile logo appear on
 `lightdm-slick-greeter`'s list of sessions, place a `.png` image under `/usr/share/slick-greeter/badges/`
 matching the name of the session's `.desktop` entry in `/usr/share/xsessions/`. In this case, the icon name
 should be `qtile.png`.
