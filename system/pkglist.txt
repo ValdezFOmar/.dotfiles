@@ -56,7 +56,9 @@ pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
 pyenv
+python-dbus-next
 python-docs
+python-iwlib
 python-pipx
 qtile
 reflector

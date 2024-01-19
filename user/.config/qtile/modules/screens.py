@@ -6,44 +6,38 @@ from .vars import Color, monitor_wallpaper
 
 __all__ = ["screens"]
 
-
 screens = [
     Screen(
         wallpaper=monitor_wallpaper,
         wallpaper_mode="fill",
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
-                widget.CurrentLayoutIcon(scale=0.8),
+                widget.Spacer(length=5),
+                mywidgets.EMPTY_LEFT,
+                mywidgets.power_menu,
+                mywidgets.EMPTY_RIGHT,
+                widget.Spacer(length=10),
+                mywidgets.EMPTY_LEFT,
                 mywidgets.groupbox,
-                widget.WindowName(),
+                mywidgets.EMPTY_RIGHT,
+                widget.Spacer(),
+                mywidgets.EMPTY_LEFT,
+                mywidgets.date,
+                mywidgets.time,
+                mywidgets.EMPTY_RIGHT,
+                widget.Spacer(),
                 mywidgets.chord,
-                mywidgets.volume,
+                widget.Spacer(length=10),
+                mywidgets.EMPTY_LEFT,
+                mywidgets.wifi,
                 mywidgets.battery,
-                mywidgets.date,
-                mywidgets.time,
-            ],
-            28,
-            # border_width=[0, 0, 0, 0],  # top, right, bottom, left
-            # border_color=["", "", "", ",
-            background=Color.BLACK,
-        ),
-    ),
-    Screen(
-        wallpaper=monitor_wallpaper,
-        wallpaper_mode="fill",
-        bottom=bar.Bar(
-            [
-                widget.CurrentLayoutIcon(scale=0.8),
-                mywidgets.groupbox.clone(),
-                widget.WindowName(),
-                mywidgets.chord.clone(),
                 mywidgets.volume,
-                mywidgets.battery,
-                mywidgets.date,
-                mywidgets.time,
+                mywidgets.EMPTY_RIGHT,
+                widget.Spacer(length=5),
             ],
-            28,
-            background=Color.BLACK,
+            size=28,
+            background=Color.transparent,
+            margin=[2, 0, 2, 0],
         ),
     ),
 ]

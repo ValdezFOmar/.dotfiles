@@ -3,45 +3,33 @@ from libqtile.config import Match
 
 from .vars import Color
 
-__all__ = ["layouts"]
+__all__ = ["layouts", "floating_layout"]
 
-# Layouts
-layouts_config = dict(
+Config = dict[str, str | int | float]
+
+layouts_config: Config = dict(
     margin=4,
     margin_on_single=False,
     border_width=2,
-    border_normal=Color.LIGHT_BLACK,
-    border_focus=Color.MAGENTA,
+    border_normal=Color.dark,
+    border_focus=Color.purple,
     border_on_single=False,
-)
-
-monad_layout_config = dict(
+    # Monad layout specific
     ratio=0.55,
     single_margin=0,
     single_border_width=0,
 )
 
 layouts = [
-    layout.MonadTall(**layouts_config, **monad_layout_config),  # pyright: ignore
-    layout.MonadWide(**layouts_config, **monad_layout_config),  # pyright: ignore
-    # layout.Zoomy(**layouts_config),  # pyright: ignore
-    # layout.Columns(**layouts_config),  # pyright: ignore
-    # layout.VerticalTile(**layouts_config),  # pyright: ignore
-    # Try more layouts by unleashing below layouts.
-    # layout.Max(**layouts_config),
-    # layout.Stack(num_stacks=4),
-    # layout.Bsp(**layouts_config),
-    # layout.Matrix(**layouts_config),
-    # layout.RatioTile(**layouts_config),
-    # layout.Tile(**layouts_config),
-    # layout.TreeTab(**layouts_config),
+    layout.MonadTall(**layouts_config),  # pyright: ignore
+    layout.MonadWide(**layouts_config),  # pyright: ignore
 ]
 
 
 floating_layout = layout.Floating(  # pyright: ignore
     border_width=1,
-    border_focus=Color.WHITE,
-    border_normal=Color.LITERAL_BLACK,
+    border_focus=Color.light,
+    border_normal=Color.literal_black,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,  # pyright: ignore

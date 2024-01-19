@@ -8,13 +8,12 @@ vim.keymap.set("n", "<leader>r", "<cmd>!python %<Enter>", {
   desc = "Run current python file.",
 })
 
--- group options prevents multiple executions.
--- See https://neovim.discourse.group/t/vimscript-autocmd-to-lua/2932
-local py_group = vim.api.nvim_create_augroup("python_formatter", { clear = true })
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-  desc = "Run formatter for python",
-  group = py_group,
-  command = "silent! !black %; isort %",
-  buffer = 0,
+vim.keymap.set("n", "<leader>ff", function()
+  vim.cmd [[
+    silent !isort %
+    silent !black %
+  ]]
+end, {
+  buffer = 0, -- current buffer
+  desc = "Format curretn file.",
 })

@@ -12,6 +12,8 @@ repos:
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
+      - id: check-added-large-files
+      - id: check-executables-have-shebangs
   - repo: https://github.com/JohnnyMorganz/StyLua
     rev: v0.19.1
     hooks:

@@ -10,7 +10,7 @@ from modules.screens import *
 from modules.widgets import *
 
 dgroups_key_binder = None
-dgroups_app_rules = []  # type: list
+dgroups_app_rules: list = []
 follow_mouse_focus = True
 bring_front_click = "floating_only"
 cursor_warp = False
