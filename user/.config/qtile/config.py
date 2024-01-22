@@ -1,18 +1,12 @@
-# TODO:
-# - Improve look and functionality
-#   - See https://qtile.org/screenshots/ for ideas
-# - Check documentation https://docs.qtile.org/en/stable/
-
 from modules.groups import *
 from modules.keybinds import *
 from modules.layouts import *
 from modules.screens import *
 from modules.widgets import *
 
-dgroups_key_binder = None
-dgroups_app_rules: list = []
 follow_mouse_focus = True
 bring_front_click = "floating_only"
+floats_kept_above = True  # NOTE: X11 only, for now
 cursor_warp = False
 auto_fullscreen = True
 focus_on_window_activation = "smart"

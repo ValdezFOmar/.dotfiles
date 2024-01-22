@@ -1,3 +1,4 @@
+# vim: set ft=gitignore:
 # Global .gitignore file for excluding
 # files/directories on all repositories
 
@@ -15,10 +16,10 @@
 .~lock.*
 
 # For testing code that isn't supposed to be commited
-.ignore_code/
-ignore_code/
-.forget_code/
-forget_code/
+.ignore_code
+ignore_code
+.forget_code
+forget_code
 
 # HTML genrated by md4c / md2html
 .markdown/

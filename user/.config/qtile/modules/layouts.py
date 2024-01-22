@@ -5,31 +5,38 @@ from .vars import Color
 
 __all__ = ["layouts", "floating_layout"]
 
-Config = dict[str, str | int | float]
+border_normal = Color.dark
+border_focus = Color.grayscale6
 
-layouts_config: Config = dict(
-    margin=4,
-    margin_on_single=False,
+layouts_config = dict[str, object](
+    margin=6,
     border_width=2,
-    border_normal=Color.dark,
-    border_focus=Color.purple,
+    margin_on_single=False,
     border_on_single=False,
-    # Monad layout specific
+    border_normal=border_normal,
+    border_focus=border_focus,
+)
+
+max_config = layouts_config.copy()
+max_config.update(only_focused=True, border_width=0)
+
+monad_config = layouts_config.copy()
+monad_config.update(
     ratio=0.55,
-    single_margin=0,
     single_border_width=0,
+    # single_margin=0,
 )
 
 layouts = [
-    layout.MonadTall(**layouts_config),  # pyright: ignore
-    layout.MonadWide(**layouts_config),  # pyright: ignore
+    layout.MonadTall(**monad_config),
+    # layout.MonadWide(**monad_config),
 ]
 
 
-floating_layout = layout.Floating(  # pyright: ignore
-    border_width=1,
-    border_focus=Color.light,
-    border_normal=Color.literal_black,
+floating_layout = layout.Floating(
+    border_width=2,
+    border_focus=border_focus,
+    border_normal=border_normal,
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,  # pyright: ignore

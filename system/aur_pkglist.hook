@@ -1,0 +1,12 @@
+# Hook for updating am AUR package list when a package is added/remove with paru
+# vim: set ft=cfg:
+
+[Trigger]
+Operation = Install
+Operation = Remove
+Type = Package
+Target = *
+
+[Action]
+When = PostTransaction
+Exec = /bin/sh -c '/usr/bin/pacman -Qqe --foreign | /usr/bin/sed "/paru/d" > /etc/aur_pkglist.txt'

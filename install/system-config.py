@@ -59,6 +59,8 @@ def install_files():
     pacman_hooks.mkdir(parents=True, exist_ok=True)
     shutil.copy(SYSTEM_CONFIG / "pkglist.hook", pacman_hooks)
     utils.handle_symlink(SYSTEM_CONFIG / "pkglist.txt", Path("/etc/pkglist.txt"))
+    shutil.copy(SYSTEM_CONFIG / "aur_pkglist.hook", pacman_hooks)
+    utils.handle_symlink(SYSTEM_CONFIG / "aur_pkglist.txt", Path("/etc/aur_pkglist.txt"))
 
     lightdm_path = Path("/etc/lightdm")
     lightdm_path.mkdir(parents=True, exist_ok=True)

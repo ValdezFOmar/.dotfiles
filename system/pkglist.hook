@@ -1,4 +1,5 @@
 # Hook for updating a package list when a package is added/remove with pacman
+# vim: set ft=cfg:
 
 [Trigger]
 Operation = Install
@@ -8,4 +9,4 @@ Target = *
 
 [Action]
 When = PostTransaction
-Exec = /bin/sh -c '/usr/bin/pacman -Qqen > /etc/pkglist.txt'
+Exec = /bin/sh -c '/usr/bin/pacman -Qqen | /usr/bin/sed "/amd\|intel\|ucode\|xf86-video/d" > /etc/pkglist.txt'

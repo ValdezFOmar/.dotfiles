@@ -1,3 +1,9 @@
+[tool.pyright]
+# Avoid "'indentifier' not exported from 'module'" errors, see
+# https://github.com/microsoft/pyright/issues/2277#issuecomment-937468789
+reportPrivateImportUsage = "none"
+
+
 [tool.isort]
 profile = "black"
 line_length = 110

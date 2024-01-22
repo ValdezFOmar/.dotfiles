@@ -1,9 +1,12 @@
 # General tips
 
+## Pacman
+
+- To enable colored output, edit `/etc/pacman.conf` and uncomment the `Color` option.
 
 ## Git
 
-### Branchs
+### Branches
 
 Delete local branch
 
@@ -44,7 +47,7 @@ setxkbmap -option xkb_options
 
 ### Persistent
 
-For a persisten keyboard layout configuration use this command instead (reboot to see changes):
+For a persistent keyboard layout configuration use this command instead (reboot to see changes):
 
 ```sh
 localectl set-x11-keymap skb_layout

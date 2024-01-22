@@ -40,7 +40,7 @@ class NerdFontBattery(widget.Battery):
         ("empty_char", "󱃍", "Character to indicate the battery is empty"),
         ("low_char", "󱃍", "Character to indicate the battery is low"),
         ("unknown_char", "󰂑", "Character to indicate the battery status is unknown"),
-        ("charge_icons", ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞 ", "󰂊", "󰂋", "󰂅"], "Charge icon at percent X0%"),
+        ("charge_icons", ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"], "Charge icon at percent X0%"),
         ("discharge_icons", ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"], "Icon at percent X0%"),
         ("medium_foreground", "#FFFF00", "Foreground color on medium battery"),
         ("medium_background", None, "Background color on medium battery"),
@@ -128,7 +128,7 @@ class NerdFontVolume(widget.PulseVolume):
 
 group_decoration = RectDecoration(
     colour=Color.darker,
-    line_colour=[Color.grayscale5, Color.grayscale8],
+    line_colour=Color.grayscale6,
     line_width=1.5,
     padding_y=2,
     radius=10,
@@ -136,7 +136,7 @@ group_decoration = RectDecoration(
     group=True,
 )
 
-# Usefull for for adding extra space to the sides of a group of widgets
+# Usefull for adding extra space to the sides of a group of widgets
 EMPTY_LEFT = widget.TextBox(" ", padding=0, decorations=[group_decoration])
 EMPTY_RIGHT = widget.TextBox(" ", padding=0, decorations=[group_decoration])
 
@@ -151,11 +151,14 @@ groupbox = widget.GroupBox(
     # There's a bug preventing the use of markup in this widget
     # fmt="<b>{}</b>",
     # markup=True,
+    fontsize=14,
     highlight_method="text",
     active=Color.text,
-    this_screen_border=Color.orange,
-    this_current_screen_border=Color.orange,
+    this_screen_border=Color.light_blue,
+    this_current_screen_border=Color.light_blue,
     block_highlight_text_color=Color.literal_black,
+    urgent_alert_method="text",
+    urgent_text=Color.orange,
     inactive=Color.grayscale5,
     spacing=10,
     center_aligned=True,
@@ -164,17 +167,16 @@ groupbox = widget.GroupBox(
 
 date = widget.Clock(
     # format="<b>%A %d/%b/%Y</b> 󰃭 ", # Long format
-    format="<b>%A %d, %b</b> 󰃭 ",
+    # Maybe implement it as a pop up?
+    format="<b>%A %d %b</b> 󰃭 ",
     markup=True,
     decorations=[group_decoration],
-    foreground=Color.pink,
 )
 
 time = widget.Clock(
     format="<b>%I:%M</b>  ",
     markup=True,
     decorations=[group_decoration],
-    foreground=Color.sky,
 )
 
 chord = widget.Chord(
