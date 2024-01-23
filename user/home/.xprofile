@@ -1,4 +1,4 @@
-picom -b &
+picom --daemon
 udiskie &
 light-locker --lock-after-screensaver=60 --lock-on-suspend --lock-on-lid &
 gnome-keyring-daemon --start --daemonize --components=pkcs11,secrets,ssh

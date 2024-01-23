@@ -1,5 +1,7 @@
 # Dotfiles
 
+![Desktop](./desktop_screenshot.png)
+
 Dotfiles and installation scripts for my Arch Linux setup.
 
 For Additional installation info:

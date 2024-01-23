@@ -1,7 +1,6 @@
 acpilight
 adobe-source-sans-fonts
 alsa-utils
-amd-ucode
 arc-gtk-theme
 archlinux-wallpaper
 autorandr
@@ -14,6 +13,7 @@ cpupower
 deepin-gtk-theme
 dunst
 efibootmgr
+entr
 fd
 firefox
 freerdp
@@ -76,7 +76,6 @@ vlc
 wget
 xclip
 xcolor
-xf86-video-amdgpu
 xorg-bdftopcf
 xorg-docs
 xorg-font-util

@@ -1,9 +1,10 @@
 exclude: |
   (?x)^(
-    system/.*|
-    user/\.icons/.*|
-    user/\.config/nvim/lazy-lock\.json|
-    user/home/\.dmrc
+    system/.*
+    |user/\.icons/.*
+    |user/\.config/nvim/lazy-lock\.json
+    |user/home/\.dmrc
+    |desktop_screenshot.png
   )$
 
 repos:
