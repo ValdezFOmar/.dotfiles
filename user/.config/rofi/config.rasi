@@ -11,36 +11,61 @@ configuration {
 // @theme "/dev/null"
 @theme "arthur"
 
+/* Color palette inspired in Catppuccin Mocha
+ * https://github.com/catppuccin/catppuccin#-palette
+ */
 * {
-    font: "sans 12";
-    blacklist: #1c1c1c;
-    inputbar-color: rgb(61, 63, 76);
-    lightblue: rgb(102, 217, 239);
+    // color theme
+    base:         hsl(240, 21%, 20%);
+    dark:         hsl(240, 23%, 9%);
+    black:        hsl(240, 21%, 12%);
+    lightblack:   hsl(237, 16%, 23%);
+    red:          #e3455c;
+    lightred:     #ea7183;
+    green:        #8aec69;
+    lightgreen:   #96D382;
+    yellow:       #f39967;
+    lightyellow:  #f8cf7c;
+    blue:         #739df2;
+    lightblue:    #78cec1;
+    magenta:      #9e6ffe;
+    lightmagenta: #b889f4;
+    cyan:         #68bae0;
+    lightcyan:    #91d7e3;
+    white:        #c5d1f1;
+    lightwhite:   #a0a8f6;
 
-    semi-transparent: rgba(21, 23, 36, 70%);
-    select-color: rgb(21, 23, 36);
-    select-border-color: rgb(71, 73, 86);
+    // General
+    font: "CaskaydiaCove NF 12";
+    foreground: @white;
+    color: @foreground;
+    backlight: @lightwhite;
+    semi-transparent: hsla(240, 23%, 9%, 60%);
 
-    blue-highlight: bold rgb(102, 217, 239);
+    inputbar-color: @base;
+    highlight: @green;
+
+    no-select-color: hsl(240, 21%, 50%);
+    select-color: @foreground;
 }
 
 window {
     padding: 0px;
-    width: calc( 40% min 600px );
+    width: calc(40% min 600px);
     border-radius: 0px;
     transparency: "real";
 }
 
 inputbar {
     border: 0px;
-    border-radius: 5px 5px 0px 0px;
+    border-radius: /*5px 5px 0px*/ 0px;
     border-color: @lightblack;
     background-color: @inputbar-color;
-    color: @lightblue;
+    color: @foreground;
 }
 
 prompt, entry {
-    font: "sans 14";
+    font: "CaskaydiaCove NF 14";
 }
 
 listview {
@@ -48,8 +73,7 @@ listview {
     cycle: false;
     padding: 5px;
     border: 0px;
-    border-radius: 0px 0px 5px 5px;
-    border-color: @blacklist;
+    border-radius: 0px /* 0px 5px 5px */;
     background-color: @semi-transparent;
 }
 
@@ -59,13 +83,12 @@ element {
     spacing: 10px;
     padding: 5px 8px;
     border-radius: 0px;
+    color: @no-select-color;
 }
 
 element selected.normal {
-    background-color: @select-color;
-    border-color: @select-border-color;
-    border-radius: 5px;
-    border: 2px;
+    background-color: @transparent;
+    color: @select-color;
 }
 
 element-icon {
@@ -75,5 +98,4 @@ element-icon {
 element-text {
     vertical-align: 0.5;
     background-color: @transparent;
-    highlight: @blue-highlight;
 }

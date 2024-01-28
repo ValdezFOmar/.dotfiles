@@ -2,23 +2,34 @@
 
 """
 Script for setting the CPU Frequency Governor using the `rofi` launcher and
-the `cpupower` utility.
+the `cpupower` utility. Additionally, sends notifications using `notify-send`.
 
 For running this script, you will either need to execute it with root privileges
 or set a rule in the `/etc/sudoers` file for `cpupower frequency-set` command.
+For example you can write the following:
+
+    user ALL=(ALL) NOPASSWD: /usr/bin/cpupower frequency-set*
+
+Where `user` is your username.
 """
 
 import subprocess
 import sys
 from pathlib import Path
-from typing import Iterable
+from typing import Sequence
 
 PATH_TO_GOVERNORS = Path("/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors")
-ROFI_CONFIG = Path(Path.home() / ".config" / "rofi")
+ROFI_CONFIG = Path.home() / ".config" / "rofi"
+SCRIPT = Path(__file__).stem
+
+
+def send_notification(title: str, body: str, urgency="normal") -> None:
+    subprocess.run(["notify-send", "--app-name", SCRIPT, "--urgency", urgency, title, body])
 
 
 def get_governors(path: Path) -> tuple[str, ...]:
     if not path.exists():
+        send_notification("Error", "Scaling governors file not found.")
         sys.exit(1)
     with open(path, "r", encoding="utf-8") as file:
         governors = file.read()
@@ -26,53 +37,46 @@ def get_governors(path: Path) -> tuple[str, ...]:
 
 
 def set_gorvernor(governor: str) -> None:
-    try:
-        subprocess.run(
-            ["sudo", "cpupower", "frequency-set", "--governor", governor],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            check=True,
-        )
-    except subprocess.CalledProcessError:
-        sys.exit("frequencymenu: You need root privileges to change the CPU frequency.")
-
-
-def launch_rofi_menu(options: Iterable[str]) -> str:
-    formated_options = "\n".join(options)
-    options_args = ["printf", formated_options]
-    rofi_args = ["rofi", "-dmenu"]
-
-    theme = (
-        path
-        if (path := ROFI_CONFIG / "frequencymenu.rasi").exists()
-        else path
-        if (path := ROFI_CONFIG / "config.rasi").exists()
-        else None
-    )
-
-    if theme is not None:
-        rofi_args.extend(["-theme-str", f'@import "{theme}"'])
-
-    # https://docs.python.org/3.11/library/subprocess.html#replacing-shell-pipeline
-    pipe_options = subprocess.Popen(options_args, stdout=subprocess.PIPE)
-    rofi_process = subprocess.run(
-        rofi_args,
-        stdin=pipe_options.stdout,
-        universal_newlines=True,
+    cpupower = subprocess.run(
+        ["sudo", "cpupower", "frequency-set", "--governor", governor],
         capture_output=True,
     )
+    if cpupower.returncode != 0:
+        if sys.stderr.isatty():
+            print(f"{SCRIPT}: an error occurred.", file=sys.stderr)
+            print(cpupower.stderr, file=sys.stderr)
+        else:
+            send_notification("CPU Frequency", "An error occurred", "critical")
+        sys.exit(cpupower.returncode)
+
+
+def launch_rofi_menu(options: Sequence[str]) -> str:
+    fmt_options = "\n".join(options)
+    lines = str(len(options))
+    args = ["rofi", "-dmenu", "-l", lines, "-i", "-p", "CPU Frequency:"]
+
+    if (theme := ROFI_CONFIG / "frequencymenu.rasi").exists():
+        args.extend(["-theme-str", f'@import "{theme}"'])
+
+    rofi_process = subprocess.run(args, input=fmt_options, encoding="utf-8", capture_output=True)
     return rofi_process.stdout.strip()
 
 
-def main():
+def main() -> int:
     governors = get_governors(PATH_TO_GOVERNORS)
-    selected_governor = launch_rofi_menu(governors)
+    as_titles = [g.title() for g in governors]
+    selected_governor = launch_rofi_menu(as_titles).lower()
 
+    if not selected_governor:
+        return 0
     if selected_governor not in governors:
-        sys.exit(1)
+        send_notification("CPU Frequency", f"{selected_governor!r} is not a valid governor")
+        return 1
 
     set_gorvernor(selected_governor)
+    send_notification("CPU Frequency", f"Changed to governor {selected_governor!r}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

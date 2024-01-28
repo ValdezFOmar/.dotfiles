@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 
-option=$(printf "Lock Screen\nSuspend\nRestart\nShutdown" \
-    | rofi -dmenu -i -theme-str '@import "powermenu"')
+lock="  Lock Screen"
+suspend_session="󰒲  Suspend"
+log_out="󰗽  Log Out"
+restart="  Restart"
+shutdown="  Shutdown"
+
+option=$(echo -e -n "$lock\n$suspend_session\n$log_out\n$restart\n$shutdown" \
+    | rofi -dmenu -theme-str '@import "powermenu"' -i -l 5 -p 'Power Options' -no-custom)
 
 case "$option" in
-    "Lock Screen") light-locker-command -l ;;
-    "Suspend") systemctl suspend ;;
-    "Restart") reboot ;;
-    "Shutdown") poweroff ;;
+    "$lock") light-locker-command -l ;;
+    "$suspend_session") systemctl suspend ;;
+    "$log_out") qtile cmd-obj -o cmd -f shutdown ;;
+    "$restart") reboot ;;
+    "$shutdown") poweroff ;;
     *) exit 1 ;;
 esac

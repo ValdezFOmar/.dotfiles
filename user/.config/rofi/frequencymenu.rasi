@@ -1,25 +1,13 @@
 configuration {
-    dmenu {
-        display-name: "CPU Frequency:";
-    }
     show-icons: false;
 }
 
-
 * {
-    font: "sans 16";
+    font: "CaskaydiaCove NF 14";
 }
 
 window {
-    width: calc( 40% min 350px );
-}
-
-prompt, entry {
-    font: "sans 14";
-}
-
-listview {
-    lines: 6;
+    width: 250px;
 }
 
 element {

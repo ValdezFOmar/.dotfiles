@@ -1,25 +1,17 @@
 configuration {
-    dmenu {
-        display-name: "</>";
-    }
     show-icons: false;
 }
 
-
 * {
-    font: "sans 16";
+    font: "CaskaydiaCove NF 16";
 }
 
 window {
-    width: calc( 40% min 300px );
-}
-
-listview {
-    lines: 4;
+    width: 250px;
 }
 
 prompt, entry {
-    font: "sans 14";
+    font: "CaskaydiaCove NF 16";
 }
 
 element {

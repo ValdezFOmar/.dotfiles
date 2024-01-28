@@ -1,0 +1,108 @@
+# See dunst(5) for all configuration options
+
+[global]
+  monitor = 0
+  follow = none
+  sort = yes  # Sort messages by urgency
+  idle_threshold = 2m
+
+  notification_limit = 6
+  indicate_hidden = yes
+
+  # Geometry
+  width = (50, 400)
+  height = 300
+  origin = top-right
+  offset = 4x40
+  scale = 0
+  corner_radius = 12
+
+  # Progress bar
+  progress_bar = true
+  progress_bar_height = 10
+  progress_bar_frame_width = 1
+  progress_bar_min_width = 150
+  progress_bar_max_width = 300
+  progress_bar_corner_radius = 3
+
+  # Spacing / Frame (Border)
+  gap_size = 5
+  frame_width = 3
+  frame_color = "#2c2f40"
+  separator_height = 3
+  separator_color = frame
+
+  # Text
+  font = Caskaydia Cove NF 10
+  line_height = 0
+  markup = full
+  format = "<span size='110%'><b>%s</b></span> <span size='90%' color='#848cad'>(%a)</span>\n%b"
+  alignment = left
+  vertical_alignment = center
+  show_age_threshold = -1
+  ellipsize = middle
+  ignore_newline = no
+  stack_duplicates = true
+  hide_duplicate_count = true
+  show_indicators = yes
+
+  # Icons
+  icon_corner_radius = 0
+  text_icon_padding = 0
+  enable_recursive_icon_lookup = true
+  icon_theme = Papirus-Dark, Papirus, Adwaita
+  icon_position = left
+  min_icon_size = 32
+  max_icon_size = 128
+
+  # History
+  sticky_history = no
+  history_length = 20
+
+  # Misc/Advanced
+  dmenu = '/usr/bin/rofi -dmenu -no-custom -p Dunst:'
+  browser = /usr/bin/xdg-open
+  always_run_script = true
+  title = Dunst
+  ignore_dbusclose = true
+
+  # mouse
+  mouse_left_click = close_current
+  mouse_middle_click = close_all
+  mouse_right_click = do_action, close_current
+
+  # https://en.m.wikibooks.org/wiki/Regular_Expressions/POSIX-Extended_Regular_Expressions
+  enable_posix_regex = true
+
+
+[experimental]
+  per_monitor_dpi = false
+
+[urgency_low]
+  background = "#161618"
+  foreground = "#959ec2"
+  highlight = "#959ec2"
+  timeout = 10
+
+[urgency_normal]
+  background = "#161618"
+  foreground = "#b5c1f1"
+  frame_color = "#739df2"
+  highlight = "#739df2"
+  timeout = 10
+
+[urgency_critical]
+  background = "#161618"
+  foreground = "#b5c1f1"
+  frame_color = "#ea7183"
+  highlight = "#ea7183"
+  timeout = 0
+
+
+# Rules
+[testing]
+  summary = Test[ ](Title)|(Error!!!)
+  history_ignore = yes
+  timeout = 5
+
+# vim: ft=cfg
