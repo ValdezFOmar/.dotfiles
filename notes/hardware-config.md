@@ -7,7 +7,7 @@ See the archlinux wiki for controlling the CPU [Frequency](https://wiki.archlinu
 Use `cpupower` to do all the configurations.
 
 Check the [Power Governors](https://wiki.archlinux.org/title/CPU_frequency_scaling#Scaling_governors)
-for diferent power modes.
+for different power modes.
 
 > A [script for controlling the CPU frequency](../user/.local/bin/frequencymenu) is provided, but needs
 > needs permission to [run `cpupower`](#run-cpupower-without-password-prompt).

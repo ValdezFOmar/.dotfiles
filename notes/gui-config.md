@@ -18,7 +18,7 @@ greeter-session=lightdm-slick-greeter
 
 ## Qtile
 
-Install `qtile` and a compositor (for managing transparecy) like `picom`.
+Install `qtile` and a compositor (for managing transparency) like `picom`.
 
 > Qtile **log messages** can be found at `~/.local/share/qtile/qtile.log`.
 
@@ -47,7 +47,7 @@ ln -s ~/.local/share/icons/[theme_name]/cursors ~/.icons/default/cursors
 
 > **NOTE:** Consider using `lxrandr` instead (`lxrandr-gtk3` package).
 
-Use `autorandr` for configuring multimonitors, use the following options:
+Use `autorandr` for configuring multi monitors, use the following options:
 
 > You still need to preconfigured the displays with `xrandr` and then saved them with `autorandr`
 

@@ -2,7 +2,7 @@
 
 > For the full documentation see the [Arch Wiki: Installation guide](https://wiki.archlinux.org/title/Installation_guide).
 
-> Use the `less` conmmand for scrolling through a large command output.
+> Use the `less` command for scrolling through a large command output.
 
 ## Set the console keyboard layout and font
 
@@ -66,7 +66,7 @@ Finally, check internet connection with:
 
 ## Update the system clock
 
-Use timedatectl to ensure the system clock is accurate:
+Use `timedatectl` to ensure the system clock is accurate:
 
     timedatectl
 
@@ -78,7 +78,7 @@ Partition the disk with:
 
 Choose a GPT label for UEFI and create the following 3 partitions
 
-> **NOTE**: If a EFI partition alredy exists, use it instead of creating a new one.
+> **NOTE**: If a EFI partition already exists, use it instead of creating a new one.
 
 | Partition | Size       | mount         |
 | --------- | ---------- | ------------- |
@@ -91,7 +91,7 @@ Choose a GPT label for UEFI and create the following 3 partitions
 
 Format the partitions with its proper file system
 
-> **NOTE**: If a EFI partition alredy exists, don't format it.
+> **NOTE**: If a EFI partition already exists, don't format it.
 
     mkfs.ext4 /dev/[root_partition]
     mkfs.ext4 /dev/[home_partition]
@@ -212,7 +212,7 @@ Uncomment the following line:
 
 ## Core services
 
-Enable the newtwork manager so you can connect to the internet after rebooting
+Enable the network manager so you can connect to the internet after rebooting
 
     systemctl enable NetworkManager.service
 
@@ -225,7 +225,7 @@ Install and configure grub for EFI mode.
 
 ## Reboot
 
-1. Exit the chroot enviroment with `exit`.
+1. Exit the chroot environment with `exit`.
 2. Unmount the partitions `umount -R /mnt`.
 3. Type `reboot`.
 

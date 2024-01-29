@@ -5,11 +5,13 @@ PLUGIN.build = ":TSUpdate"
 function PLUGIN.config()
   require("nvim-treesitter.configs").setup {
     ensure_installed = {
+      -- This 5 should always be installed
       "c",
       "lua",
       "vim",
       "vimdoc",
       "query",
+      --
       "luadoc",
       "python",
       "toml",
@@ -27,6 +29,7 @@ function PLUGIN.config()
       "csv",
       "git_config",
       "gitignore",
+      "regex",
     },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)

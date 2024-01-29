@@ -2,6 +2,7 @@ local set = vim.opt
 
 set.guicursor = ""
 set.cursorline = true
+set.shortmess = "I"
 
 set.number = true
 set.relativenumber = true

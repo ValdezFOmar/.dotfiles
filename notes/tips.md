@@ -79,12 +79,12 @@ Paste output of command `foo` to `gpaste`:
 foo | gpaste-client
 ```
 
-> Use the keybind `mod4 + T + H` from the Qtile custom config to see the clipboard history.
+> Use the key bind `mod4 + T + H` from the Qtile custom config to see the clipboard history.
 
 
 ## Image Viewer
 
-See images in a directory by `cd`'ing into it and typing:
+See images in a directory by moving into it and typing:
 
 ```sh
 nsxiv .

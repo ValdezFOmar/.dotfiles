@@ -17,19 +17,21 @@ function PLUGIN.config()
     custom_highlights = function(colors)
       return {
         -- General config
+        TabLine = { bg = colors.base },
+        TabLineSel = { fg = colors.subtext0, bg = colors.mantle },
         ["@keyword.operator"] = { style = { "italic" } },
         ["@constant.builtin"] = { fg = colors.pink },
         ["@function.builtin"] = { fg = "#7d7ddb" }, -- Original function.builtin #8888C6
-        ["@text.uri"] = { fg = colors.sapphire, style = { "underline" } },
-        -- Markfdown
-        ["@text.quote.markdown"] = { fg = colors.mauve, style = { "italic" } },
+        ["@markup.link.url"] = { fg = colors.sapphire, style = { "underline" } },
+        -- Markdown
+        ["@markup.quote.markdown"] = { fg = colors.mauve },
         -- Vimdoc
-        ["@text.reference.vimdoc"] = { fg = colors.pink, style = { "underline" } },
+        ["@markup.link.vimdoc"] = { fg = colors.pink, style = { "underline" } },
         -- Python
         DevIconPy = { fg = colors.blue },
         ["@attribute.python"] = { fg = colors.green },
         ["@attribute.builtin.python"] = { fg = colors.green },
-        ["@string.documentation.python"] = { fg = "#71a162", style = { "italic" } },
+        ["@string.documentation.python"] = { fg = "#71a162" },
         -- HTML
         ["@tag.attribute"] = { fg = colors.yellow },
         ["@tag.delimeter"] = { fg = colors.overlay2 },

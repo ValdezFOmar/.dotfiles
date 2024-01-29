@@ -41,6 +41,7 @@ remap("x", "<leader>p", [["_dP]], { desc = "Keep yanked text after pasting" })
 remap("n", "<leader>Y", [["+Y]], { desc = "Copy line to clipboard" })
 remap("v", "<leader>Y", [["+y]], { desc = "Copy selected text to clipboard" })
 remap({ "n", "v" }, "<leader>P", [["+p]], { desc = "Paste from clipboard" })
+remap("n", "<leader>cb", "<Cmd>bdelete<Enter>", cmd_opts "Close the current buffer")
 
 remap("n", "<leader>w", "<Cmd>w<Enter>", cmd_opts "Save current buffer")
 remap("n", "<leader>q", "<Cmd>q<Enter>", cmd_opts "Quit Neovim")
@@ -48,16 +49,18 @@ remap("n", "U", "<C-r>", { desc = "Redo changes with U" })
 remap("n", "J", "mzJ`z", { desc = "Same as `J`, but doesn't move the cursor" })
 
 remap("n", "<S-Enter>", function()
-  return trykey("O<Esc>0D", "<S-Enter")
+  return trykey([[O<Esc>0"_D]], "<S-Enter>")
 end, {
   expr = true,
   desc = "Add new line above the cursor",
+  noremap = true,
 })
 remap("n", "<Enter>", function()
-  return trykey("o<Esc>0D", "<Enter>")
+  return trykey([[o<Esc>0"_D]], "<Enter>")
 end, {
   expr = true,
   desc = "Add new line under the cursor",
+  noremap = true,
 })
 
 remap("n", "<Tab>", ">>", { desc = "Add 1 level of indentation" })
@@ -67,9 +70,10 @@ remap("n", "<BS>", "<<", { desc = "Remove 1 level of indentation" })
 remap("v", "<S-Tab>", "<gv", { desc = "Remove 1 level of indentation" })
 remap("v", "<BS>", "<gv", { desc = "Remove 1 level of indentation" })
 
-remap("n", "<leader>xx", "<Cmd>!chmod u+x %<Enter>", { desc = "Make file executable", silent = true })
+remap("n", "<leader>xx", "<Cmd>!chmod u+x %<Enter>", cmd_opts "Make file executable")
 
 -- Moving between tabs
 remap("n", "<M-h>", "<Cmd>tabprevious<Enter>", cmd_opts())
 remap("n", "<M-l>", "<Cmd>tabnext<Enter>", cmd_opts())
-remap("n", "<leader>cb", "<Cmd>bdelete<Enter>", cmd_opts "Close the current buffer")
+remap("n", "<M-H>", "<Cmd>tabmove-<Enter>", cmd_opts())
+remap("n", "<M-L>", "<Cmd>tabmove+<Enter>", cmd_opts())

@@ -11,7 +11,7 @@ PLUGIN.opts = {
   auto_scroll = true,
   float_opts = {
     border = "curved",
-    winblend = 15,
+    -- winblend = 15,
   },
 }
 
