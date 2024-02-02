@@ -1,66 +1,78 @@
-from libqtile.config import Click, Drag, Key, KeyChord
-from libqtile.lazy import lazy
+from libqtile.config import Click, Drag, EzKey, EzKeyChord, Key, KeyChord
+from libqtile.lazy import LazyCall, lazy
 
 from . import vars
-from .groups import groups
-from .vars import alt, mod
+from .vars import mod
 
 __all__ = ["keys", "mouse"]
 
-# TODO: Change keybinds to this more concise format
-# https://github.com/numirias/qtile-plasma/blob/4b57f313ed6948212582de05205a3ae4372ed812/README.md?plain=1#L51
-keys = [
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
-    Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "Left", lazy.screen.prev_group(), desc="Go to previous group"),
-    Key([mod], "Right", lazy.screen.next_group(), desc="Go to next group"),
-    # Custom keybinds
-    Key([mod], "Return", lazy.spawn(vars.terminal), desc="Launch terminal"),
-    Key([mod, alt], "f", lazy.window.toggle_floating(), desc="Switch between float and tiling window"),
-    Key([mod, alt], "m", lazy.window.toggle_floating(), desc="Toggle fullscreen tiling window"),
-    Key([mod], "b", lazy.spawn("firefox"), desc="Launch firefox browser"),
-    Key([mod, alt], "b", lazy.spawn("firefox -P School"), desc="Launch firefox browser with school profile"),
-    Key([mod], "e", lazy.spawn(vars.file_explorer), desc="Launch a file explorer"),
-    Key([mod], "q", lazy.spawn(vars.power_menu), desc="Launch power menu"),
-    Key([mod], "m", lazy.spawn(vars.menu_launcher), desc="Open menu launcher for programs"),
-    KeyChord(
-        [mod],
-        "t",
-        [
-            Key(
-                [], "p", lazy.spawn("xcolor --format HEX --preview-size 155 --selection"), desc="Color picker"
-            ),
-            Key([], "h", lazy.spawn("gpaste-client ui"), desc="Clipboard history"),
-            Key(
-                [],
-                "l",
-                lazy.spawn(f"{vars.terminal} less +F -S {vars.qtile_log}"),
-                desc="Open Qtile log file",
-            ),
-        ],
-        name="tool",
-        desc="Tooling (mod + T + <key>), for using general purpose tools",
-    ),
-    # Hardware Keybinds
+
+cmd = lazy.spawn
+
+keybinds = {
+    "M-C-r": (lazy.reload_config(), "Reload the config"),
+    # Move window focus
+    "M-<space>": (lazy.layout.next(), "Move window focus to the next window"),
+    "M-h": (lazy.layout.left(), "Move focus to left"),
+    "M-l": (lazy.layout.right(), "Move focus to right"),
+    "M-j": (lazy.layout.down(), "Move focus down"),
+    "M-k": (lazy.layout.up(), "Move focus up"),
+    # Change window placement
+    "M-S-h": (lazy.layout.shuffle_left(), "Move window to the left"),
+    "M-S-l": (lazy.layout.shuffle_right(), "Move window to the right"),
+    "M-S-j": (lazy.layout.shuffle_down(), "Move window down"),
+    "M-S-k": (lazy.layout.shuffle_up(), "Move window up"),
+    # Operations on windows / other
+    "M-w": (lazy.window.kill(), "Kill focused window"),
+    "M-n": (lazy.layout.normalize(), "Reset all window sizes"),
+    "M-f": (lazy.window.toggle_floating(), "Switch between float and tiling window"),
+    "M-A-f": (lazy.window.toggle_fullscreen(), "Toggle fullscreen window"),
+    "M-<Tab>": (lazy.next_layout(), "Toggle between layouts"),
+    "M-<Left>": (lazy.screen.prev_group(), "Go to previous group"),
+    "M-<Right>": (lazy.screen.next_group(), "Go to next group"),
+    # Special
+    "<Print>": (cmd("gnome-screenshot --area --interactive"), "Snipping tool"),
+    # Hardware keys
     # Note: Both volume and backlight are configure to be more accurate to human perception
-    Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -perceived -inc 5"), desc="Increse brightness"),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -perceived -dec 5"), desc="Decrese brightness"),
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("pamixer -i 5 --gamma 2"), desc="Increase volume"),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("pamixer -d 5 --gamma 2"), desc="Decrease volume"),
-    Key([], "XF86AudioMute", lazy.spawn("pamixer -t"), desc="Toggle mute"),
-    Key([], "Print", lazy.spawn("gnome-screenshot --area --interactive"), desc="Snipping tool"),
-]
+    "<XF86MonBrightnessUp>": (cmd("xbacklight -perceived -inc 5"), "Increse brightness"),
+    "<XF86MonBrightnessDown>": (cmd("xbacklight -perceived -dec 5"), "Decrese brightness"),
+    "<XF86AudioRaiseVolume>": ([cmd("pamixer -i 5 --gamma 2"), cmd(vars.notify_volume)], "Increase volume"),
+    "<XF86AudioLowerVolume>": ([cmd("pamixer -d 5 --gamma 2"), cmd(vars.notify_volume)], "Decrease volume"),
+    "<XF86AudioMute>": (cmd("pamixer --toggle-mute"), "Toggle mute"),
+    # Programs / Applications
+    "M-<Return>": (cmd(vars.terminal), "Launch terminal"),
+    "M-b": (cmd("firefox"), "Launch firefox browser"),
+    "M-A-b": (cmd("firefox -P School"), "Launch firefox browser with school profile"),
+    "M-e": (cmd(vars.file_explorer), "Launch a file explorer"),
+    "M-q": (cmd(vars.power_menu), "Launch power menu"),
+    "M-m": (cmd(vars.menu_launcher), "Open menu launcher for programs"),
+    # Chords
+    "M-t": {
+        "p": (cmd("xcolor --format HEX --preview-size 155 --selection clipboard"), "Color picker"),
+        "h": (cmd("gpaste-client ui"), "Clipboard history"),
+        "l": (cmd(f"{vars.terminal} less +F -S {vars.qtile_log}"), "Open Qtile log file"),
+        "kwargs": {
+            "name": "tool",
+            "desc": "Tooling (mod + T + <key>), for using general purpose tools",
+        },
+    },
+}
+
+
+def def_to_ezkey(key: str, action) -> Key | KeyChord:
+    match action:
+        case (command, str(desc)) if isinstance(command, LazyCall):
+            return EzKey(key, command, desc=desc)
+        case ([*commands], str(desc)):
+            return EzKey(key, *commands, desc=desc)
+        case dict(submappings):
+            kwargs = submappings.pop("kwargs") if "kwargs" in submappings else {}
+            return EzKeyChord(key, [def_to_ezkey(*submap) for submap in submappings.items()], **kwargs)
+        case _:
+            raise ValueError("Key difinition not recognized")
+
+
+keys = [def_to_ezkey(key, action) for key, action in keybinds.items()]
 
 # Drag floating layouts.
 mouse = [
@@ -68,25 +80,3 @@ mouse = [
     Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
-
-
-# TODO: remove once the logs bug is solved
-# TODO: Maybe move the simple_keybinder to here instead?
-for group in groups:
-    keys.extend(
-        [
-            Key(
-                [mod],
-                group.name,
-                lazy.group[group.name].toscreen(),
-                desc="Switch to group {}".format(group.name),
-            ),
-            # mod1 + shift + group number = switch to & move focused window to group
-            Key(
-                [mod, "shift"],
-                group.name,
-                lazy.window.togroup(group.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(group.name),
-            ),
-        ]
-    )

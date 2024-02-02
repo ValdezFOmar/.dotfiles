@@ -18,7 +18,6 @@ alias md='mkdir '
 alias cd..='cd ..'
 alias vim='nvim '
 alias kssh='kitty +kitten ssh'
-alias nsxivf='nsxiv --class float'
 alias tree='tree --dirsfirst -C'
 alias gitree='tree -a --prune --gitignore -I .git/'
 
@@ -37,7 +36,7 @@ alias disk='df -H --type=ext4'
 
 cl()
 {
-    if [ -z "$1" ]; then
+    if [[ -z "$1" ]]; then
         echo "cl: No directory provided"
         return 1
     fi
@@ -46,7 +45,7 @@ cl()
 
 mcd()
 {
-    if [ -z "$1" ]; then
+    if [[ -z "$1" ]]; then
         echo "mcd: No name provided"
         return 1
     fi
@@ -56,17 +55,14 @@ mcd()
 # activate virtual env
 activate()
 {
-    if [[ ! -d ./.venv ]]; then
-        echo "Theres no '.venv' directory"
-        return 1
-    fi
+    local venv_name=".venv"
 
-    if [[ ! -f ./.venv/bin/activate ]]; then
-        echo "Theres no file for virtual enviroment"
-        return 1
-    fi
+    [[ -n "$1" ]] && venv_name="$1"
 
-    source ./.venv/bin/activate
+    [[ ! -d "./$venv_name" ]] && echo "There's no '$venv_name' directory" && return 1
+    [[ ! -f "./$venv_name/bin/activate" ]] && echo "There's no file to source" && return 1
+
+    source "./$venv_name/bin/activate"
 }
 
 # Create virtual env
@@ -74,7 +70,7 @@ venv()
 {
     local venv_name=".venv/"
 
-    if [ -d $venv_name ]; then
+    if [[ -d $venv_name ]]; then
         echo "===> '$venv_name' already exists"
         return 1
     fi
@@ -86,10 +82,10 @@ venv()
 
     echo "Creating virtual enviroment..."
     python -m venv "./$venv_name" --prompt "\[$(tput setaf 2)\]$venv_name\[$(tput sgr0)\]"
-    activate
+    activate "$venv_name"
     pip -V
 
-    if [ -f ./requirements.txt ]; then
+    if [[ -f ./requirements.txt ]]; then
         read -p "Install from 'requirements.txt' file? (Y/n) " -r answer
         if [[ -z $answer || $answer = "y" || $answer = "yes" ]]; then
             pip install -r ./requirements.txt

@@ -17,9 +17,9 @@ target-version = ["py311"]
 include = '''
 (
     \.pyi?$
-    |^user/\.config/qtile/
+    |^user/\.config/qtile/.*\.py$
     |^user/\.local/bin/frequencymenu$
-    |^user/\.local/bin/powermenu$
+    |^user/\.local/bin/paths$
     |^user/\.local/bin/notes$
 )
 '''

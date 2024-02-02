@@ -1,14 +1,8 @@
 # Dotfiles
 
-![Desktop](./desktop_screenshot.png)
-
 Dotfiles and installation scripts for my Arch Linux setup.
 
-For Additional installation info:
-1. [Arch Linux installation guide](/notes/installation-guide.md).
-2. [Wi-Fi Connection](/notes/connect-wifi.md)
-3. [GUI setup](/notes/gui-config.md)
-
+![Desktop](./desktop_screenshot.png)
 
 ## Setup
 
@@ -31,3 +25,8 @@ Install the user configurations:
 ```
 
 > NOTE: This will install all the config files. To see more options use the flag `--help`.
+
+For Additional installation info:
+1. [Arch Linux installation guide](/notes/installation-guide.md).
+2. [Wi-Fi Connection](/notes/connect-wifi.md)
+3. [GUI setup](/notes/gui-config.md)

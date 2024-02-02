@@ -36,7 +36,7 @@ export POETRY_VIRTUALENVS_PROMPT=  # Set at prompt section
 #
 #   Source aliases
 #
-[[ -e "$HOME/.bash_aliases" ]] && source "$HOME/.bash_aliases"
+[[ -f "$HOME/.bash_aliases" ]] && source "$HOME/.bash_aliases"
 
 
 #

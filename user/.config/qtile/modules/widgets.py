@@ -101,7 +101,7 @@ class NerdFontVolume(widget.PulseVolume):
             "The format to display the volume and icon",
         ),
         ("show_volume_when_mute", False, "Self explanatory"),
-        ("mute_icon", "󰝟", "Icon to display when the mute"),
+        ("mute_icon", "󰝟", "Icon to display when mute"),
         ("no_volume_icon", "󰸈", "Icon to display when the volume is 0 and is not muted"),
         ("icon_list", ["󰕿", "󰖀", "󰕾"], "List of icons for low, medium and high volume, in order"),
     ]
