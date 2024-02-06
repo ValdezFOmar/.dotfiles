@@ -66,8 +66,10 @@ ripgrep
 rofi
 terminus-font
 tk
+tldr
 tmux
 tree
+ttf-cascadia-code
 ttf-cascadia-code-nerd
 udiskie
 udisks2

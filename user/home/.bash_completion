@@ -8,13 +8,26 @@
 shopt -s autocd
 
 # git
-[ -f "$HOME/.git-completion.bash" ] && source "$HOME/.git-completion.bash"
+[[ -f $HOME/.git-completion.bash ]] && source "$HOME/.git-completion.bash"
 
 # pipx
 command -v pipx >/dev/null && eval "$(register-python-argcomplete pipx)"
 
 # poetry
-[ -f "$HOME/.poetry-completion.bash" ] && source "$HOME/.poetry-completion.bash"
+if command -v poetry >/dev/null; then
+    if [[ ! -f $HOME/.poetry-completion.bash ]]; then
+        poetry completions bash > "$HOME/.poetry-completion.bash"
+    fi
+    source ~/.poetry-completion.bash
+fi
+
+# tldr
+if command -v tldr >/dev/null; then
+    if [[ ! -f $HOME/.tldr-completion.bash ]]; then
+        tldr --print-completion bash > "$HOME/.tldr-completion.bash"
+    fi
+    source ~/.tldr-completion.bash
+fi
 
 # dotnet
 if command -v dotnet >/dev/null; then

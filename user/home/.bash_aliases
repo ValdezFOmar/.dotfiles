@@ -12,12 +12,14 @@ alias ls='ls --color=auto --group-directories-first'
 alias la='ls -AvF'
 alias ll='ls -AlvGh'
 
+alias cp='cp -i '
+alias mv='mv -i '
 alias rm='rm -I '
 alias md='mkdir '
 
 alias cd..='cd ..'
 alias vim='nvim '
-alias kssh='kitty +kitten ssh'
+alias kssh='kitten ssh '
 alias tree='tree --dirsfirst -C'
 alias gitree='tree -a --prune --gitignore -I .git/'
 
@@ -55,12 +57,17 @@ mcd()
 # activate virtual env
 activate()
 {
-    local venv_name=".venv"
+    local venv_name="${1:-.venv}"
 
-    [[ -n "$1" ]] && venv_name="$1"
+    if [[ ! -d "./$venv_name" ]]; then
+        echo "===> There's no '$venv_name' directory"
+        return 1
+    fi
 
-    [[ ! -d "./$venv_name" ]] && echo "There's no '$venv_name' directory" && return 1
-    [[ ! -f "./$venv_name/bin/activate" ]] && echo "There's no file to source" && return 1
+    if [[ ! -f "./$venv_name/bin/activate" ]]; then
+        echo "===> There's no file to source"
+        return 1
+    fi
 
     source "./$venv_name/bin/activate"
 }
@@ -68,7 +75,7 @@ activate()
 # Create virtual env
 venv()
 {
-    local venv_name=".venv/"
+    local venv_name=".venv"
 
     if [[ -d $venv_name ]]; then
         echo "===> '$venv_name' already exists"

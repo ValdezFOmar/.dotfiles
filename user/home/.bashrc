@@ -24,6 +24,13 @@ export POETRY_VIRTUALENVS_IN_PROJECT=true
 export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true
 export POETRY_VIRTUALENVS_PROMPT=  # Set at prompt section
 
+# https://github.com/tldr-pages/tldr-python-client#colors
+export TLDR_COLOR_NAME="green underline"
+export TLDR_COLOR_DESCRIPTION=""
+export TLDR_COLOR_EXAMPLE=""
+export TLDR_COLOR_COMMAND="blue"
+export TLDR_COLOR_PARAMETER="red"
+
 
 #
 #   Path

@@ -18,16 +18,19 @@ def handle_symlink(target: Path, destination: Path) -> None:
         return
 
     home_dest = str(destination).replace(str(Path.home()), "~")
+    answer = input(f"{home_dest!r} already exists, override? [y/N] ")
 
-    if input(f"{home_dest!r} already exists, override? [y/N] ").lower() in ("y", "yes"):
-        if destination.is_symlink() or destination.is_file():
-            destination.unlink()
-        elif destination.is_dir() and is_empty_directory(destination):
-            destination.rmdir()
-        else:
-            print(f"==> Could not remove {home_dest!r}, skiping...", file=sys.stderr)
-            return
-        destination.symlink_to(target)
+    if answer.strip().lower() not in ("y", "yes"):
+        return
+
+    if destination.is_symlink() or destination.is_file():
+        destination.unlink()
+    elif destination.is_dir() and is_empty_directory(destination):
+        destination.rmdir()
+    else:
+        print(f"==> Could not remove {home_dest!r}, skiping...", file=sys.stderr)
+        return
+    destination.symlink_to(target)
 
 
 def symlink_config(config: Path, destination: Path | None = None, use_dir_name: bool = False):

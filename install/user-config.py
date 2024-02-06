@@ -52,25 +52,27 @@ def set_theme():
     local_icons = Path.home() / ".local" / "share" / "icons"
     local_icons.mkdir(parents=True, exist_ok=True)
 
-    if cloned_repo.returncode == 0:
-        shell.run([f"{repos_dir}/Qogir-icon-theme/src/cursors/install.sh"], stdout=shell.DEVNULL)
-        handle_symlink(local_icons / "Qogir-cursors" / "cursors", default_icons / "cursors")
-    else:
+    if cloned_repo.returncode != 0:
         print(
-            f"Cursor theme {cursors_repo_url!r} couldn't be installed"
-            f" due to the following error {cloned_repo.stderr.strip()!r}"
+            f"Cursor theme {cursors_repo_url!r} couldn't be installed",
+            "due to the following error:",
+            cloned_repo.stderr,
         )
+        return
+
+    shell.run([f"{repos_dir}/Qogir-icon-theme/src/cursors/install.sh"], stdout=shell.DEVNULL)
+    handle_symlink(local_icons / "Qogir-cursors" / "cursors", default_icons / "cursors")
 
 
 def git_config():
     home = Path.home()
     completion = Path("/usr/share/git/completion/git-completion.bash")
     if completion.exists():
-        shutil.copy(completion, home)
+        shutil.copy(completion, home / f".{completion.name}")
 
     prompt = Path("/usr/share/git/completion/git-prompt.sh")
     if prompt.exists():
-        shutil.copy(prompt, home)
+        shutil.copy(prompt, home / f".{prompt.name}")
 
     shell.run(
         ["/usr/bin/git", "config", "--global", "core.excludesfile", f"{home}/.gitignore_global"],
@@ -94,7 +96,6 @@ def make_special_dirs():
 
 
 # TODO: Maybe add a summary of the actions made by the script?
-# TODO: Add set up for poetry (install with pipx and generate bash completion)
 def main() -> int:
     parser = argparse.ArgumentParser(description="For installing user related configuration files.")
     parser.add_argument("--all", action="store_true", help="install everything")
