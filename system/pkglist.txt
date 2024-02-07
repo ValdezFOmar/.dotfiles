@@ -1,14 +1,11 @@
 acpilight
 adobe-source-sans-fonts
 alsa-utils
-arc-gtk-theme
 archlinux-wallpaper
-autorandr
 base
 base-devel
 bash-completion
-bind
-cmake
+bat
 cpupower
 deepin-gtk-theme
 dunst
@@ -16,7 +13,6 @@ efibootmgr
 entr
 fd
 firefox
-freerdp
 fzf
 gimp
 git
@@ -35,6 +31,7 @@ lightdm-slick-greeter
 linux
 linux-firmware
 lxappearance-gtk3
+lxrandr-gtk3
 mdcat
 mtpfs
 neofetch

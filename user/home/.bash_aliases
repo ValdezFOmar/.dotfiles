@@ -54,6 +54,13 @@ mcd()
     mkdir -p -- "$1" && cd -P -- "$1" || return 1
 }
 
+gitdiff()
+{
+    # shellcheck disable=SC2046
+    # word splitting is useful here so `bat` can read each individual file
+    bat --diff $(git diff --name-only)
+}
+
 # activate virtual env
 activate()
 {

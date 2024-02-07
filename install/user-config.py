@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
 
 """
-For installing user related configuration files.
-
-Requirements:
-- git
-- python >=3.11
-
 This script takes care of:
-- Creating the appropiate symbolic links for diferent config files.
-- Downloading any additional packages not found in the arch linux repositories.
-- Setting the defualt theme.
-- Creating some special and useful directories.
+ - Creating the appropiate symbolic links for diferent config files.
+ - Downloading any additional packages not found in the arch linux repositories.
+ - Setting the defualt theme.
+ - Creating some special and useful directories.
 
 While the script can override files and empty directories, it will not attempt
 to remove non-empty directories, skiping them instead.
+
+Requirements:
+ - git
 
 WARNING: This script should NOT be run as root.
 """
@@ -36,32 +33,12 @@ def set_keyboard_layout():
 
 
 def set_theme():
-    default_icons = Path.home() / ".icons" / "default"
-    symlink_config(USER_CONFIG / ".icons" / "default", default_icons)
-
-    repos_dir = Path.home() / "repos"
-    repos_dir.mkdir(exist_ok=True)
-
-    cursors_repo_url = "https://github.com/vinceliuice/Qogir-icon-theme"
-    cloned_repo = shell.run(
-        ["/usr/bin/git", "clone", "-q", cursors_repo_url, f"{repos_dir}/Qogir-icon-theme"],
-        capture_output=True,
-        encoding="utf-8",
-    )
-
-    local_icons = Path.home() / ".local" / "share" / "icons"
-    local_icons.mkdir(parents=True, exist_ok=True)
-
-    if cloned_repo.returncode != 0:
-        print(
-            f"Cursor theme {cursors_repo_url!r} couldn't be installed",
-            "due to the following error:",
-            cloned_repo.stderr,
-        )
-        return
-
-    shell.run([f"{repos_dir}/Qogir-icon-theme/src/cursors/install.sh"], stdout=shell.DEVNULL)
-    handle_symlink(local_icons / "Qogir-cursors" / "cursors", default_icons / "cursors")
+    """
+    The theme now is downloaded from the AUR, but
+    the file is still symlinked so is set on startup.
+    """
+    default_icons = Path(".icons/default")
+    symlink_config(USER_CONFIG / default_icons, Path.home() / default_icons)
 
 
 def git_config():
@@ -81,15 +58,7 @@ def git_config():
 
 
 def make_special_dirs():
-    directories = [
-        "projects",
-        "archives",
-        "bin",
-        "builds",
-        "Documents",
-        "Downloads",
-        "Images",
-    ]
+    directories = ["projects", "archives", "bin", "builds", "Documents", "Downloads", "Images", "repos"]
     paths = (Path.home() / dir for dir in directories)
     for path in paths:
         path.mkdir(parents=True, exist_ok=True)
@@ -97,7 +66,11 @@ def make_special_dirs():
 
 # TODO: Maybe add a summary of the actions made by the script?
 def main() -> int:
-    parser = argparse.ArgumentParser(description="For installing user related configuration files.")
+    parser = argparse.ArgumentParser(
+        description="For installing user related configuration files.",
+        epilog=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("--all", action="store_true", help="install everything")
     parser.add_argument("--nvim", action="store_true", help="install Neovim configuration")
     parser.add_argument("--config", action="store_true", help="install '.config/' configurations")

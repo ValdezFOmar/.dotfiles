@@ -1,3 +1,4 @@
 jmtpfs
 python-pulsectl-asyncio
+qogir-cursor-theme-git
 qtile-extras

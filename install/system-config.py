@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 
 """
-For installing system configurations (assumed to be running on Arch Linux).
-
-Requirements:
-- python >=3.11
-
 This script takes care of:
 - Downloading all the necessary packages using pacman.
 - Copying system configuration files.
@@ -31,6 +26,29 @@ def install_packages():
     with open(SYSTEM_CONFIG / "pkglist.txt", "r", encoding="utf-8") as file:
         packages = file.read()
     shell.run(["/usr/bin/pacman", "-S", "--needed", "-"], input=packages, encoding="utf-8", check=True)
+
+
+def install_aur_packages():
+    try:
+        shell.run([f"/usr/bin/paru"], check=True)
+    except FileNotFoundError:
+        print(
+            "`paru` executable not found",
+            "Some packages from the AUR are needed, run the following commands to install paru:",
+            "",
+            "  git clone https://aur.archlinux.org/paru-bin.git",
+            "  cd paru-bin",
+            "  makepkg -si",
+            "",
+            "Then run `system-config --aur`",
+            sep="\n",
+            file=sys.stderr,
+        )
+        return
+
+    with open(SYSTEM_CONFIG / "aur_pkglist.txt", "r", encoding="utf-8") as file:
+        packages = file.read()
+    shell.run(["/usr/bin/paru", "-S", "--needed", "-"], input=packages, encoding="utf-8", check=True)
 
 
 def enable_services():
@@ -72,9 +90,14 @@ def install_files():
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Install system configuration/settoings files.")
+    parser = argparse.ArgumentParser(
+        description="For installing system configurations (assumed to be running on Arch Linux).",
+        epilog=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("--all", action="store_true", help="install everything")
     parser.add_argument("--files", action="store_true", help="copy/symlink system files")
+    parser.add_argument("--aur", action="store_true", help="install AUR packages (uses paru)")
     args = parser.parse_args()
 
     if not any(vars(args).values()):
@@ -89,8 +112,12 @@ def main() -> int:
         enable_services()
         setup_reflector()
         install_files()
-    elif args.files:
-        install_files()
+        install_aur_packages()
+    else:
+        if args.files:
+            install_files()
+        if args.aur:
+            install_aur_packages()
 
     return 0
 
