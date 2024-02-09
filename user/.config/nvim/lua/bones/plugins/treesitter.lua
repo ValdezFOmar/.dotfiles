@@ -30,6 +30,7 @@ function PLUGIN.config()
       "git_config",
       "gitignore",
       "regex",
+      "printf",
     },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)

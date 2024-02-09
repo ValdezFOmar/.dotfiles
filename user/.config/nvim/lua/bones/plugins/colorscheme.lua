@@ -1,5 +1,6 @@
 local PLUGIN = { "catppuccin/nvim" }
 
+PLUGIN.name = "catppuccin"
 PLUGIN.lazy = false
 PLUGIN.priority = 1000
 
@@ -22,11 +23,12 @@ function PLUGIN.config()
         ["@keyword.operator"] = { style = { "italic" } },
         ["@constant.builtin"] = { fg = colors.pink },
         ["@function.builtin"] = { fg = "#7d7ddb" }, -- Original function.builtin #8888C6
+        ["@function.builtin.bash"] = { fg = "#7d7ddb", style = { "italic" } },
         ["@markup.link.url"] = { fg = colors.sapphire, style = { "underline" } },
-        -- Markdown
         ["@markup.quote.markdown"] = { fg = colors.mauve },
-        -- Vimdoc
         ["@markup.link.vimdoc"] = { fg = colors.pink, style = { "underline" } },
+        ["@keyword.sql"] = { fg = colors.mauve },
+        ["@keyword.operator.sql"] = { fg = colors.mauve },
         -- Python
         DevIconPy = { fg = colors.blue },
         ["@attribute.python"] = { fg = colors.green },

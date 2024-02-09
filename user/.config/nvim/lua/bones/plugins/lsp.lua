@@ -66,6 +66,7 @@ function PLUGIN.config()
       "marksman",
       "volar",
       "pyright",
+      "sqlls",
     },
     handlers = {
       lsp_zero.default_setup,
