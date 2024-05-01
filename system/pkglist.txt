@@ -11,6 +11,7 @@ deepin-gtk-theme
 dunst
 efibootmgr
 entr
+fastfetch
 fd
 firefox
 fzf

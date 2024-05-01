@@ -20,6 +20,7 @@ alias md='mkdir '
 alias cd..='cd ..'
 alias vim='nvim '
 alias kssh='kitten ssh '
+alias neofetch='fastfetch'
 alias tree='tree --dirsfirst -C'
 alias gitree='tree -a --prune --gitignore -I .git/'
 
