@@ -1,19 +1,24 @@
-[tool.pyright]
+[tool.basedpyright]
+pythonVersion = '3.12'
+reportUnusedCallResult = false
+reportAny = false
+typeCheckingMode = 'standard'
 # Avoid "'indentifier' not exported from 'module'" errors, see
 # https://github.com/microsoft/pyright/issues/2277#issuecomment-937468789
-reportPrivateImportUsage = "none"
+reportPrivateImportUsage = false
 
 
 [tool.isort]
-profile = "black"
+profile = 'black'
 line_length = 110
 skip_gitignore = true
-known_third_party = ["libqtile"]
+known_third_party = ['libqtile']
 
 
 [tool.black]
 line-length = 110
-target-version = ["py311"]
+target-version = ['py312']
+skip-string-normalization = true
 include = '''
 (
     \.pyi?$

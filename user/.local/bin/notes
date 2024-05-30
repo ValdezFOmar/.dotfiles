@@ -4,9 +4,10 @@ import argparse
 import os
 import sqlite3
 import sys
-from typing import Iterable, NamedTuple
+from collections.abc import Iterable
+from typing import NamedTuple
 
-XDG_DATA_HOME = os.getenv("XDG_DATA_HOME", os.path.expanduser("~/.local/share"))
+XDG_DATA_HOME = os.getenv('XDG_DATA_HOME', os.path.expanduser('~/.local/share'))
 
 
 class Note(NamedTuple):
@@ -15,10 +16,10 @@ class Note(NamedTuple):
 
 
 class NotesManager:
-    def __init__(self) -> None:
-        self._datadir = os.path.join(XDG_DATA_HOME, "py-notes")
+    def __init__(self, datadir: str) -> None:
+        self._datadir = os.path.join(datadir, 'py-notes')
         os.makedirs(self._datadir, exist_ok=True)
-        self._database = os.path.join(self._datadir, "db.sqlite")
+        self._database = os.path.join(self._datadir, 'db.sqlite')
         self.connection = sqlite3.connect(self._database)
         self._set_note_table()
 
@@ -29,7 +30,7 @@ class NotesManager:
         if table_exist:
             return
         with self.connection:
-            self.connection.execute("CREATE TABLE note(id INTEGER PRIMARY KEY, content TEXT)")
+            self.connection.execute('CREATE TABLE note(id INTEGER PRIMARY KEY, content TEXT)')
 
     def __enter__(self):
         return self
@@ -43,7 +44,7 @@ class NotesManager:
         if not note:
             return False
         with self.connection:
-            self.connection.execute("INSERT INTO note(content) VALUES(?)", [note])
+            self.connection.execute('INSERT INTO note(content) VALUES(?)', [note])
             return True
 
     def migrate_file(self, name: str) -> int:
@@ -51,31 +52,29 @@ class NotesManager:
         Add notes from a text file, taking each line as a note.
         Returns the number of notes added.
         """
-        with open(name, "r") as file:
+        with open(name, 'r') as file:
             added_notes = [self.add_note(line) for line in file]
         return sum(added_notes)
 
     def get_last_notes(self, number: int) -> list[Note]:
         cursor = self.connection.cursor()
-        cursor.execute("SELECT id, content FROM note ORDER BY id DESC")
+        cursor.execute('SELECT id, content FROM note ORDER BY id DESC')
         return [Note(*note) for note in cursor.fetchmany(number)]
 
     def get_all_notes(self) -> list[Note]:
         cursor = self.connection.cursor()
-        cursor.execute("SELECT id, content FROM note ORDER BY id DESC")
+        cursor.execute('SELECT id, content FROM note ORDER BY id DESC')
         return [Note(*note) for note in cursor.fetchall()]
 
     def get_note_by_id(self, id: int) -> Note | None:
         cursor = self.connection.cursor()
-        cursor.execute("SELECT id, content FROM note WHERE id = ?", [id])
+        cursor.execute('SELECT id, content FROM note WHERE id = ?', [id])
         note = cursor.fetchone()
-        if not note:
-            return None
-        return Note(*note)
+        return Note(*note) if note else None
 
     def remove_note(self, id: int):
         with self.connection:
-            self.connection.execute("DELETE FROM note WHERE id = ?", [id])
+            self.connection.execute('DELETE FROM note WHERE id = ?', [id])
         assert self.get_note_by_id(id) is None
 
 
@@ -89,7 +88,7 @@ def print_notes(notes: Iterable[Note], show_id: bool = False, full: bool = False
     for note in notes:
         line = f"{note.id}: {note.content}" if show_id else note.content
         if not full and len(line) > term_width:
-            line = line[: term_width - 3] + "..."
+            line = line[: term_width - 3] + '...'
         print(line)
 
 
@@ -104,63 +103,66 @@ def delete_note(notes_manager: NotesManager, id: int) -> int:
         print(f"Note with id '{id}' doesn't exist", file=sys.stderr)
         return 1
     print(f"Note: {note.content!r}")
-    awnser = input("Are you sure you want to delete this note? [y/N] ").strip().lower()
-    if awnser in {"y", "yes"}:
+    answer = input('Are you sure you want to delete this note? [y/N] ').strip().lower()
+    if answer in {'y', 'yes'}:
         notes_manager.remove_note(note.id)
     return 0
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="For simple notes. Show the last 5 notes when not arguments are provided."
+        description='For simple notes. Show the last 5 notes when not arguments are provided.'
     )
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-a", "--add", metavar="NOTE", help="add a note")
+    group.add_argument('-a', '--add', metavar='NOTE', help='add a note')
     group.add_argument(
-        "-l",
-        "--list",
-        metavar="N",
-        nargs="?",
+        '-l',
+        '--list',
+        metavar='N',
+        nargs='?',
         const=0,
         type=int,
-        help="show N notes, 0 for showing all notes (default)",
+        help='show N notes, 0 for showing all notes (default)',
     )
     group.add_argument(
-        "-r",
-        "--remove",
-        metavar="ID",
-        nargs="?",
+        '-r',
+        '--remove',
+        metavar='ID',
+        nargs='?',
         const=-1,
         type=int,
-        help="remove a note by id, remove the last note by default",
+        help='remove a note by id, remove the last note by default',
     )
-    group.add_argument("--migrate", metavar="FILE", help="migrate a .txt file to the database")
-    parser.add_argument("--show-id", action="store_true", help="use with --list to show the id fot each note")
+    group.add_argument('--migrate', metavar='FILE', help='migrate a .txt file to the database')
     parser.add_argument(
-        "-f", "--full", action="store_true", help="use with --list to show the full content of the note"
+        '--show-id', '--id', action='store_true', help='use with --list to show the id fot each note'
+    )
+    parser.add_argument(
+        '-f', '--full', action='store_true', help='use with --list to show the full content of the note'
     )
     args = parser.parse_args()
 
     if any((args.show_id, args.full)) and args.list is None:
-        parser.error("Cannot use --show-id or --full without --list")
+        parser.error('Cannot use --show-id or --full without --list')
 
-    with NotesManager() as notes_manager:
+    with NotesManager(XDG_DATA_HOME) as notes_manager:
         if not sys.argv[1:]:
             print_notes(notes_manager.get_last_notes(5))
         elif args.list is not None:
             if args.list < 0:
-                parser.error("Negatives values are not allowed")
+                parser.error('Negatives values are not allowed')
             elif args.list == 0:
                 print_notes(notes_manager.get_all_notes(), args.show_id, args.full)
             else:
                 print_notes(notes_manager.get_last_notes(args.list), args.show_id, args.full)
         elif args.add is not None:
             if not args.add.strip():
-                parser.error("Adding an empty note is not allowed")
+                parser.error('Adding an empty note is not allowed')
             assert notes_manager.add_note(args.add)
         elif args.migrate:
             total = notes_manager.migrate_file(args.migrate)
-            print(f"{parser.prog}: {total} note(s) added")
+            suffix = '' if total == 1 else 's'
+            print(f"{parser.prog}: {total} note{suffix} added")
         elif args.remove is not None:
             return delete_note(notes_manager, args.remove)
         else:
@@ -169,5 +171,5 @@ def main() -> int:
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main())

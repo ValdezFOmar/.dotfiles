@@ -1,5 +1,4 @@
 # Hook for updating a package list when a package is added/remove with pacman
-# vim: set ft=cfg:
 
 [Trigger]
 Operation = Install

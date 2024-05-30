@@ -6,8 +6,14 @@ log_out="󰗽  Log Out"
 restart="  Restart"
 shutdown="  Shutdown"
 
-option=$(echo -e -n "$lock\n$suspend_session\n$log_out\n$restart\n$shutdown" \
-    | rofi -dmenu -theme-str '@import "powermenu"' -i -l 5 -p 'Power Options' -no-custom)
+printf -v options '%s\n%s\n%s\n%s\n%s' "$lock" "$suspend_session" "$log_out" "$restart" "$shutdown"
+theme="$HOME/.config/rofi/powermenu.rasi"
+
+if [[ -f $theme ]]; then
+    option=$(rofi -dmenu -theme "$theme" -i -l 5 -p 'Power Options' -no-custom <<< "$options")
+else
+    option=$(rofi -dmenu -i -l 5 -p 'Power Options' -no-custom <<< "$options")
+fi
 
 case "$option" in
     "$lock") light-locker-command -l ;;

@@ -32,10 +32,8 @@ lightdm-slick-greeter
 linux
 linux-firmware
 lxappearance-gtk3
-lxrandr-gtk3
 mdcat
 mtpfs
-neofetch
 neovim
 networkmanager
 nodejs
@@ -46,6 +44,7 @@ npm
 nsxiv
 openssh
 os-prober
+pacman-contrib
 pamixer
 papirus-icon-theme
 pcmanfm-gtk3
@@ -55,7 +54,6 @@ pulseaudio-alsa
 pulseaudio-bluetooth
 pyenv
 python-dbus-next
-python-docs
 python-iwlib
 python-pipx
 qtile
@@ -63,9 +61,10 @@ reflector
 ripgrep
 rofi
 terminus-font
+thunderbird
+thunderbird-dark-reader
 tk
 tldr
-tmux
 tree
 ttf-cascadia-code
 ttf-cascadia-code-nerd
@@ -108,3 +107,4 @@ xorg-xsetroot
 xorg-xvinfo
 xorg-xwd
 xorg-xwud
+zip

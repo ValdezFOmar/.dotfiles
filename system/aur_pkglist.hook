@@ -1,5 +1,4 @@
 # Hook for updating am AUR package list when a package is added/remove with paru
-# vim: set ft=cfg:
 
 [Trigger]
 Operation = Install

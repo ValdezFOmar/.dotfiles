@@ -1,5 +1,5 @@
 configuration {
-    modes: [combi];
+    modes: [combi, drun];
     combi-mode: [run, drun, window];
     terminal: "kitty";
 
@@ -11,7 +11,8 @@ configuration {
 // @theme "/dev/null"
 @theme "arthur"
 
-/* Color palette inspired in Catppuccin Mocha
+/**
+ * Color palette inspired in Catppuccin Mocha
  * https://github.com/catppuccin/catppuccin#-palette
  */
 * {
@@ -45,7 +46,7 @@ configuration {
     inputbar-color: @base;
     highlight: @green;
 
-    no-select-color: hsl(240, 21%, 50%);
+    no-select-color: hsl(240, 21%, 60%);
     select-color: @foreground;
 }
 
@@ -79,14 +80,14 @@ listview {
 
 element {
     orientation: horizontal;
-    children: [ element-icon, element-text ];
+    children: [element-icon, element-text];
     spacing: 10px;
     padding: 5px 8px;
     border-radius: 0px;
     color: @no-select-color;
 }
 
-element selected.normal {
+element selected normal {
     background-color: @transparent;
     color: @select-color;
 }
@@ -97,5 +98,12 @@ element-icon {
 
 element-text {
     vertical-align: 0.5;
+    background-color: @transparent;
+}
+
+// Error message
+error-message {
+    border: 4px;
+    border-color: @red;
     background-color: @transparent;
 }

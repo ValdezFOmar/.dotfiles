@@ -3,7 +3,8 @@
 [global]
   monitor = 0
   follow = none
-  sort = yes  # Sort messages by urgency
+  # Sort messages by urgency
+  sort = yes
   idle_threshold = 2m
 
   notification_limit = 6
@@ -60,7 +61,7 @@
   history_length = 20
 
   # Misc/Advanced
-  dmenu = '/usr/bin/rofi -dmenu -no-custom -p Dunst:'
+  dmenu = /usr/bin/rofi -dmenu -no-custom -p Dunst:
   browser = /usr/bin/xdg-open
   always_run_script = true
   title = Dunst
@@ -119,5 +120,3 @@
   frame_color = "#2c2f40"
   highlight = "#9e6ffe"
   timeout = 3s
-
-# vim: ft=cfg

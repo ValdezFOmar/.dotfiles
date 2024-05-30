@@ -1,3 +1,5 @@
+@theme "config" // Extend base config
+
 configuration {
     show-icons: false;
 }
@@ -11,5 +13,5 @@ window {
 }
 
 element {
-    children: [ element-text ];
+    children: [element-text];
 }
