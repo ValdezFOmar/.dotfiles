@@ -13,6 +13,13 @@ shopt -s autocd
 # pipx
 command -v pipx >/dev/null && eval "$(register-python-argcomplete pipx)"
 
+if command -v npm >/dev/null; then
+    if [[ ! -f $HOME/.npm-completion.bash ]]; then
+        npm completion > "$HOME/.npm-completion.bash"
+    fi
+    source ~/.npm-completion.bash
+fi
+
 # poetry
 if command -v poetry >/dev/null; then
     if [[ ! -f $HOME/.poetry-completion.bash ]]; then
@@ -33,7 +40,7 @@ fi
 if command -v dotnet >/dev/null; then
     _dotnet_bash_complete()
     {
-        local cur="${COMP_WORDS[COMP_CWORD]}" IFS=$'\n' # On Windows you may need to use use IFS=$'\r\n'
+        local cur="${COMP_WORDS[COMP_CWORD]}" IFS=$'\n'
         local candidates
 
         read -d '' -ra candidates < <(dotnet complete --position "${COMP_POINT}" "${COMP_LINE}" 2>/dev/null)
@@ -43,6 +50,5 @@ if command -v dotnet >/dev/null; then
 
     complete -f -F _dotnet_bash_complete dotnet
 fi
-
 
 # vim: set ft=sh:

@@ -1,3 +1,6 @@
+export LC_TIME=es_MX.UTF-8
+# export QT_QPA_PLATFORMTHEME=qt5ct
+
 picom --daemon
 udiskie &
 light-locker --lock-after-screensaver=60 --lock-on-suspend --lock-on-lid &

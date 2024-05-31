@@ -1,9 +1,25 @@
 [user]
     name = Omar Valdez
-    email = 80359343+ValdezFOmar@users.noreply.github.com
+    email = omarantoniovaldezf2@gmail.com
+
 [init]
     defaultBranch = main
+
 [core]
-	excludesfile = /home/omar/.gitignore_global
+    editor = nvim
+    excludesfile = ~/.gitignore_global
+
+[alias]
+    st = status
+    aa = add -A
+    co = commit --edit --verbose
+    amend = commit --amend --edit
+    just-amend = commit --amend --no-edit
+    # ~/.local/bin/common-git-utils.sh
+    recover = "!common-git-utils.sh --recover-file"
+    cdiff = "!common-git-utils.sh --bat-diff"
+    idiff = "!common-git-utils.sh --intersection-diff"
+    restage = "!common-git-utils.sh --restage-files"
+
 [push]
-	autoSetupRemote = true
+    autoSetupRemote = true
