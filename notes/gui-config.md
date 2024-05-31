@@ -1,5 +1,13 @@
 # GUI
 
+Optional packages:
+
+- `arandr`: Alternative monitor configuration program
+- `font-manager`: Simple to use font explorer
+- Optional for LibreOffice (and other programs) spelling
+  - `hunspell-en_us`: Spelling for American English
+  - `hunspell-es_mx`: Spelling for Mexican Spanish
+  - `hyphen-es`: Hyphen rules for Spanish
 
 ## Display Manager (DM) and Session Greeter
 
@@ -14,6 +22,36 @@ greeter-session=lightdm-slick-greeter
 ```
 
 > **NOTE:** its important to set this attribute to be able to login.
+
+
+## Qt theme
+
+Dependencies:
+
+- `kvantum`
+- `kvantum-theme-materia`
+- `qt5ct`
+
+Then follow this instructions
+
+1. Launch **Qt5 settings** (`qt5ct`)
+  1. Choose *style > **kvantum-dark***.
+2. Launch **Kvantum Manager**
+  1. Go to *Change / Delete Theme > Select a Theme*
+  2. Choose **MateriaDark**.
+
+### Nomacs Image Viewer
+
+> [!IMPORTANT]
+> **Optional**
+> Only available in the `AUR` and needs compilation every update.
+> Not recommended for now, but it has been the best image viewer that I found.
+
+Dependencies:
+
+- `nomacs`
+
+Go to *Edit > Settings* and add necessary changes.
 
 
 ## Qtile

@@ -1,5 +1,41 @@
 # General tips
 
+## Links
+
+- [LaTeX Short Guide](https://github.com/oetiker/lshort)
+
+## MISC
+
+- After every kernel update (`linux` package) reboot the system so the
+  new kernel modules for hardware are loaded (e.g. USB drives)
+
+## BASH Escape Sequences
+
+Replace color codes with the following syntax. `setaf` stands for '**set** **A**NSI **f**oreground'.
+This syntax can only be embedded in double quotes. Also note that `$` need to be escaped for commands
+and variables that are intended to be evaluated each time the prompt is printed, else they would
+only be evaluated the first time.
+
+```sh
+# Here a 'number' can be any in the range of 0 to 15
+# use `tput sgr 0` to reset all the properties
+color="\[$(tput setaf number)\]"
+
+# Escape '$' by placing a '\' before it
+PS1="$color \$(date +%M:%S) $ "
+```
+Variables that contain escapes (`\[` and `\]`) will not properly escape the
+ANSI escape code in `PS1` when:
+
+- use inside literal strings (single quotes `''`)
+- it's escaped (`\$`) inside a double quoted string
+- it's escaped inside a literal string (it will just print the literal variable name)
+
+## Firefox
+
+To make windows from external links open in tabs instead, apply the changes listed in this
+[article](https://support.mozilla.org/en-US/questions/1193456).
+
 ## Pacman
 
 - To enable colored output, edit `/etc/pacman.conf` and uncomment the `Color` option.

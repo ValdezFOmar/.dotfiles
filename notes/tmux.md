@@ -52,20 +52,30 @@ The key binds:
 
 Create a new session with a name:
 
-    $ tmux new -s <session-name>
+```sh
+tmux new -s [session-name]
+```
 
 Do the same, but also assign a name to the first window
 
-    $ tmux new -s <session-name> -n <window-name>
+```sh
+tmux new -s [session-name] -n [window-name]
+```
 
 To attach to the last session:
 
-    $ tmux attach
+```sh
+tmux attach
+```
 
 Or attach to a specific session:
 
-    $ tmux attach -t <session>
+```sh
+tmux attach -t [session]
+```
 
 List available sessions:
 
-    $ tmux ls
+```sh
+tmux ls
+```

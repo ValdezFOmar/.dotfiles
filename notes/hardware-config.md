@@ -46,10 +46,13 @@ sudo systemctl kill -s HUP systemd-logind
 
 ## Backlight / Screen Brightness
 
-Use the package `acpilight`, provides the command `xbacklight`. Add the following configuration
+Use the package `acpilight`, it provides the command `xbacklight`. Add the following configuration
 under `/etc/udev/rules.d/90-backlight.rules`:
 
-```
+> [!TIP]
+> `:TSInstall udev`
+
+```udev
 SUBSYSTEM=="backlight", ACTION=="add", \
   RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness", \
   RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
