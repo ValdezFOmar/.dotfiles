@@ -2,8 +2,8 @@
 
 ## .dotfiles
 
-- [ ] Change python scripts' names in `install/` (`-` to `_`) and fixed the
-      implicit relative imports, so is possible to run the scripts like
+- [x] Change python scripts' names in `install/` (`-` to `_`)
+- [ ] fixed the implicit relative imports, so is possible to run the scripts like
       `python -m install.user_config`. Maybe even consider adding a `__main__`
       to run it like this: `python -m install`
 
@@ -20,8 +20,8 @@
       call `cpupower frequency-set` without root permission.
 - [ ] Create a `pacman` hook for notifying the user when a new kernel update happened
       to remember to reboot the system after it so the new kernel modules are loaded
-- [ ] Consider changing python workflow by using `virtualenv` instead of `venv` builtin module
-- [ ] Write my own image viewer LOL (in python)
+- [x] Consider changing python workflow by using `virtualenv` instead of `venv` builtin module
+- [x] ~Write my own image viewer LOL (in python)~ I just made a simple script
 - [ ] Look into configuring Firefox with a plain text file
 - [ ] Learn [touch typing](https://www.typingclub.com/)
 - [ ] Configure a better [locale](https://wiki.archlinux.org/title/Locale) and add environmental variables
@@ -29,17 +29,13 @@
 
 ## Neovim
 
-> [!IMPORTANT]
-> - [ ] Move `user/.config/nvim` to its own git repo and add it as a git submodule.
->       This will allow it to be more easy to changed without affecting the main repo.
-
 - [ ] Make `nvim` plugins lazy loaded
-- [ ] Change `lua` formatting
-  - [ ] Change in `stylua.toml`
-  - [ ] Change in `.editorconfig`
-  - [ ] Change in `nvim/after/ftplugin/lua.lua`
-  - [ ] Indentation from 2 to 4 spaces
-  - [ ] From double to single quotes `"AutoPreferSingle"`
+- [x] Change `lua` formatting
+  - [x] Change in `stylua.toml`
+  - [x] Change in `.editorconfig`
+  - [x] Change in `nvim/after/ftplugin/lua.lua`
+  - [x] Indentation from 2 to 4 spaces
+  - [x] From double to single quotes `"AutoPreferSingle"`
 - [ ] Change keymaps for overload window because is conflicting when using autocompletion
 - [ ] Apply configurations from [this repo](https://github.com/mjlbach/starter.nvim)
       like the following:

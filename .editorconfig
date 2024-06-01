@@ -10,10 +10,6 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-# To be changed
-[*.lua]
-indent_size = 2
-
 [*.{yaml,json,jsonc,scm}]
 indent_size = 2
 
