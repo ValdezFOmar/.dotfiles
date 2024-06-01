@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, assert_never
 
 from libqtile.lazy import lazy
 from libqtile.widget.battery import BatteryState, BatteryStatus
@@ -11,9 +11,11 @@ from . import vars
 from .vars import Color
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
+
     from libqtile.utils import ColorsType
 
-__all__ = ["widget_defaults", "extension_defaults"]
+__all__ = ['widget_defaults', 'extension_defaults']
 
 widget_defaults = dict(
     font=vars.monofont,
@@ -21,6 +23,10 @@ widget_defaults = dict(
     foreground=Color.text,
 )
 extension_defaults = widget_defaults.copy()
+
+
+def clamp[T: (int, float)](lower: T, value: T, upper: T) -> T:
+    return max(lower, min(value, upper))
 
 
 class NerdFontBattery(widget.Battery):
@@ -36,22 +42,23 @@ class NerdFontBattery(widget.Battery):
 
     # Prevent clashing with Battery.defaults
     _defaults = [
-        ("full_char", "󱟢", "Character to indicate the battery is full"),
-        ("empty_char", "󱃍", "Character to indicate the battery is empty"),
-        ("low_char", "󱃍", "Character to indicate the battery is low"),
-        ("unknown_char", "󰂑", "Character to indicate the battery status is unknown"),
-        ("charge_icons", ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"], "Charge icon at percent X0%"),
-        ("discharge_icons", ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"], "Icon at percent X0%"),
-        ("medium_foreground", "#FFFF00", "Foreground color on medium battery"),
-        ("medium_background", None, "Background color on medium battery"),
-        ("medium_percentage", 0.5, "Indicates when to use the medium_foreground color 0 < x < 1"),
+        ('full_char', '󱟢', 'Character to indicate the battery is full'),
+        ('empty_char', '󱃍', 'Character to indicate the battery is empty'),
+        ('low_char', '󱃍', 'Character to indicate the battery is low'),
+        ('unknown_char', '󰂑', 'Character to indicate the battery status is unknown'),
+        ('not_charging_char', '󱟨', 'Character to indicate the batter is not charging'),
+        ('charge_icons', ['󰢜', '󰂆', '󰂇', '󰂈', '󰢝', '󰂉', '󰢞', '󰂊', '󰂋', '󰂅'], 'Charge icon at percent X%'),
+        ('discharge_icons', ['󰁺', '󰁻', '󰁼', '󰁽', '󰁾', '󰁿', '󰂀', '󰂁', '󰂂', '󰁹'], 'Icon at percent X%'),
+        ('medium_foreground', '#FFFF00', 'Foreground color on medium battery'),
+        ('medium_background', None, 'Background color on medium battery'),
+        ('medium_percentage', 0.5, 'Indicates when to use the medium_foreground color (0 < x < 1)'),
     ]
 
-    def __init__(self, **config) -> None:
+    def __init__(self, **config: object) -> None:
         super().__init__(**config)
         self.add_defaults(self._defaults)
 
-    def _update_colour(self, status: BatteryStatus):
+    def __update_colour(self, status: BatteryStatus) -> None:
         if self.layout is None:
             return
         if status.state is BatteryState.DISCHARGING:
@@ -66,64 +73,41 @@ class NerdFontBattery(widget.Battery):
         self.layout.colour = self.foreground
         self.background = self.normal_background
 
-    def build_string(self, status: BatteryStatus) -> str:
-        self._update_colour(status)
+    def __percent_to_icon(self, percent: float, icons: Sequence[str]) -> str:
+        length = len(icons)
+        index = int(clamp(0, percent, 1) * length)
+        index = index if index < length else -1
+        return icons[index]
 
-        percent = int(status.percent * 100)
+    def build_string(self, status: BatteryStatus) -> str:
+        self.__update_colour(status)
+
         match status.state:
             case BatteryState.FULL:
                 char = self.full_char
             case BatteryState.EMPTY:
                 char = self.empty_char
             case BatteryState.CHARGING:
-                char = self.charge_icons[percent // 10 - 1]
+                char = self.__percent_to_icon(status.percent, self.charge_icons)
             case BatteryState.DISCHARGING:
                 if status.percent <= self.low_percentage:
                     char = self.low_char
                 else:
-                    char = self.discharge_icons[percent // 10 - 1]
-            case _:
+                    char = self.__percent_to_icon(status.percent, self.discharge_icons)
+            case BatteryState.UNKNOWN:
                 char = self.unknown_char
+            case BatteryState.NOT_CHARGING:
+                char = self.not_charging_char
+            case _:
+                assert_never(status.state)
 
-        return self.format.format(char=char, percent=percent)
+        percent_formated = clamp(0, int(status.percent * 100), 100)
+        return self.format.format(char=char, percent=percent_formated)
 
 
-class NerdFontVolume(widget.PulseVolume):
-    """Like regular Volume, but uses NerdFonts' icons."""
-
-    icon_list: list[str]
-    format: str
-
-    defualts = [
-        (
-            "format",
-            "{volume}% {icon}",
-            "The format to display the volume and icon",
-        ),
-        ("show_volume_when_mute", False, "Self explanatory"),
-        ("mute_icon", "󰝟", "Icon to display when mute"),
-        ("no_volume_icon", "󰸈", "Icon to display when the volume is 0 and is not muted"),
-        ("icon_list", ["󰕿", "󰖀", "󰕾"], "List of icons for low, medium and high volume, in order"),
-    ]
-
-    def __init__(self, **config):
-        super().__init__(**config)
-        self.add_defaults(self.defualts)
-
-    def _update_drawer(self):
-        if self.volume < 0:
-            icon = self.mute_icon
-        elif not self.volume:
-            icon = self.no_volume_icon
-        elif self.volume <= 20:
-            icon = self.icon_list[0]
-        elif self.volume < 70:
-            icon = self.icon_list[1]
-        else:
-            icon = self.icon_list[2]
-
-        volume = self.volume if icon != self.mute_icon else "M"
-        self.text = self.format.format(icon=icon, volume=volume)
+class TitleClock(widget.Clock):
+    def poll(self):
+        return super().poll().title()
 
 
 group_decoration = RectDecoration(
@@ -137,13 +121,13 @@ group_decoration = RectDecoration(
 )
 
 # Usefull for adding extra space to the sides of a group of widgets
-EMPTY_LEFT = widget.TextBox(" ", padding=0, decorations=[group_decoration])
-EMPTY_RIGHT = widget.TextBox(" ", padding=0, decorations=[group_decoration])
+EMPTY_LEFT = widget.TextBox(' ', padding=0, decorations=[group_decoration])
+EMPTY_RIGHT = widget.TextBox(' ', padding=0, decorations=[group_decoration])
 
 power_menu = widget.TextBox(
-    " <b>tile</b>",
+    ' <b>tile</b>',
     markup=True,
-    mouse_callbacks={"Button1": lazy.spawn(vars.power_menu)},
+    mouse_callbacks={'Button1': lazy.spawn(vars.power_menu)},
     decorations=[group_decoration],
 )
 
@@ -152,12 +136,12 @@ groupbox = widget.GroupBox(
     # fmt="<b>{}</b>",
     # markup=True,
     fontsize=14,
-    highlight_method="text",
+    highlight_method='text',
     active=Color.text,
     this_screen_border=Color.light_blue,
     this_current_screen_border=Color.light_blue,
     block_highlight_text_color=Color.literal_black,
-    urgent_alert_method="text",
+    urgent_alert_method='text',
     urgent_text=Color.orange,
     inactive=Color.grayscale5,
     spacing=10,
@@ -165,16 +149,17 @@ groupbox = widget.GroupBox(
     decorations=[group_decoration],
 )
 
-date = widget.Clock(
+date = TitleClock(
     # format="<b>%A %d/%b/%Y</b> 󰃭 ", # Long format
     # Maybe implement it as a pop up?
-    format="<b>%A %d %b</b> 󰃭 ",
+    format='%A %d %B',
+    fmt='<b>{}</b> 󰃭 ',
     markup=True,
     decorations=[group_decoration],
 )
 
 time = widget.Clock(
-    format="<b>%I:%M</b>  ",
+    format='<b>%I:%M</b>  ',
     markup=True,
     decorations=[group_decoration],
 )
@@ -194,23 +179,25 @@ chord = widget.Chord(
     ],
 )
 
-volume = NerdFontVolume(
-    format="<b>{volume}</b> {icon} ",
+volume = widget.PulseVolume(
+    fmt='<b>{}</b> ',
     foreground=Color.purple,
+    mute_format='M 󰝟',
+    unmute_format='{volume} 󰕾',
     markup=True,
     decorations=[group_decoration],
 )
 
 battery = NerdFontBattery(
-    format="<b>{percent}</b> {char} ",
+    format='<b>{percent}</b> {char} ',
     markup=True,
     foreground=Color.blue,
     medium_foreground=Color.yellow,
     medium_percentage=0.5,
     low_foreground=Color.hot_red,
     low_percentage=0.2,
-    update_interval=1,  # seconds
-    mouse_callbacks={"Button1": lazy.spawn(vars.frequency_menu)},
+    update_interval=5,  # seconds
+    mouse_callbacks={'Button1': lazy.spawn(vars.frequency_menu)},
     notify_below=21,
     notification_timeout=30,
     decorations=[group_decoration],
@@ -218,7 +205,7 @@ battery = NerdFontBattery(
 
 # Check interface with `iwconfig`
 wifi = widget.WiFiIcon(
-    interface="wlo1",
+    interface='wlo1',
     expanded_timeout=15,
     active_colour=Color.green,
     foreground=Color.green,

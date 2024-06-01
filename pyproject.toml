@@ -1,8 +1,25 @@
 [tool.basedpyright]
-pythonVersion = '3.12'
-reportUnusedCallResult = false
-reportAny = false
+include = [
+    'install/',
+    'user/.config/qtile',
+    'user/.local/bin',
+]
+# The default value excludes '**/.*', which prevents files in 'user/.config' and
+# 'user/.local/bin' from being type checked
+exclude = [
+    '**/__pycache__',
+    '**/.venv',
+    '**/.git',
+]
+extraPaths = ['/usr/lib/python3.12/site-packages/']  # Use system python
 typeCheckingMode = 'standard'
+pythonVersion = '3.12'
+pythonPlatform = 'Linux'
+deprecateTypingAliases = true
+reportConstantRedefinition = true
+reportMatchNotExhaustive = true
+reportMissingParameterType = true
+reportIgnoreCommentWithoutRule = true
 # Avoid "'indentifier' not exported from 'module'" errors, see
 # https://github.com/microsoft/pyright/issues/2277#issuecomment-937468789
 reportPrivateImportUsage = false
