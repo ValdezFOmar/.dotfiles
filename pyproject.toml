@@ -41,7 +41,7 @@ include = '''
     \.pyi?$
     |^user/\.config/qtile/.*\.py$
     |^user/\.local/bin/frequencymenu$
-    |^user/\.local/bin/paths$
     |^user/\.local/bin/notes$
+    |^user/\.local/bin/view-images$
 )
 '''

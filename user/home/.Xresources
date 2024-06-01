@@ -1,8 +1,8 @@
 Xcursor.theme: Qogir-cursors
 
-Nsxiv.window.background: #1B1D1E
-Nsxiv.window.foreground: #DFDFDF
+Nsxiv.window.background: #0A0C0D
+Nsxiv.window.foreground: #64d0e3
 Nsxiv.bar.font: sans 14
-Nsxiv.bar.background: #0A0C0D
-Nsxiv.bar.foreground: #66D9EF
-Nsxiv.mark.foregorund: #A6E22E
+Nsxiv.bar.background: #1B1D1E
+Nsxiv.bar.foreground: #739df2
+Nsxiv.mark.foregorund: #8aec69

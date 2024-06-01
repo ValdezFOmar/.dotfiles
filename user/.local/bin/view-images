@@ -1,0 +1,175 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import subprocess
+from collections.abc import Iterable
+from functools import cmp_to_key
+from itertools import chain
+from pathlib import Path
+from typing import Any, cast
+
+LESS = -1
+EQUAL = 0
+GREATER = 1
+
+FZF_CANCEL_CODE = 130
+FZF_PROMPT_SUFFIX = '❯ '
+NF_DIRECTORY_ICON = '\uf413  '  # 
+NF_IMAGE_ICON = '\uf03e  '  # 
+
+IMAGE_FORMATS = frozenset(('png', 'jpg', 'jpeg'))
+IMAGE_EXTENSIONS = frozenset('.' + ext for ext in IMAGE_FORMATS)
+
+
+def extract_int(string: str, start: int) -> tuple[int, int]:
+    index = None
+    for index, char in enumerate(string[start:], start):
+        if not char.isdecimal():
+            break
+    assert index is not None and index != start, 'Tried to extract int from empty string'
+    if index == len(string) - 1 and string[-1].isdecimal():
+        index += 1
+    return int(string[start:index]), index
+
+
+def cmp_to_int(o: Any, p: Any, /) -> int:
+    if o < p:
+        return LESS
+    elif o == p:
+        return EQUAL
+    else:
+        return GREATER
+
+
+def version_compare(s1: str, s2: str, /) -> int:
+    """Compare two strings, interpreting sequences of digits as integers."""
+
+    if not s1 or not s2:
+        return cmp_to_int(s1, s2)
+
+    skip_until_index = -1
+    min_length = min(len(s1), len(s2))
+
+    for i, (char_1, char_2) in enumerate(zip(s1, s2)):
+        if skip_until_index >= min_length:
+            break
+        if i < skip_until_index:
+            continue
+
+        if not char_1.isdecimal() or not char_2.isdecimal():
+            if char_1 == char_2:
+                continue
+            elif char_1 < char_2:
+                return LESS
+            else:
+                return GREATER
+
+        number_1, end_1 = extract_int(s1, i)
+        number_2, end_2 = extract_int(s2, i)
+        cmp_result = cmp_to_int(number_1, number_2)
+
+        if cmp_result != EQUAL:
+            return cmp_result
+
+        skip_until_index = min(end_1, end_2)
+
+    return cmp_to_int(len(s1), len(s2))
+
+
+def select_option(options: Iterable[str], prompt: str) -> str | None:
+    process = subprocess.run(
+        ['fzf', '--read0', '--no-sort', '--cycle', '--prompt', prompt],
+        input='\0'.join(options),
+        encoding='utf-8',
+        stdout=subprocess.PIPE,
+    )
+    option = process.stdout.strip()
+
+    if process.returncode == FZF_CANCEL_CODE or not option:
+        return None
+    return option
+
+
+def view_images(image_paths: Iterable[str], start_at: int = 0) -> None:
+    args = ['nsxiv', '--stdin', '--no-bar', '--null']
+    if start_at > 0:
+        args.extend(('--start-at', str(start_at + 1)))
+    subprocess.run(args, input='\0'.join(image_paths), encoding='utf-8')
+
+
+def get_dir_contents(directory: str) -> tuple[list[str], list[str]]:
+    dir_entries = []
+    file_entries = []
+
+    for file in Path(directory).iterdir():
+        if file.is_dir():
+            dir_entries.append(file.name)
+        elif file.is_file() and file.suffix in IMAGE_EXTENSIONS:
+            file_entries.append(file.name)
+
+    return dir_entries, file_entries
+
+
+def browse_contents(directory: str) -> None:
+    while True:
+        dir_entries, file_entries = get_dir_contents(directory)
+
+        file_entries.sort(key=cmp_to_key(version_compare))
+        dir_entries.sort(key=cmp_to_key(version_compare))
+        dirs_with_icons = (NF_DIRECTORY_ICON + d for d in chain([os.path.pardir], dir_entries))
+        files_with_icons = (NF_IMAGE_ICON + f for f in file_entries)
+
+        prompt = directory + FZF_PROMPT_SUFFIX
+        option = select_option(chain(dirs_with_icons, files_with_icons), prompt)
+
+        if option is None:
+            return
+
+        file_name = option.removeprefix(
+            NF_DIRECTORY_ICON if option.startswith(NF_DIRECTORY_ICON) else NF_IMAGE_ICON
+        )
+
+        path = Path(directory, file_name).resolve()
+
+        if path.is_relative_to(Path.cwd()):
+            path = path.relative_to(Path.cwd())
+
+        if path.is_dir():
+            directory = str(path)
+        elif path.is_file():
+            index = file_entries.index(path.name)
+            paths = (os.path.join(directory, file) for file in file_entries)
+            view_images(paths, start_at=index)
+
+
+def sort_stdin():
+    import sys
+
+    for line in sorted(sys.stdin, key=cmp_to_key(version_compare)):
+        sys.stdout.write(line)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description='Browse images using `fzf` and `nsxiv`.')
+    parser.add_argument('DIR', nargs='?', default=os.path.curdir, help='directory to browse, empty for CWD')
+    parser.add_argument(
+        '-', dest='stdin', action='store_true', help='sort lines from stdin using version sort'
+    )
+    args = parser.parse_args()
+
+    if args.stdin:
+        sort_stdin()
+        return 0
+
+    directory = cast(str, args.DIR).removesuffix('/')
+
+    if not os.path.isdir(directory):
+        parser.error(f"{directory!r} doesn't exists or is not a directory")
+
+    browse_contents(directory)
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
