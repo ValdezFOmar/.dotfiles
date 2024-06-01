@@ -3,7 +3,7 @@
 ## .dotfiles
 
 - [x] Change python scripts' names in `install/` (`-` to `_`)
-- [ ] fixed the implicit relative imports, so is possible to run the scripts like
+- [x] fixed the implicit relative imports, so is possible to run the scripts like
       `python -m install.user_config`. Maybe even consider adding a `__main__`
       to run it like this: `python -m install`
 
@@ -36,7 +36,7 @@
   - [x] Change in `nvim/after/ftplugin/lua.lua`
   - [x] Indentation from 2 to 4 spaces
   - [x] From double to single quotes `"AutoPreferSingle"`
-- [ ] Change keymaps for overload window because is conflicting when using autocompletion
+- [x] Change keymaps for overload window because is conflicting when using autocompletion
 - [ ] Apply configurations from [this repo](https://github.com/mjlbach/starter.nvim)
       like the following:
 

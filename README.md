@@ -18,13 +18,13 @@ git clone https://github.com/ValdezFOmar/.dotfiles.git && cd .dotfiles/
 Install the system configurations:
 
 ```sh
-./install/system-config.py --all
+python -m install.system_config --all
 ```
 
 Install the user configurations:
 
 ```sh
-./install/user-config.py --all
+python -m install.user_config --all
 ```
 
 ## Extra
