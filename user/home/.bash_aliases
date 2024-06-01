@@ -73,7 +73,7 @@ function paths()
 # activate virtual env
 function activate()
 {
-    local venv_name="${1:=.venv}"
+    local venv_name="${1:-.venv}"  # Assigning with := is not allowed
 
     if [[ ! -d "./$venv_name" ]]; then
         >&2 echo "==> There's no '$venv_name' directory"
@@ -88,33 +88,54 @@ function activate()
     source "./$venv_name/bin/activate"
 }
 
-# Create virtual env
-venv()
+# Depends on:
+#   - pyenv
+#   - virtualenv
+#   - fd
+#   - fzf
+function venv()
 {
-    local venv_name=".venv"
+    local venv_name=".venv" error green normal answer version
+
+    error="$(tput setaf 1)"
+    green="$(tput setaf 2)"
+    normal="$(tput sgr0)"
 
     if [[ -d $venv_name ]]; then
-        echo "===> '$venv_name' already exists"
+        >&2 echo "${error}==> '$venv_name' already exists${normal}"
         return 1
     fi
 
-    if ! pyenv local &> /dev/null; then
-        echo "===> No local python version detected"
-        return 1
-    fi
-
-    echo "Creating virtual enviroment..."
-    python -m venv "./$venv_name" --prompt "\[$(tput setaf 2)\]$venv_name\[$(tput sgr0)\]"
-    activate "$venv_name"
-    pip -V
-
-    if [[ -f ./requirements.txt ]]; then
-        read -p "Install from 'requirements.txt' file? (Y/n) " -r answer
-        if [[ -z $answer || $answer = "y" || $answer = "yes" ]]; then
-            pip install -r ./requirements.txt
+    if ! command -v pyenv > /dev/null; then
+        echo "${error}==> pyenv not found${normal}"
+        read -p "Use system $(python --version) instead? [y/N] " -r answer
+        if (shopt -s nocasematch; [[ ! $answer =~ ^y(es)?$ ]]); then
+            return 1
         fi
+        version=$(python -c 'import sys; sys.stdout.write(".".join(map(str, sys.version_info[:3])))')
+    elif ! pyenv local &> /dev/null; then
+        if version=$(pyenv versions --bare | fzf --height='~100%' --no-info --disabled --tac); then
+            pyenv local "$version"
+        else
+            return $?
+        fi
+    else
+        version=$(pyenv local)
     fi
+
+    echo "${green}::${normal} Creating virtual enviroment..."
+    virtualenv --python "$version" "./$venv_name" \
+                   --prompt "\[$green\]$venv_name\[$normal\]" \
+                   --copies
+    activate "$venv_name" || return 1
+
+    for file in $(fd --glob '*requirements*.txt'); do
+        read -p "Install from '$file' file? [Y/n] " -r answer
+        if (shopt -s nocasematch; [[ $answer =~ ^(y(es)?)?$ ]]); then
+            pip install --requirement "$file"
+        fi
+    done
 }
 
 
-# vim: set ft=sh:
+# vim: set ft=bash:
