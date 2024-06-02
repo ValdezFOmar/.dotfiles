@@ -2,15 +2,12 @@
 
 """
 This script takes care of:
- - Creating the appropiate symbolic links for diferent config files.
- - Setting the defualt theme.
- - Creating some special and useful directories.
+- Creating the appropiate symbolic links for diferent config files.
+- Setting the defualt theme.
+- Creating some special and useful directories.
 
 While the script can override files and empty directories, it will not attempt
 to remove non-empty directories, skiping them instead.
-
-Requirements:
- - git
 
 WARNING: This script should NOT be run as root.
 """
@@ -76,12 +73,11 @@ Some packages from the AUR are needed, run the following commands to install par
 git clone https://aur.archlinux.org/paru-bin.git
 cd paru-bin
 makepkg -si
-
-Then run `system-config --aur`
 """,
             file=sys.stderr,
         )
-        return
+    except subp.CalledProcessError:
+        print('Could not call paru', file=sys.stderr)
 
 
 def main() -> int:
@@ -110,7 +106,6 @@ def main() -> int:
         for directory in SPECIAL_DIRS:
             manager.create_directory(directory)
         set_keyboard_layout()
-        enable_user_services()
     if args.config:
         manager.symlink_contents(USER_CONFIG / '.config', use_dir_name=True)
     if args.nvim and not args.config:
@@ -125,6 +120,8 @@ def main() -> int:
     if args.theme:
         default_icons = Path('.icons', 'default')
         manager.symlink_contents(USER_CONFIG / default_icons, Path.home() / default_icons)
+    if args.all:
+        enable_user_services()  # Some services depend on some files being symlink first
     if args.aur:
         install_aur_packages()
 
