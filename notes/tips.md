@@ -41,8 +41,8 @@ color="\[$(tput setaf number)\]"
 # Escape '$' by placing a '\' before it
 PS1="$color \$(date +%M:%S) $ "
 ```
-Variables that contain escapes (`\[` and `\]`) will not properly escape the
-ANSI escape code in `PS1` when:
+
+Variables that contain escapes (`\[` and `\]`) will not properly escape the ANSI escape code in `PS1` when:
 
 - use inside literal strings (single quotes `''`)
 - it's escaped (`\$`) inside a double quoted string

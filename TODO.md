@@ -60,9 +60,7 @@
   - [x] Disable icons in the file
   - [x] Make `config.rasi` the fallback in scripts
 
-## BASH Prompt (`PS1`)
 
-- [ ] Fix `PS1` crazy escape sequences because they are pretty confusing right now. See: [Bash escape sequences](/notes/tips.md#bash-escape-sequences)
 
 
 # Completed
@@ -79,6 +77,10 @@
   - Instead use one of the AUR `Qogir` themes.
   - ~~Use command `git -C path/to/repo rev-parse --is-inside-work-tree`~~
   - ~~Use `git -C path/to/repo remote get-url`~~
+
+## BASH Prompt (`PS1`)
+
+- [x] Fix `PS1` crazy escape sequences because they are pretty confusing right now. See: [Bash escape sequences](/notes/tips.md#bash-escape-sequences)
 
 ## Rofi
 - [x] Improve appearance so it matches the desktop theme (Use dark colors and catpuccin colors for accents)

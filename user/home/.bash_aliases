@@ -74,17 +74,6 @@ function paths()
 function activate()
 {
     local venv_name="${1:-.venv}"  # Assigning with := is not allowed
-
-    if [[ ! -d "./$venv_name" ]]; then
-        >&2 echo "==> There's no '$venv_name' directory"
-        return 1
-    fi
-
-    if [[ ! -f "./$venv_name/bin/activate" ]]; then
-        >&2 echo "==> There's no file to source"
-        return 1
-    fi
-
     source "./$venv_name/bin/activate"
 }
 
@@ -96,10 +85,15 @@ function activate()
 function venv()
 {
     local venv_name=".venv" error green normal answer version
+    local -f _select_version
 
-    error="$(tput setaf 1)"
-    green="$(tput setaf 2)"
-    normal="$(tput sgr0)"
+    function _select_version() {
+        pyenv versions --bare | fzf --height='~100%' --no-info --disabled --tac
+    }
+
+    error=$(tput setaf 1)
+    green=$(tput setaf 2)
+    normal=$(tput sgr 0)
 
     if [[ -d $venv_name ]]; then
         >&2 echo "${error}==> '$venv_name' already exists${normal}"
@@ -108,26 +102,23 @@ function venv()
 
     if ! command -v pyenv > /dev/null; then
         echo "${error}==> pyenv not found${normal}"
-        read -p "Use system $(python --version) instead? [y/N] " -r answer
-        if (shopt -s nocasematch; [[ ! $answer =~ ^y(es)?$ ]]); then
+        read -p "Use system's $(python --version) instead? [y/N] " -r answer
+        if (shopt -s nocasematch; ! [[ $answer =~ ^y(es)?$ ]]); then
             return 1
         fi
         version=$(python -c 'import sys; sys.stdout.write(".".join(map(str, sys.version_info[:3])))')
     elif ! pyenv local &> /dev/null; then
-        if version=$(pyenv versions --bare | fzf --height='~100%' --no-info --disabled --tac); then
-            pyenv local "$version"
-        else
-            return $?
-        fi
+        version=$(_select_version) || return $?
+        pyenv local "$version"
     else
         version=$(pyenv local)
     fi
 
     echo "${green}::${normal} Creating virtual enviroment..."
     virtualenv --python "$version" "./$venv_name" \
-                   --prompt "\[$green\]$venv_name\[$normal\]" \
-                   --copies
-    activate "$venv_name" || return 1
+               --prompt "\[$green\]$venv_name\[$normal\]" \
+               --copies --download || return $?
+    activate "$venv_name"
 
     for file in $(fd --glob '*requirements*.txt'); do
         read -p "Install from '$file' file? [Y/n] " -r answer
@@ -135,6 +126,8 @@ function venv()
             pip install --requirement "$file"
         fi
     done
+
+    unset -f _select_version
 }
 
 

@@ -23,7 +23,7 @@ export GIT_PS1_SHOWUNTRACKEDFILES=true
 export PIPX_BIN_DIR="$HOME/bin"
 export POETRY_VIRTUALENVS_IN_PROJECT=true
 export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true
-export POETRY_VIRTUALENVS_PROMPT=  # Set at prompt section
+# export POETRY_VIRTUALENVS_PROMPT="${_green}poetry-{python_version}${normal}"
 
 # https://github.com/tldr-pages/tldr-python-client#colors
 export TLDR_COLOR_NAME="green underline"
@@ -73,51 +73,40 @@ bind "set mark-symlinked-directories on"
 #   Prompt
 #
 
-normal=$(tput sgr0)
-# black=$(tput setaf c)
-red=$(tput setaf 1)
-green=$(tput setaf 2)
-orange=$(tput setaf 3)
-blue=$(tput setaf 4)
-purple=$(tput setaf 5)
-# cyan=$(tput setaf 6)
-# white=$(tput setaf 7)
-yellow=$(tput setaf 11)
+normal="\[$(tput sgr0)\]"
+italic="\[$(tput sitm)\]"
+# black="\[$(tput setaf c)\]"
+_red="\[$(tput setaf 1)\]"
+_green="\[$(tput setaf 2)\]"
+orange="\[$(tput setaf 3)\]"
+blue="\[$(tput setaf 4)\]"
+purple="\[$(tput setaf 5)\]"
+# cyan="\[$(tput setaf 6)\]"
+# white="\[$(tput setaf 7)\]"
+_yellow="\[$(tput setaf 11)\]"
 
-POETRY_VIRTUALENVS_PROMPT="\[${green}\]poetry-{python_version}\[${normal}\]"
-
-__color_exit()
+_color_exit()
 {
+    # Strip the '\[\]' characters and add them in the prompt,
+    # they are interpreted literally otherwise
     local exit=$?
     if [[ $exit -eq 0 ]]; then
-        echo "$green"
+        echo "${_green:2:-2}"
     elif [[ $exit -eq 130 ]]; then
-        echo "$yellow"
+        echo "${_yellow:2:-2}"
     else
-        echo "$red"
+        echo "${_red:2:-2}"
     fi
 }
 
-# Simple prompt
-#PS1='\u@\h \w$ '
-
-# User name in italics
-# '❯' is green if there's no errors, otherwise red
-#
-# TODO: A possible alternative prompt to use instead of hacking things with CR/LF
-# PS1="$(__git_ps1 '(%s) ')\u@\h:\w\n❯ "
-
-# Add git prompt if it exists
 if [[ -f ~/.git-prompt.sh ]]; then
     source ~/.git-prompt.sh
-    # FIXME: Better solution for this crazy escape sequences
-    PS1='\[${normal}\]\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[${orange}\]$(__git_ps1)\[$(__color_exit)\]❯\[${normal}\] '
+    PS1="$normal$orange\$(__git_ps1 '(%s) ')$purple$italic\u@\h$normal:$blue\w\n\[\$(_color_exit)\]❯$normal "
 else
-    PS1='\[${normal}\]\[${purple}\]\[\e[3m\]\u\[\e[23m\] \[${blue}\]\w\[$(__color_exit)\]❯\[${normal}\] '
+    PS1="$normal$purple$italic\u@\h$normal:$blue\w\n\[\$(_color_exit)\]❯$normal "
 fi
 
-PS2="\[${green}\]❯\[${normal}\] "
-
+PS2="$_green❯$normal "
 
 #
 #   Programs Integrations
