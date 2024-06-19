@@ -3,7 +3,8 @@ local PLUGIN = { 'nvim-treesitter/nvim-treesitter' }
 PLUGIN.build = ':TSUpdate'
 
 function PLUGIN.config()
-    ---@diagnostic disable:missing-fields
+    require('nvim-treesitter.install').prefer_git = true
+    ---@diagnostic disable-next-line:missing-fields
     require('nvim-treesitter.configs').setup {
         ensure_installed = {
             -- This 5 should always be installed
@@ -36,18 +37,21 @@ function PLUGIN.config()
             'luadoc',
             'jsdoc',
         },
-
         -- Install parsers synchronously (only applied to `ensure_installed`)
         sync_install = false,
         auto_install = true,
-        indent = { enable = true, disable = { 'css' } }, -- it messes up the indentation of css comments
+        indent = {
+            enable = true,
+            disable = {
+                'css', -- it messes up the indentation of comments
+                'html', -- indenting issues when `head` and `body` tags are at the same level as `html`
+            },
+        },
         highlight = {
             enable = true,
             additional_vim_regex_highlighting = false,
         },
     }
-
-    vim.treesitter.language.register('ini', 'systemd')
 end
 
 return PLUGIN

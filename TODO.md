@@ -37,16 +37,15 @@
   - [x] Indentation from 2 to 4 spaces
   - [x] From double to single quotes `"AutoPreferSingle"`
 - [x] Change keymaps for overload window because is conflicting when using autocompletion
-- [ ] Apply configurations from [this repo](https://github.com/mjlbach/starter.nvim)
-      like the following:
+- [ ] Add highlight groups for C# doc comments. Omnisharp reports semantic tokens
+      in the form of `@lsp.type.xmlDocument*`, so this highlight groups should be linked to a}
+      tag highlight groups (like `@tag.*`).
+      A complete list of all the semantic tokens can be found at [the roslyn repository][roslyn-semantic-tokens]
 
-  ```lua
-  -- Diagnostic keymaps
-  vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
-  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-  vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-  vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
-  vim.keymap.set('n', '<leader>Q', vim.diagnostic.setqflist)
+  ```cs
+  /// <summary>
+  /// Some description <c>Program</c>
+  /// </summary>
   ```
 
 
@@ -99,3 +98,7 @@
 - [x] Remove option for margin, it causes programs inside the terminal to have an ugly margin
 - [x] Add keymaps for opening special files (.dofiles, nvim config, qtile config)
 - [x] Use captppuccin colors for terminal
+
+---
+
+[roslyn-semantic-tokens]: https://github.com/dotnet/roslyn/src/Workspaces/Core/Portable/Classification/ClassificationTypeNames.cs#L57C8-L77C24

@@ -1,3 +1,5 @@
+vim.g.query_lint_on = { 'InsertLeave', 'TextChanged' }
+
 vim.opt.guicursor = 'a:block-inverse'
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
@@ -6,6 +8,7 @@ vim.opt.foldenable = false
 
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.signcolumn = 'yes'
 vim.opt.wrap = false
 vim.opt.scrolloff = 8
 
@@ -21,12 +24,12 @@ vim.opt.incsearch = true
 -- vim.opt.concealcursor = 'nc'
 -- vim.opt.conceallevel = 2
 
-vim.diagnostic.config { severity_sort = true }
-
 vim.filetype.add {
     extension = {
         conf = 'ini',
         hook = 'ini',
+        theme = 'ini',
+        tex = 'tex',
     },
     filename = {
         ['picom.conf'] = 'conf',
@@ -43,17 +46,15 @@ vim.filetype.add {
     },
 }
 
---[[
-TODO: add highlight groups for C# doc comments
+--- LSP ---
 
-Omnisharp reports semantic tokens in the form of `@lsp.type.xmlDocument*`,
-so this highlight groups should be linked to a tag highlight groups (like `@tag.*`)
+vim.diagnostic.config { severity_sort = true, float = { border = 'rounded' } }
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 
-A complete list of all the semantic tokens can be found at
-https://github.com/dotnet/roslyn/src/Workspaces/Core/Portable/Classification/ClassificationTypeNames.cs#L57C8-L77C24
-
-/// <summary>
-/// Some description <c>Program</c>
-/// </summary>
---]]
 vim.api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
+
+--- Tree-sitter ---
+
+vim.treesitter.language.register('ini', 'systemd')
+vim.treesitter.language.register('latex', 'plaintex')

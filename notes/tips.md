@@ -9,6 +9,23 @@
 - After every kernel update (`linux` package) reboot the system so the
   new kernel modules for hardware are loaded (e.g. USB drives)
 
+## Neovim
+
+### `LuaLS` break
+
+When there's an update to `lua_ls`, mason might brake with a message saying that
+the entries in `ensured_installed` are not valid. To solve this, comment out all the options in
+`ensure installed`, restart neovim, update with `:MasonUpdate` then you can uncomment
+the servers and restart neovim.
+
+### Test a local language server
+
+```lua
+require('lspconfig').some_server.setup {
+    cmd = { '/path/to/some_server', 'some-arg' }
+}
+```
+
 ## BASH Escape Sequences
 
 Replace color codes with the following syntax. `setaf` stands for '**set** **A**NSI **f**oreground'.
