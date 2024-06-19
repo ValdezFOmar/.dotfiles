@@ -20,6 +20,7 @@ type KeyDefinition = tuple[LazyCall, str] | tuple[Sequence[LazyCall], str] | Key
 cmd = lazy.spawn
 no_fullscreen = lazy.window.disable_fullscreen
 
+
 keybinds: dict[str, KeyDefinition] = {
     'M-C-r': (lazy.reload_config(), 'Reload the config'),
     # Move window focus
@@ -77,12 +78,12 @@ keybinds: dict[str, KeyDefinition] = {
 
 def def_to_ezkey(key: str, action: KeyDefinition) -> Key | KeyChord:
     match action:
-        case ([*commands], str(desc)):
-            return EzKey(key, *commands, desc=desc)
         case dict(submappings):
-            kwargs = submappings.pop('kwargs') if 'kwargs' in submappings else {}
+            kwargs = submappings.pop('kwargs', {})
             return EzKeyChord(key, [def_to_ezkey(*submap) for submap in submappings.items()], **kwargs)
-        case (command, str(desc)):
+        case ([*commands], desc):
+            return EzKey(key, *commands, desc=desc)
+        case (command, desc):
             return EzKey(key, command, desc=desc)
         case _:
             assert_never(action)

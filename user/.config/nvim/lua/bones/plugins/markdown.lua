@@ -22,8 +22,8 @@ local function clamp(lower, value, upper)
     return math.max(lower, math.min(value, upper))
 end
 
----Split a number representing an RGB value into its -individual red,
----green and blue components:
+---Split a number representing an RGB value into its individual red,
+---green and blue components
 ---@param number integer
 ---@return RGBColor
 local function int_to_RGB(number)
@@ -133,24 +133,6 @@ local function generate_highlights(value)
     return highlight_groups
 end
 
--- https://github.com/neovim/neovim/issues/3688#issuecomment-574544618
---[[
-local function toggle_render()
-    require 'render-markdown'.toggle()
-    local state = require 'render-markdown.state'
-    if not (vim.tbl_contains(state.config.file_types, vim.bo.filetype) and
-            vim.tbl_contains(state.config.render_modes, vim.fn.mode())) then
-        return
-    end
-    if state.enabled then
-        vim.opt_local.cursorline = false
-        -- vim.opt_local.guicursor:append { 'a:Cursor/lCursor' }
-    else
-        vim.opt_local.cursorline = true
-    end
-end
---]]
-
 function PLUGIN.config()
     local value = 0.30
 
@@ -161,6 +143,7 @@ function PLUGIN.config()
             },
             code = 'CursorColumn',
         },
+        win_options = { conceallevel = { rendered = 2 } },
     }
 
     vim.api.nvim_create_autocmd('ColorScheme', {
