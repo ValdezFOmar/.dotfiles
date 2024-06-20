@@ -20,9 +20,6 @@ function PLUGIN.config()
             local documentation = '#71a162'
             return {
                 -- General config
-                TabLine = { bg = colors.base },
-                TabLineSel = { fg = colors.subtext0, bg = colors.mantle },
-                FloatBorder = { fg = colors.surface2 },
                 ['@lsp.type.comment'] = {}, -- Disabled becuase it overrides usefull highlighting
                 ['@constant.builtin'] = { fg = colors.pink, style = {} },
                 ['@variable.builtin'] = { style = { 'italic' } },
@@ -48,6 +45,9 @@ function PLUGIN.config()
                 -- HTML
                 ['@tag.attribute'] = { link = '@property' },
                 ['@tag.delimiter'] = { fg = colors.overlay2 },
+                -- GUI
+                FloatBorder = { fg = colors.surface2 },
+                TabLineSel = { fg = colors.subtext1, bg = colors.surface0 },
                 -- Telescope
                 TelescopeBorder = { fg = colors.surface2 },
                 TelescopeNormal = { fg = colors.overlay0 },
