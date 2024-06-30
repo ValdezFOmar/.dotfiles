@@ -1,3 +1,6 @@
+# Neovim
+user/.config/nvim/spell/
+
 # Symlinks created by systemd
 user/.config/systemd/user/*.wants/
 

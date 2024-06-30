@@ -1,9 +1,11 @@
 ; extends
 
 ; highlight byte literals different from strings
-(string
-  (string_start) @_b
-  (#lua-match? @_b ".*[bB].*")) @character
+((string
+  (string_start) @character @_b
+  (string_content)? @character
+  (string_end) @character)
+  (#lua-match? @_b "^[rR]?[bB][rR]?"))
 
 ; I only have this because the language server
 ; overrides this highlights in a way that I don't like

@@ -1,40 +1,19 @@
----@return boolean
-local function current_buf_writeable()
-    local buf = vim.api.nvim_get_current_buf()
-    local buf_opts = vim.bo[buf]
-    return buf_opts.modifiable and not buf_opts.readonly
-end
-
----@param key string
----@param fallback string
----@return string
-local function trykey(key, fallback)
-    if not current_buf_writeable() then
-        return fallback
-    end
-    return key
-end
+local utils = require 'bones.utils'
+local remap = vim.keymap.set
 
 ---Options for cmd keymaps
 ---@param desc string|nil
----@return table
+---@return vim.keymap.set.Opts
 local function cmd_opts(desc)
-    return {
-        silent = true,
-        noremap = true,
-        desc = desc or '',
-    }
+    return { silent = true, desc = desc }
 end
 
 vim.g.mapleader = ' '
 
-local remap = vim.keymap.set
 remap('n', '<leader><leader>', '<Cmd>Lazy<Enter>', cmd_opts())
 remap('n', '<leader>ls', '<Cmd>Mason<Enter>', cmd_opts())
 remap('n', '<leader>e', '<Cmd>Telescope file_browser<Enter>', cmd_opts())
-remap('n', 'L', function()
-    vim.diagnostic.open_float()
-end, { desc = 'See diagnostics' })
+remap('n', 'L', vim.diagnostic.open_float, { desc = 'See diagnostics' })
 remap('n', '<leader>i', '<Cmd>Inspect<Enter>', cmd_opts 'Treesitter tokens')
 remap('n', '<leader>nh', '<Cmd>noh<Enter>', cmd_opts 'Remove search highlighting')
 remap({ 'n', 'v', 'i' }, '<C-z>', '<Nop>', { desc = 'Prevents for accidentally suspending neovim' })
@@ -54,16 +33,12 @@ remap('i', '<C-a>', '<Esc>I', { desc = 'Move cursor to the start of line' })
 remap('i', '<C-e>', '<Esc>A', { desc = 'Move cursor to the end of line' })
 remap('n', '<leader>0', '^', { desc = 'Move to first non whitespace char' })
 
-remap('n', '<S-Enter>', function()
-    return trykey([[O<Esc>0"_D]], '<S-Enter>')
-end, {
+remap('n', '<S-Enter>', utils.trykey('O<Esc>0"_D', '<S-Enter>'), {
     expr = true,
     desc = 'Add new line above the cursor',
     noremap = true,
 })
-remap('n', '<Enter>', function()
-    return trykey([[o<Esc>0"_D]], '<Enter>')
-end, {
+remap('n', '<Enter>', utils.trykey('o<Esc>0"_D', '<Enter>'), {
     expr = true,
     desc = 'Add new line under the cursor',
     noremap = true,
@@ -77,6 +52,7 @@ remap('v', '<S-Tab>', '<gv', { desc = 'Remove 1 level of indentation' })
 remap('v', '<BS>', '<gv', { desc = 'Remove 1 level of indentation' })
 
 remap('n', '<leader>xx', '<Cmd>!chmod u+x %<Enter>', cmd_opts 'Make file executable')
+remap('n', 'gx', utils.uri.open, { desc = 'Open a URI' })
 
 -- Moving between tabs
 remap('n', '<M-h>', '<Cmd>tabprevious<Enter>', cmd_opts())

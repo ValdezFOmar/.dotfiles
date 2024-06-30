@@ -1,17 +1,19 @@
--- Consider moving this configuration to a autocommand
--- so it can be applied to both manpages and vim help pages
--- also consider setting:
--- vim.opt_local.signcolumn = 'yes:9' in vim help files but
--- not in manpages since that will break the formatting
--- set the options one in the autocommand by setting a buffer
--- variable `:help vim.b`
+local function center_cursor()
+    local window = vim.api.nvim_get_current_win()
+    local height = vim.api.nvim_win_get_height(window)
+    local line = math.ceil(height / 2)
+    vim.api.nvim_win_set_cursor(window, { line, 0 })
+end
+
+local function toggle_cursorline()
+    ---@diagnostic disable-next-line:undefined-field
+    vim.opt_local.cursorline = not vim.opt_local.cursorline:get()
+end
+
 vim.opt_local.scrolloff = 999
 vim.opt_local.cursorline = true
 vim.opt_local.signcolumn = 'no'
 
-vim.keymap.set('n', 's', function()
-    vim.opt_local.cursorline = not vim.opt_local.cursorline:get()
-end, { buffer = true, desc = 'Toggle visible cursorline' })
+vim.keymap.set('n', 's', toggle_cursorline, { buffer = true })
 
-local line = math.ceil(vim.fn.winheight(0) / 2)
-vim.fn.cursor { line, 1 }
+center_cursor()

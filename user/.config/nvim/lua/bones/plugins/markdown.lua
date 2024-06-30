@@ -137,6 +137,8 @@ function PLUGIN.config()
     local value = 0.30
 
     require('render-markdown').setup {
+        start_enabled = false,
+        code_style = 'normal',
         highlights = {
             heading = {
                 backgrounds = generate_highlights(value),

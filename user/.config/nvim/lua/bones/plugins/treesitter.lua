@@ -1,9 +1,9 @@
 local PLUGIN = { 'nvim-treesitter/nvim-treesitter' }
 
+PLUGIN.lazy = false
 PLUGIN.build = ':TSUpdate'
 
 function PLUGIN.config()
-    require('nvim-treesitter.install').prefer_git = true
     ---@diagnostic disable-next-line:missing-fields
     require('nvim-treesitter.configs').setup {
         ensure_installed = {

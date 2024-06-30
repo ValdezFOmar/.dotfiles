@@ -1,16 +1,24 @@
 vim.g.query_lint_on = { 'InsertLeave', 'TextChanged' }
 
-vim.opt.guicursor = 'a:block-inverse'
-vim.opt.termguicolors = true
 vim.opt.cursorline = true
-vim.opt.shortmess = 'ltToOCFI'
-vim.opt.foldenable = false
+vim.opt.guicursor = {
+    'a:blinkwait700-blinkon250-blinkoff400',
+    'i-ci-ve:ver25-Cursor/lCursor',
+    'n-v-c:block-inverse',
+    'o:hor50-Cursor/lCursor',
+    'r-cr:hor20-Cursor/lCursor',
+    'sm:block-blinkwait175-blinkoff150-blinkon175',
+}
 
+vim.opt.shortmess:append 'I'
+vim.opt.incsearch = true
+vim.opt.foldenable = false
+vim.opt.wrap = false
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = 'yes'
-vim.opt.wrap = false
 vim.opt.scrolloff = 8
+vim.opt.virtualedit = { 'block' }
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -19,10 +27,6 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.formatoptions:append 'r'
 vim.opt.formatoptions:append 'o'
-
-vim.opt.incsearch = true
--- vim.opt.concealcursor = 'nc'
--- vim.opt.conceallevel = 2
 
 vim.filetype.add {
     extension = {
