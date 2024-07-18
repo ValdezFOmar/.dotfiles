@@ -10,7 +10,7 @@ exclude: |
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
@@ -19,19 +19,21 @@ repos:
       - id: check-toml
       - id: check-yaml
       - id: double-quote-string-fixer
+        # Workaround for fixing quotes in python 3.12 f-strings
+        # See: https://github.com/pre-commit/pre-commit-hooks/issues/1055
+        language_version: python3.11
 
   - repo: https://github.com/JohnnyMorganz/StyLua
-    rev: v0.19.1
+    rev: v0.20.0
     hooks:
       - id: stylua-github
         alias: stylua
-        files: 'user/\.config/nvim/'
+        files: ^user/\.config/nvim/
 
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 23.12.1
+    rev: 24.4.2
     hooks:
       - id: black
-        language_version: python3.11
 
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2

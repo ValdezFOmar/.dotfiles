@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import shutil
 import sqlite3
 import sys
 from collections.abc import Iterable
@@ -53,8 +54,7 @@ class NotesManager:
         Returns the number of notes added.
         """
         with open(name, 'r') as file:
-            added_notes = [self.add_note(line) for line in file]
-        return sum(added_notes)
+            return sum(self.add_note(line) for line in file)
 
     def get_last_notes(self, number: int) -> list[Note]:
         cursor = self.connection.cursor()
@@ -79,14 +79,9 @@ class NotesManager:
 
 
 def print_notes(notes: Iterable[Note], show_id: bool = False, full: bool = False) -> None:
-    # `get_terminal_size` causes an error when the output is piped
-    # use `sys.maxsize` to print the entire lines
-    if sys.stdout.isatty():
-        term_width, _ = os.get_terminal_size()
-    else:
-        term_width = sys.maxsize
+    term_width = shutil.get_terminal_size((sys.maxsize, 0)).columns
     for note in notes:
-        line = f"{note.id}: {note.content}" if show_id else note.content
+        line = f'{note.id}: {note.content}' if show_id else note.content
         if not full and len(line) > term_width:
             line = line[: term_width - 3] + '...'
         print(line)
@@ -102,7 +97,7 @@ def delete_note(notes_manager: NotesManager, id: int) -> int:
     if not note:
         print(f"Note with id '{id}' doesn't exist", file=sys.stderr)
         return 1
-    print(f"Note: {note.content!r}")
+    print(f'Note: {note.content!r}')
     answer = input('Are you sure you want to delete this note? [y/N] ').strip().lower()
     if answer in {'y', 'yes'}:
         notes_manager.remove_note(note.id)
@@ -162,11 +157,11 @@ def main() -> int:
         elif args.migrate:
             total = notes_manager.migrate_file(args.migrate)
             suffix = '' if total == 1 else 's'
-            print(f"{parser.prog}: {total} note{suffix} added")
+            print(f'{parser.prog}: {total} note{suffix} added')
         elif args.remove is not None:
             return delete_note(notes_manager, args.remove)
         else:
-            parser.error(f"Undandled arguments: {args}")
+            parser.error(f'Undandled arguments: {args}')
 
     return 0
 

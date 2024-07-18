@@ -166,7 +166,7 @@ time = widget.Clock(
 
 chord = widget.Chord(
     foreground=[Color.sky, Color.blue],
-    name_transform=lambda name: f" {name.title()} ",
+    name_transform=lambda name: f' {name.title()} ',
     decorations=[
         RectDecoration(
             colour=Color.darker,
