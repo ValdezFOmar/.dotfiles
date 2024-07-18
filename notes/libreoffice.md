@@ -4,8 +4,7 @@
 
 Information about the LibreOffice python API and tips for development.
 
-- [APSO](https://extensions.libreoffice.org/en/extensions/show/apso-alternative-script-organizer-for-python):
-  Extension for managing python scripts and running an interactive shell from within LibreOffice.
+- [APSO][apso]: Extension for managing python scripts and running an interactive shell from within LibreOffice.
 - [Import `uno` from system python](https://bbs.archlinux.org/viewtopic.php?id=145384)
 - [LibreOffice Extensions](https://wiki.documentfoundation.org/Extensions)
 - [Developing LibreOffice Extensions](https://wiki.documentfoundation.org/Development/Extension_Development)
@@ -30,13 +29,14 @@ for the python API are stored) to `PYTHONPATH`.
 PYTHONPATH=/usr/lib/libreoffice/program/ python
 ```
 
-Alternatively use the console provided by the APSO extension. Go to *Tool > Macros > Organize python scripts*,
-select the *MyMacros > apso.oxt > tools > console* and hit **Execute** to run it.
+Alternatively use the console provided by the APSO extension. Go to
+*Tool > Macros > Organize python scripts*, select the
+*MyMacros > apso.oxt > tools > console* and hit **Execute** to run it.
 
 ## Including external modules
 
-External modules should be placed under the `pythonpath/` directory alongside
-the main python script, given the following structure:
+External modules should be placed under the `pythonpath/` directory
+alongside the main python script, given the following structure:
 
 ```
 .
@@ -45,3 +45,5 @@ the main python script, given the following structure:
 │   └── module_b/
 └── main.py
 ```
+
+[apso]: https://extensions.libreoffice.org/en/extensions/show/apso-alternative-script-organizer-for-python

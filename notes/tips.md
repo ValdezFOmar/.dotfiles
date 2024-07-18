@@ -13,10 +13,11 @@
 
 ### `LuaLS` break
 
-When there's an update to `lua_ls`, mason might brake with a message saying that
-the entries in `ensured_installed` are not valid. To solve this, comment out all the options in
-`ensure installed`, restart neovim, update with `:MasonUpdate` then you can uncomment
-the servers and restart neovim.
+When there's an update to `lua_ls`, mason might brake with a message
+saying that the entries in `ensured_installed` are not valid. To solve
+this, comment out all the options in `ensure installed`, restart neovim,
+update with `:MasonUpdate` then you can uncomment the servers and
+restart neovim.
 
 ### Test a local language server
 
@@ -26,12 +27,22 @@ require('lspconfig').some_server.setup {
 }
 ```
 
+## Thunderbird
+
+To prevent Thunderbird from downloading all your e-mails, change the
+settings at *Edit > Account Settings > Synchronisation and Storage* to
+**Synchronise the most recent**.
+
+> [!TIP]
+> You might need to press `Alt` to see the *Edit* option in top of the window.
+
 ## BASH Escape Sequences
 
-Replace color codes with the following syntax. `setaf` stands for '**set** **A**NSI **f**oreground'.
-This syntax can only be embedded in double quotes. Also note that `$` need to be escaped for commands
-and variables that are intended to be evaluated each time the prompt is printed, else they would
-only be evaluated the first time.
+Replace color codes with the following syntax. `setaf` stands for
+'**set** **A**NSI **f**oreground'. This syntax can only be embedded in
+double quotes. Also note that `$` need to be escaped for commands and
+variables that are intended to be evaluated each time the prompt is
+printed, else they would only be evaluated the first time.
 
 ```sh
 # Here a 'number' can be any in the range of 0 to 15
@@ -42,7 +53,8 @@ color="\[$(tput setaf number)\]"
 PS1="$color \$(date +%M:%S) $ "
 ```
 
-Variables that contain escapes (`\[` and `\]`) will not properly escape the ANSI escape code in `PS1` when:
+Variables that contain escapes (`\[` and `\]`) will not properly escape
+the ANSI escape code in `PS1` when:
 
 - use inside literal strings (single quotes `''`)
 - it's escaped (`\$`) inside a double quoted string
@@ -50,12 +62,13 @@ Variables that contain escapes (`\[` and `\]`) will not properly escape the ANSI
 
 ## Firefox
 
-To make windows from external links open in tabs instead, apply the changes listed in this
-[article](https://support.mozilla.org/en-US/questions/1193456).
+To make windows from external links open in tabs instead, apply the
+changes listed in this [article][firefox-tabs].
 
 ## Pacman
 
-- To enable colored output, edit `/etc/pacman.conf` and uncomment the `Color` option.
+To enable colored output, edit `/etc/pacman.conf` and uncomment
+the `Color` option.
 
 ## Git
 
@@ -78,8 +91,8 @@ git push -d origin <remote-branch-name>
 
 ### Temporal
 
-To see a full list of keyboard models, layouts, variants and options for X11, along with a short description,
-do the following:
+To see a full list of keyboard models, layouts, variants and options
+for X11, along with a short description, do the following:
 
 ```sh
 less /usr/share/X11/xkb/rules/base.lst
@@ -87,7 +100,8 @@ less /usr/share/X11/xkb/rules/base.lst
 
 To set up the configuration, use the following commands:
 
-> [X11 Keyboard config](https://wiki.archlinux.org/title/Xorg/Keyboard_configuration)
+> [!NOTE]
+> [X11 Keyboard config][x11-keyboard-config] ArchWiki article.
 
 ```sh
 setxkbmap -model xkb_model
@@ -96,16 +110,19 @@ setxkbmap -variant xkb_variant
 setxkbmap -option xkb_options
 ```
 
-> For latin american keyboard layout use: `setxkbmap -layout latam`.
+> [!TIP]
+> For a Latin American keyboard layout use: `setxkbmap -layout latam`.
 
 ### Persistent
 
-For a persistent keyboard layout configuration use this command instead (reboot to see changes):
+For a persistent keyboard layout configuration use this command
+instead (reboot to see changes):
 
 ```sh
 localectl set-x11-keymap skb_layout
 ```
 
+> [!NOTE]
 > The same layouts from `setxkbmap` apply.
 
 
@@ -132,8 +149,9 @@ Paste output of command `foo` to `gpaste`:
 foo | gpaste-client
 ```
 
-> Use the key bind `mod4 + T + H` from the Qtile custom config to see the clipboard history.
-
+> [!TIP]
+> Use the key bind `mod4 + T + H` from the Qtile custom config to see
+> the clipboard history.
 
 ## Image Viewer
 
@@ -142,3 +160,6 @@ See images in a directory by moving into it and typing:
 ```sh
 nsxiv .
 ```
+
+[x11-keyboard-config]: https://wiki.archlinux.org/title/Xorg/Keyboard_configuration
+[firefox-tabs]: https://support.mozilla.org/en-US/questions/1193456

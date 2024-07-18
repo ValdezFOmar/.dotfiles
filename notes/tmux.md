@@ -1,21 +1,20 @@
 # tmux | Terminal Multiplexer
 
-> Check [tmux documentation](https://github.com/tmux/tmux/wiki/Getting-Started)
+> [!TIP]
+> Check the [tmux documentation](https://github.com/tmux/tmux/wiki/Getting-Started)
 
 - [Keybinds](#keybinds)
 - [Command Line Arguments](#command-line-arguments)
 
 ## Configuration
 
-Configuration file should either be:
+Configuration file should be one of:
 
-```sh
-~/tmux.conf
-# or
-~/.config/tmux/tmux.conf
-```
+1. `~/.config/tmux/tmux.conf`
+2. `~/tmux.conf`
 
-For setting an option, use `set -g`, this will set the option globally for all sessions, windows and panes.
+For setting an option, use `set -g`, this will set the option globally
+for all sessions, windows and panes.
 
 ## Keybinds
 
@@ -24,8 +23,9 @@ Some terminology:
 - `M`: Stands for the *Meta* key (normally the `alt` key).
 - `C`: Stands for the `ctrl` or *Control* key.
 - `S`: Stands for the `shift`key.
-- `<prefix>`: Represents the *prefix key*, is the key that should be pressed before any key bind.
-By default is `C-b` but it can be change in the settings.
+- `<prefix>`: Represents the *prefix key*, is the key that should be
+  pressed before any key bind. By default is `C-b` but it can be change
+  in the settings.
 
 
 The key binds:

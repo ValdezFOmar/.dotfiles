@@ -1,8 +1,8 @@
 # Dotfiles
 
-![Desktop](./desktop_screenshot.png)
-
 Dotfiles and installation scripts for my Arch Linux setup.
+
+![Desktop](./desktop_screenshot.png)
 
 ## Setup
 
@@ -13,7 +13,8 @@ git clone https://github.com/ValdezFOmar/.dotfiles.git && cd .dotfiles/
 ```
 
 > [!IMPORTANT]
-> This will install all the config files. To see more options use the flag `--help`.
+> This will install all the config files. Use `--help` to see more
+> options.
 
 Install the system configurations:
 

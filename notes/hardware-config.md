@@ -1,17 +1,15 @@
 # Hardware Configuration
 
-
 ## CPU Frequency Scaling
 
-See the archlinux wiki for controlling the CPU [Frequency](https://wiki.archlinux.org/title/CPU_frequency_scaling).
+See the archlinux wiki for controlling the CPU [Frequency][cpu-frequency].
 Use `cpupower` to do all the configurations.
 
-Check the [Power Governors](https://wiki.archlinux.org/title/CPU_frequency_scaling#Scaling_governors)
-for different power modes.
+Check the [Power Governors][power-governors] section for different power modes.
 
-> A [script for controlling the CPU frequency](../user/.local/bin/frequencymenu) is provided, but needs
-> needs permission to [run `cpupower`](#run-cpupower-without-password-prompt).
-
+> [!TIP]
+> A [script for controlling the CPU frequency][cpu-frequency-script]
+> is provided, but needs needs permission to run `cpupower`.
 
 ## Run `cpupower` without password prompt
 
@@ -30,7 +28,8 @@ user_name ALL=(ALL) NOPASSWD: /usr/bin/cpupower frequency-set*
 
 ## Shutdown button suspends the computer
 
-Edit the file `/etc/systemd/logind.conf` and add the following configuration:
+Edit the file `/etc/systemd/logind.conf` and add the following
+configuration:
 
 ```
 HandlePowerKey=suspend
@@ -46,8 +45,8 @@ sudo systemctl kill -s HUP systemd-logind
 
 ## Backlight / Screen Brightness
 
-Use the package `acpilight`, it provides the command `xbacklight`. Add the following configuration
-under `/etc/udev/rules.d/90-backlight.rules`:
+Use the package `acpilight`, it provides the command `xbacklight`. Add
+the following configuration under `/etc/udev/rules.d/90-backlight.rules`:
 
 > [!TIP]
 > `:TSInstall udev`
@@ -63,3 +62,7 @@ Then add the user to the `video` group:
 ```sh
 usermod --apend --groups video $(whoami)
 ```
+
+[cpu-frequency]: https://wiki.archlinux.org/title/CPU_frequency_scaling
+[power-governors]: https://wiki.archlinux.org/title/CPU_frequency_scaling#Scaling_governors
+[cpu-frequency-script]: ../user/.local/bin/frequencymenu

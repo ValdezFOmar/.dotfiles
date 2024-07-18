@@ -1,19 +1,31 @@
 # Arch Linux: Installation guide
 
 > [!NOTE]
-> For the full documentation see the
-> [Arch Wiki: Installation guide](https://wiki.archlinux.org/title/Installation_guide).
+> For the full documentation see the [Arch Wiki: Installation guide][arch-install-guide].
 
 > [!TIP]
 > Use the `more` command for scrolling through a large command output.
 
 ## Set the console keyboard layout and font
 
-### Keymap
+### Keyboard mapping
 
-For a Latin American keyboard layout: `/usr/share/kbd/keymaps/i386/qwerty/la-latin1.map.gz`
+To list the available keyboard mappings do:
 
-To set it as the keyboard layout:
+```sh
+localectl list-keymaps
+```
+
+To set a keyboard mapping for the current session do:
+
+```sh
+loadkeys [file-name]
+```
+
+> [!TIP]
+> For a persistent configuration, use a [`/etc/vconsole.conf` file](#persistent-configuration-for-the-linux-console)
+
+For example, for a Latin American mapping do:
 
 ```sh
 loadkeys la-latin1
@@ -24,15 +36,14 @@ loadkeys la-latin1
 Fonts at:
 
 ```sh
-ls /usr/share/kbd/consolefonts/
-
-# Some useful fonts:
-# ...
-# ter-122n
-# ter-124n
-# ter-128n
-# ...
+ls /usr/share/kbd/consolefonts/ | more
 ```
+
+Some useful fonts:
+
+- `ter-122n`
+- `ter-124n`
+- `ter-128n`
 
 Setting fonts:
 
@@ -43,8 +54,8 @@ setfont [font]
 
 ## Verify the boot mode
 
-This command should return `64`, if not or the directory doesn't exists at all,
-then you aren't booting in UEFI mode.
+This command should return `64`, if not or the directory doesn't exists
+at all, then you aren't booting in UEFI mode.
 
 ```sh
 cat /sys/firmware/efi/fw_platform_size
@@ -67,7 +78,6 @@ rfkill unblock wlan
 ```
 
 Connect to a wireless network with [`iwctl`](./connect-wifi.md#using-iwctl-live-boot).
-
 Finally, check internet connection with:
 
 ```sh
@@ -95,12 +105,12 @@ Choose a GPT label for UEFI and create the following 3 partitions
 > [!IMPORTANT]
 > If a EFI partition already exists, use it instead of creating a new one.
 
-| Partition | Size       | mount         |
-| --------- | ---------- | ------------- |
-| EFI       | 300 M      | /mnt/boot/efi |
-| swap      | +512 M     | [SWAP]        |
-| root      | ~50-100 GB | /mnt          |
-| home      | Left space | /mnt/home     |
+| Partition | Size       | Mount point     |
+| --------- | ---------- | --------------- |
+| EFI       | 300 M      | `/mnt/boot/efi` |
+| swap      | +512 M     | N/A             |
+| root      | ~50-100 GB | `/mnt`          |
+| home      | Left space | `/mnt/home`     |
 
 ### Format partitions
 
@@ -160,15 +170,20 @@ List of packages to install
 
 ### Drivers
 
-Drivers for the graphics card are required to use Xorg, to see a list of drivers:
+Drivers for the graphics card are required to use Xorg, to see a
+list of drivers:
 
 ```sh
 pacman -Ss xf86-video
 ```
 
+> [!NOTE]
+> The Intel graphics driver may be buggy, consider using the default
+> drivers instead (no installation required and more than capable).
+
 ### Microcode
 
-A microcode package for the CPU is required.
+A microcode package for the CPU is recommended.
 
 - `amd-ucode` for AMD processors.
 - `intel-ucode` for Intel processors.
@@ -199,28 +214,41 @@ date
 
 ### Localization
 
-Edit `/etc/locale.gen` and uncomment `en_US.UTF-8 UTF-8`, then generate the locales:
+Edit `/etc/locale.gen` and uncomment
+
+```txt
+en_US.UTF-8 UTF-8
+es_MX.UTF-8 UTF-8
+```
+
+Then generate the locales:
 
 ```sh
 locale-gen
 ```
 
+> [!WARNING]
+> Not generating the Spanish locale will cause some important
+> applications to error since this locale is used for dates.
+
 Create the `/etc/locale.conf` file and add:
 
-```txt
+```
 LANG=en_US.UTF-8
 ```
 
-Also create `/etc/vconsole.conf` and add:
+#### Persistent configuration for the Linux console
 
-> [!NOTE]
-> For other fonts/font sizes, select one from `pacman -Ql terminus-font`
+Create the file `/etc/vconsole.conf` and write:
 
-```txt
+```
 KEYMAP=la-latin1
 FONT=ter-128n
 XKBLAYOUT=latam
 ```
+
+> [!NOTE]
+> For other fonts/font sizes, select one from `pacman -Ql terminus-font`
 
 ## Network configuration
 
@@ -256,7 +284,8 @@ passwd [user_name]
 
 ### Sudoers file
 
-Edit the sudoers file so any user of the group `wheel` would be able to run `sudo` commands.
+Edit the sudoers file to allow any user in the `wheel` group
+to run `sudo`.
 
 ```sh
 EDITOR=/usr/bin/nvim visudo
@@ -303,7 +332,9 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ## Post installation
 
-Refer to [README](../README.md) to see the instructions for adding all the additional software after
-successfully installing the system.
+Refer to [README](../README.md) to see the instructions for adding all
+the additional software after successfully installing the system.
+For internet connection, use [`nmcli`](./connect-wifi.md#using-networkmanager).
 
-For internet connection, refer to [how to connect to WiFi with `NetworkManager`](./connect-wifi.md#using-networkmanager).
+
+[arch-install-guide]: https://wiki.archlinux.org/title/Installation_guide
