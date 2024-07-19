@@ -43,5 +43,6 @@ include = '''
     |^user/\.local/bin/frequencymenu$
     |^user/\.local/bin/notes$
     |^user/\.local/bin/view-images$
+    |^user/\.local/bin/mkvenv$
 )
 '''

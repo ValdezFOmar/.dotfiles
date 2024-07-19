@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+
+"""Easily create virtual enviroments using `virtualenv`, `pyenv` and `fzf`."""
+
+import argparse
+import os
+import subprocess as sp
+import sys
+
+GREEN = '\033[32m'
+NORMAL = '\033[0m'
+
+
+def yesno(prompt: object) -> bool | None:
+    while True:
+        try:
+            answer = input(f'{GREEN}::{NORMAL} {prompt} [y/n] ').strip().lower()
+        except EOFError:
+            return None
+        if not answer:
+            return None
+        if answer in {'y', 'yes'}:
+            return True
+        if answer in {'n', 'no'}:
+            return False
+
+
+def select_version() -> str | None:
+    pyenv = sp.run(['pyenv', 'versions', '--bare'], capture_output=True)
+    fzf = sp.run(
+        ['fzf', '--height=~100%', '--no-info', '--disabled', '--tac'], input=pyenv.stdout, stdout=sp.PIPE
+    )
+    version = fzf.stdout.decode(encoding='utf-8').strip()
+    if fzf.returncode != 0 or not version:
+        return None
+    return version
+
+
+def get_version() -> str | None:
+    try:
+        process = sp.run(['pyenv', 'local'], encoding='utf-8', capture_output=True, check=True)
+    except FileNotFoundError as e:
+        assert e.filename == 'pyenv'
+        print(f'==> pyenv not found', file=sys.stderr)
+        current_version = '.'.join(map(str, sys.version_info[:3]))
+        if yesno(f'Use system python ({current_version}) instead?'):
+            return current_version
+        return None
+    except sp.CalledProcessError as e:
+        assert e.stderr.startswith('pyenv: no local version')
+        version = select_version()
+        if not version:
+            return None
+        sp.run(['pyenv', 'local', version])
+        return version
+    else:
+        return process.stdout.strip()
+
+
+def create_vritualenv(name: str, version: str, prompt: str) -> int:
+    common_args = [name, '--prompt', prompt, '--copies']
+    try:
+        venv = sp.run(['virtualenv', *common_args, '--python', version, '--download'])
+    except FileNotFoundError as e:
+        # Fallback to standard venv if virtualenv is not present
+        assert e.filename == 'virtualenv'
+        venv = sp.run(['python', '-m', 'venv', *common_args, '--upgrade-deps'])
+    return venv.returncode
+
+
+def main() -> int:
+    default_name = '.venv'
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        'venv_name',
+        default=default_name,
+        nargs='?',
+        help=f'Name for the virtual enviroment (default: {default_name})',
+    )
+    args = parser.parse_args()
+
+    venv_name: str = args.venv_name.strip()
+
+    if not venv_name:
+        parser.error(f'Empty name for virtual enviroment: {args.venv_name!r}')
+
+    if os.path.exists(venv_name):
+        print(f'==> {venv_name!r} already exists', file=sys.stderr)
+        return 1
+
+    venv_version = get_version()
+
+    if not venv_version:
+        print(f'==> No python version selected, aborting', file=sys.stderr)
+        return 1
+
+    print(f'{GREEN}::{NORMAL} Creating virtual enviroment...')
+    return create_vritualenv(venv_name, venv_version, rf'\[{GREEN}\]{venv_name}\[{NORMAL}\]')
+
+
+if __name__ == '__main__':
+    sys.exit(main())

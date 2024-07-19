@@ -12,13 +12,14 @@ alias ls='ls --color=auto --group-directories-first'
 alias la='ls -AvF'
 alias ll='ls -Alvh'
 
+alias cd..='cd ..'
 alias cp='cp -i '
 alias mv='mv -i '
 alias rm='rm -I '
-alias md='mkdir '
+alias md='mkdir --parents'
 
-alias cd..='cd ..'
 alias vim='nvim'
+alias ts='tree-sitter'
 alias kssh='kitten ssh '
 alias neofetch='fastfetch'
 alias tree='tree --dirsfirst -C'
@@ -62,13 +63,12 @@ function mcd()
 # pretty print paths in $PATH
 function paths()
 {
-    local bin_paths
+    local bin_paths bin_path
     IFS=':' read -ra bin_paths <<< "$PATH"
     for bin_path in "${bin_paths[@]}"; do
         echo "$bin_path"
     done
 }
-
 
 # activate virtual env
 function activate()
@@ -77,58 +77,20 @@ function activate()
     source "./$venv_name/bin/activate"
 }
 
-# Depends on:
-#   - pyenv
-#   - virtualenv
-#   - fd
-#   - fzf
 function venv()
 {
-    local venv_name=".venv" error green normal answer version
-    local -f _select_version
+    local answer file
+    local venv_name="${1:-.venv}"
 
-    function _select_version() {
-        pyenv versions --bare | fzf --height='~100%' --no-info --disabled --tac
-    }
+    ~/.local/bin/mkvenv "$venv_name" || return $?
+    activate "$venv_name" || return $?
 
-    error=$(tput setaf 1)
-    green=$(tput setaf 2)
-    normal=$(tput sgr 0)
-
-    if [[ -d $venv_name ]]; then
-        >&2 echo "${error}==> '$venv_name' already exists${normal}"
-        return 1
-    fi
-
-    if ! command -v pyenv > /dev/null; then
-        echo "${error}==> pyenv not found${normal}"
-        read -p "Use system's $(python --version) instead? [y/N] " -r answer
-        if (shopt -s nocasematch; ! [[ $answer =~ ^y(es)?$ ]]); then
-            return 1
-        fi
-        version=$(python -c 'import sys; sys.stdout.write(".".join(map(str, sys.version_info[:3])))')
-    elif ! pyenv local &> /dev/null; then
-        version=$(_select_version) || return $?
-        pyenv local "$version"
-    else
-        version=$(pyenv local)
-    fi
-
-    echo "${green}::${normal} Creating virtual enviroment..."
-    virtualenv --python "$version" "./$venv_name" \
-               --prompt "\[$green\]$venv_name\[$normal\]" \
-               --copies --download || return $?
-    activate "$venv_name"
-
-    for file in $(fd --glob '*requirements*.txt'); do
+    for file in $(fd --type file --glob '*requirements*.txt'); do
         read -p "Install from '$file' file? [Y/n] " -r answer
         if (shopt -s nocasematch; [[ $answer =~ ^(y(es)?)?$ ]]); then
             pip install --requirement "$file"
         fi
     done
-
-    unset -f _select_version
 }
-
 
 # vim: set ft=bash:
