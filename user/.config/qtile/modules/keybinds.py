@@ -1,3 +1,4 @@
+import os
 from typing import TYPE_CHECKING, Any, assert_never
 
 from libqtile.config import Click, Drag, EzKey, EzKeyChord, Key, KeyChord
@@ -68,6 +69,7 @@ keybinds: dict[str, KeyDefinition] = {
             cmd(f"{vars.terminal} bat --plain --pager 'less +F -RFS' {vars.qtile_log}"),
             'Open Qtile log file',
         ),
+        't': (cmd(vars.toggle_touchpad), 'Enbale/Disable touchpad tapping'),
         'kwargs': {
             'name': 'tool',
             'desc': 'Tooling (mod + T + <key>), for using general purpose tools',

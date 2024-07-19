@@ -111,6 +111,15 @@
   new_icon = ~/.config/qtile/notification.png
   max_icon_size = 28
 
+[touchpad]
+  summary = ^Touchpad$
+  msg_urgency = low
+  icon_position = off
+  history_ignore = true
+  frame_color = "#96D382"
+  timeout = 2s
+  set_stack_tag = touchpad-tapping
+
 [volume]
   stack_tag = volume_indicator
   set_stack_tag = volume_indicator

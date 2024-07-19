@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 from typing import TYPE_CHECKING, assert_never
 
 from libqtile.lazy import lazy
@@ -23,6 +24,25 @@ widget_defaults = dict(
     foreground=Color.text,
 )
 extension_defaults = widget_defaults.copy()
+
+
+def get_wifi_interface() -> str:
+    try:
+        process = subprocess.run(
+            ['nmcli', '--fields', 'TYPE,DEVICE', 'device'],
+            encoding='utf-8',
+            check=True,
+            capture_output=True,
+            timeout=10,
+        )
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+        return ''
+    # First line is the fields header
+    for row in process.stdout.splitlines()[1:]:
+        device_type, device_name = row.split()
+        if device_type == 'wifi':
+            return device_name
+    return ''
 
 
 def clamp[T: (int, float)](lower: T, value: T, upper: T) -> T:
@@ -205,7 +225,7 @@ battery = NerdFontBattery(
 
 # Check interface with `iwconfig`
 wifi = widget.WiFiIcon(
-    interface='wlo1',
+    interface=get_wifi_interface(),
     expanded_timeout=15,
     active_colour=Color.green,
     foreground=Color.green,
