@@ -20,7 +20,19 @@ local function on_exit(cmd_name)
     end)
 end
 
-vim.keymap.set('n', '<leader>ff', function()
+---@param cmd string[]
+---@param name string
+local function handle_cmd(cmd, name)
+    local ok, process = pcall(vim.system, cmd, { text = true }, on_exit(name))
+    if not ok then
+        local message = ('could not run "%s", command failed: %s'):format(name, vim.inspect(cmd))
+        vim.notify(message, vim.log.levels.ERROR)
+    else
+        process:wait(5000) -- milliseconds
+    end
+end
+
+local function format_current_file()
     local filename = vim.fn.expand '%:p'
     if filename == '' then
         vim.notify('Failed to expand current filename', vim.log.levels.ERROR)
@@ -31,7 +43,9 @@ vim.keymap.set('n', '<leader>ff', function()
         return
     end
     vim.cmd.write { filename, mods = { silent = true } }
-    vim.system({ 'black', filename }, { text = true }, on_exit 'black'):wait(10000)
-    vim.system({ 'isort', filename }, { text = true }, on_exit 'isort'):wait(10000)
+    handle_cmd({ 'ruff', 'format', filename }, 'ruff-format')
+    handle_cmd({ 'ruff', 'check', '--select', 'I', '--fix', filename }, 'ruff')
     vim.cmd.edit { filename }
-end, { buffer = true, desc = 'Format current file' })
+end
+
+vim.keymap.set('n', '<leader>ff', format_current_file, { buffer = true })

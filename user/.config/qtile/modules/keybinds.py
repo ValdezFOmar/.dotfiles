@@ -1,4 +1,3 @@
-import os
 from typing import TYPE_CHECKING, Any, assert_never
 
 from libqtile.config import Click, Drag, EzKey, EzKeyChord, Key, KeyChord
@@ -87,7 +86,7 @@ def def_to_ezkey(key: str, action: KeyDefinition) -> Key | KeyChord:
             return EzKey(key, *commands, desc=desc)
         case (command, desc):
             return EzKey(key, command, desc=desc)
-        case _:
+        case _:  # pyright: ignore[reportUnnecessaryComparison]
             assert_never(action)
 
 

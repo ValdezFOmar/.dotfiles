@@ -18,10 +18,6 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-toml
       - id: check-yaml
-      - id: double-quote-string-fixer
-        # Workaround for fixing quotes in python 3.12 f-strings
-        # See: https://github.com/pre-commit/pre-commit-hooks/issues/1055
-        language_version: python3.11
 
   - repo: https://github.com/JohnnyMorganz/StyLua
     rev: v0.20.0
@@ -30,18 +26,14 @@ repos:
         alias: stylua
         files: ^user/\.config/nvim/
 
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.4.2
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.5
     hooks:
-      - id: black
-
-  - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-        name: isort (python)
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
 
   - repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
-    rev: 1.14.0
+    rev: 1.15.0
     hooks:
       - id: basedpyright

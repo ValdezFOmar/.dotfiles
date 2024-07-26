@@ -118,7 +118,7 @@ class NerdFontBattery(widget.Battery):
                 char = self.unknown_char
             case BatteryState.NOT_CHARGING:
                 char = self.not_charging_char
-            case _:
+            case _:  # pyright: ignore[reportUnnecessaryComparison]
                 assert_never(status.state)
 
         percent_formated = clamp(0, int(status.percent * 100), 100)

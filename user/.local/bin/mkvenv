@@ -2,6 +2,8 @@
 
 """Easily create virtual enviroments using `virtualenv`, `pyenv` and `fzf`."""
 
+from __future__ import annotations
+
 import argparse
 import os
 import subprocess as sp
@@ -41,7 +43,7 @@ def get_version() -> str | None:
         process = sp.run(['pyenv', 'local'], encoding='utf-8', capture_output=True, check=True)
     except FileNotFoundError as e:
         assert e.filename == 'pyenv'
-        print(f'==> pyenv not found', file=sys.stderr)
+        print('==> pyenv not found', file=sys.stderr)
         current_version = '.'.join(map(str, sys.version_info[:3]))
         if yesno(f'Use system python ({current_version}) instead?'):
             return current_version
@@ -91,7 +93,7 @@ def main() -> int:
     venv_version = get_version()
 
     if not venv_version:
-        print(f'==> No python version selected, aborting', file=sys.stderr)
+        print('==> No python version selected, aborting', file=sys.stderr)
         return 1
 
     print(f'{GREEN}::{NORMAL} Creating virtual enviroment...')

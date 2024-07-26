@@ -22,6 +22,14 @@ if vim.uv.os_uname().machine ~= 'aarch64' then
     table.insert(servers, 'lua_ls')
 end
 
+local function server_config(config)
+    config = config or {}
+    return function(server)
+        config.capabilities = require('cmp_nvim_lsp').default_capabilities()
+        require('lspconfig')[server].setup(config)
+    end
+end
+
 function PLUGIN.config()
     require('mason').setup {
         ui = {
@@ -34,22 +42,24 @@ function PLUGIN.config()
         },
     }
 
-    local lspconfig = require 'lspconfig'
-    local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
-
     require('mason-lspconfig').setup {
         ensure_installed = servers,
         handlers = {
             -- default setup
-            function(server)
-                lspconfig[server].setup { capabilities = lsp_capabilities }
-            end,
-            html = function()
-                lspconfig.html.setup {
-                    capabilities = lsp_capabilities,
-                    filetypes = { 'html', 'templ', 'htmldjango' },
-                }
-            end,
+            server_config(),
+            html = server_config { filetypes = { 'html', 'templ', 'htmldjango' } },
+            basedpyright = server_config {
+                settings = {
+                    basedpyright = {
+                        analysis = {
+                            autoSearchPaths = true,
+                            useLibraryCodeForTypes = true,
+                            diagnosticMode = 'openFilesOnly',
+                            typeCheckingMode = 'standard',
+                        },
+                    },
+                },
+            },
         },
     }
 
