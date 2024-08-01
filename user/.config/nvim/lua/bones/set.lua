@@ -30,6 +30,7 @@ vim.opt.formatoptions:append 'o'
 
 vim.filetype.add {
     extension = {
+        h = 'c',
         conf = 'ini',
         hook = 'ini',
         theme = 'ini',
@@ -62,3 +63,4 @@ vim.api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
 
 vim.treesitter.language.register('ini', 'systemd')
 vim.treesitter.language.register('latex', 'plaintex')
+vim.treesitter.language.register('python', 'gyp')

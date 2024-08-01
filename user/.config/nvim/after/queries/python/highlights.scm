@@ -3,7 +3,9 @@
 ; highlight byte literals different from strings
 ((string
   (string_start) @character @_b
-  (string_content)? @character
+  (string_content
+    (escape_sequence)? @string.escape
+    (#set! @string.escape "priority" 101))? @character
   (string_end) @character)
   (#lua-match? @_b "^[rR]?[bB][rR]?"))
 

@@ -24,10 +24,11 @@ PLUGIN.opts = {
         local builtin = '#7d7ddb' -- Original builtin #8888C6
         local documentation = '#71a162'
         return {
-            -- General config
             ['@lsp.type.comment'] = {}, -- Disabled because it overrides usefull highlighting
+            -- General config
             ['@constant.builtin'] = { fg = colors.pink, style = {} },
             ['@variable.builtin'] = { style = { 'italic' } },
+            ['@module.builtin'] = { link = '@variable.builtin' },
             ['@keyword.operator'] = { link = 'Keyword' },
             ['@keyword.conditional.ternary'] = { link = 'Operator' },
             ['@attribute'] = { fg = colors.green },
@@ -47,8 +48,9 @@ PLUGIN.opts = {
             ['@keyword.operator.sql'] = { fg = colors.mauve },
             -- HTML
             ['@tag.delimiter'] = { link = 'Delimiter' },
-            ['@punctuation.bracket.htmldjango'] = { fg = colors.teal },
+            ['@punctuation.bracket.htmldjango'] = { fg = colors.pink },
             -- GUI
+            FloatTitle = { link = '@markup.heading' },
             FloatBorder = { fg = colors.surface2 },
             TabLineSel = { fg = colors.subtext1, bg = colors.surface0 },
             -- Telescope

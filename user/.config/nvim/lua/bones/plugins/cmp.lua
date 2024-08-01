@@ -67,7 +67,7 @@ end
 
 function PLUGIN.config()
     local cmp = require 'cmp'
-    local maxwidth = 35
+    local maxwidth = 28
 
     cmp.setup {
         snippet = {
@@ -100,7 +100,7 @@ function PLUGIN.config()
                     item.menu = ('[%s]'):format(name)
                 end
                 if #item.abbr > maxwidth then
-                    item.abbr = item.abbr:gsub(1, maxwidth - 1) .. '…'
+                    item.abbr = item.abbr:sub(1, maxwidth - 1) .. '…'
                 end
                 return item
             end,

@@ -71,7 +71,7 @@ function M.uri.open()
     vim.notify(message, vim.log.levels.INFO)
 end
 
-function M.uri.filetypes.markdown(path)
+function M.uri.filetypes.markdown()
     local buffer = vim.api.nvim_get_current_buf()
     local node = vim.treesitter.get_node { bufnr = buffer, ignore_injections = false }
     if not node then
@@ -84,7 +84,6 @@ function M.uri.filetypes.markdown(path)
         end
         return vim.treesitter.get_node_text(link, buffer)
     elseif node:type() == 'link_text' then
-        assert(vim.startswith(vim.treesitter.get_node_text(node, buffer), path))
         local link = node:next_named_sibling()
         if not (link and link:type() == 'link_destination') then
             return

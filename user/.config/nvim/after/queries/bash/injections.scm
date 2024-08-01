@@ -15,21 +15,3 @@
   (#eq? @_arg "-c")
   (#offset! @injection.content 0 1 0 -1)
   (#set! injection.language "bash"))
-
-((command
-  name: (command_name) @_python
-  argument: (word) @_arg
-  .
-  argument: (raw_string) @injection.content)
-  (#eq? @_python "python")
-  (#eq? @_arg "-c")
-  (#offset! @injection.content 0 1 0 -1)
-  (#set! injection.language "python"))
-
-(command
-  name: (command_name) @_command
-  .
-  argument: (string
-    (string_content) @injection.content)
-  (#eq? @_command "bind")
-  (#set! injection.language "readline"))

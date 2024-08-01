@@ -1,26 +1,19 @@
 ; extends
 
 ; sqlite3 module `execute` calls
-(call
+((call
   function: (attribute
-      object: [
-        (identifier) @_cur
-        ; This allows injecting syntax when connection
-        ; is a property, like `self.connection.execute`
-        (attribute
-          attribute: (identifier) @_cur)
-      ]
-      attribute: (identifier) @_exec)
+    object: [
+      (identifier) @_cur
+      ; In an instance field, like `self.connection.execute`
+      (attribute
+        attribute: (identifier) @_cur)
+    ]
+    attribute: (identifier) @_exec)
   arguments: (argument_list
     .
     (string
-      (string_content) @injection.content))
+      (string_content) @injection.content)))
   (#any-of? @_cur "cur" "cursor" "con" "connection")
   (#any-of? @_exec "execute" "executemany")
   (#set! injection.language "sql"))
-
-; Allow injecting sql with a `--sql` comment
-; (string
-;   (string_content) @injection.content
-;   (#lua-match? @injection.content "^%s*[-]+%s*sql")
-;   (#set! injection.language "sql"))
