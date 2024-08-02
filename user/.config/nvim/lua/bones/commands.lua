@@ -40,8 +40,6 @@ end, { desc = 'Toggle diagnostics' })
 user_command('ToggleWrap', function()
     ---@diagnostic disable:undefined-field
     vim.opt_local.wrap = not vim.opt_local.wrap:get()
-    vim.opt_local.linebreak = not vim.opt_local.linebreak:get()
-    vim.opt_local.breakindent = not vim.opt_local.breakindent:get()
 end, { desc = 'Toggle line wrapping' })
 
 user_command('CursorNode', function()

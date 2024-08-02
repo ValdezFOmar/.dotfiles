@@ -11,8 +11,9 @@ local function toggle_cursorline()
 end
 
 vim.opt_local.scrolloff = 999
-vim.opt_local.cursorline = true
+vim.opt_local.cursorline = false
 vim.opt_local.signcolumn = 'no'
+vim.opt_local.spell = false
 
 vim.keymap.set('n', 's', toggle_cursorline, { buffer = true })
 

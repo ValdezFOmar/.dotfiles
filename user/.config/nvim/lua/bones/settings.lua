@@ -28,6 +28,11 @@ vim.opt.smartindent = true
 vim.opt.formatoptions:append 'r'
 vim.opt.formatoptions:append 'o'
 
+vim.opt.spell = true
+vim.opt.spelllang = 'en'
+vim.opt.linebreak = true
+vim.opt.breakindent = true
+
 vim.filetype.add {
     extension = {
         h = 'c',
