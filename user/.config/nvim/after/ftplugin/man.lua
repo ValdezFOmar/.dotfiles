@@ -1,6 +1,9 @@
 local function center_cursor()
     local window = vim.api.nvim_get_current_win()
-    local height = vim.api.nvim_win_get_height(window)
+    local buffer = vim.api.nvim_win_get_buf(window)
+    local window_height = vim.api.nvim_win_get_height(window)
+    local buffer_height = vim.api.nvim_buf_line_count(buffer)
+    local height = (buffer_height < window_height) and buffer_height or window_height
     local line = math.ceil(height / 2)
     vim.api.nvim_win_set_cursor(window, { line, 0 })
 end

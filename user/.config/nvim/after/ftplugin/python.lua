@@ -3,30 +3,28 @@ vim.opt_local.softtabstop = 4
 vim.opt_local.shiftwidth = 4
 vim.opt_local.expandtab = true
 
----@param cmd_name string
----@return function
-local function on_exit(cmd_name)
-    ---@param cmd vim.SystemCompleted
-    return vim.schedule_wrap(function(cmd)
-        if cmd.code == 0 then
-            return
-        end
-        local name = cmd_name
-        if cmd.stderr and cmd.stderr ~= '' then
-            name = cmd_name .. '\n'
-        end
-        local msg = ('[exit: %d] %s%s'):format(cmd.code, name, cmd.stderr or '')
-        vim.notify(msg, vim.log.levels.ERROR)
-    end)
-end
-
 ---@param cmd string[]
----@param name string
-local function handle_cmd(cmd, name)
-    local ok, process = pcall(vim.system, cmd, { text = true }, on_exit(name))
+local function run(cmd)
+    local ok, process = pcall(
+        vim.system,
+        cmd,
+        { text = true },
+        ---@param p vim.SystemCompleted
+        vim.schedule_wrap(function(p)
+            if p.code == 0 then
+                return
+            end
+            local command = table.concat(cmd, ' ')
+            if p.stderr and p.stderr ~= '' then
+                command = command .. '\n'
+            end
+            local msg = ('[exit: %d] %s%s'):format(p.code, command, p.stderr or '')
+            vim.notify(msg, vim.log.levels.ERROR)
+        end)
+    )
+
     if not ok then
-        local message = ('could not run "%s", command failed: %s'):format(name, vim.inspect(cmd))
-        vim.notify(message, vim.log.levels.ERROR)
+        vim.notify('could not run "' .. cmd[0] .. '", command not found', vim.log.levels.ERROR)
     else
         process:wait(5000) -- milliseconds
     end
@@ -43,8 +41,8 @@ local function format_current_file()
         return
     end
     vim.cmd.write { filename, mods = { silent = true } }
-    handle_cmd({ 'ruff', 'format', filename }, 'ruff-format')
-    handle_cmd({ 'ruff', 'check', '--select', 'I', '--fix', filename }, 'ruff')
+    run { 'ruff', 'format', filename }
+    run { 'ruff', 'check', '--select', 'I', '--fix', filename }
     vim.cmd.edit { filename }
 end
 

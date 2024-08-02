@@ -19,6 +19,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup('bones.plugins', {
     rocks = { enabled = false },
+    git = { cooldown = 60 * 5 },
     install = {
         colorscheme = { 'catppuccin-mocha', 'default' },
     },
@@ -28,10 +29,10 @@ require('lazy').setup('bones.plugins', {
     },
     checker = {
         enabled = true,
-        concurrency = 1,
+        concurrency = 4,
         notify = false,
     },
-    -- This creates an annoying prompt in all neovim instances
+    -- This avoids an annoying prompt in all neovim instances
     change_detection = {
         enabled = false,
         notify = false,

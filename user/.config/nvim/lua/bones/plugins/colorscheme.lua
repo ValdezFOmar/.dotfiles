@@ -51,7 +51,6 @@ PLUGIN.opts = {
             ['@punctuation.bracket.htmldjango'] = { fg = colors.pink },
             -- GUI
             FloatTitle = { link = '@markup.heading' },
-            FloatBorder = { fg = colors.surface2 },
             TabLineSel = { fg = colors.subtext1, bg = colors.surface0 },
             -- Telescope
             TelescopeBorder = { fg = colors.surface2 },
@@ -97,7 +96,6 @@ PLUGIN.opts = {
     integrations = {
         mason = true,
         cmp = true,
-        nvimtree = true,
         treesitter = true,
         native_lsp = {
             enabled = true,

@@ -33,6 +33,40 @@ vim.opt.spelllang = 'en'
 vim.opt.linebreak = true
 vim.opt.breakindent = true
 
+--- Tree-sitter ---
+vim.treesitter.language.register('ini', 'systemd')
+vim.treesitter.language.register('latex', 'plaintex')
+vim.treesitter.language.register('python', 'gyp')
+
+--- LSP ---
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
+vim.api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
+
+--- Diagnostics ---
+local diagnostic_icons = {
+    [vim.diagnostic.severity.ERROR] = ' ',
+    [vim.diagnostic.severity.WARN] = ' ',
+    [vim.diagnostic.severity.INFO] = ' ',
+    [vim.diagnostic.severity.HINT] = ' ',
+}
+
+vim.diagnostic.config {
+    severity_sort = true,
+    float = { border = 'rounded' },
+    signs = { text = diagnostic_icons },
+    virtual_text = {
+        prefix = function(diagnostic)
+            local bufnr = diagnostic.bufnr
+            if bufnr and vim.bo[bufnr].filetype == 'lazy' then
+                return ''
+            end
+            return diagnostic_icons[diagnostic.severity]
+        end,
+    },
+}
+
+--- File types ---
 vim.filetype.add {
     extension = {
         h = 'c',
@@ -55,17 +89,3 @@ vim.filetype.add {
         ['%.?[Jj]ustfile'] = 'just',
     },
 }
-
---- LSP ---
-
-vim.diagnostic.config { severity_sort = true, float = { border = 'rounded' } }
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
-
-vim.api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
-
---- Tree-sitter ---
-
-vim.treesitter.language.register('ini', 'systemd')
-vim.treesitter.language.register('latex', 'plaintex')
-vim.treesitter.language.register('python', 'gyp')

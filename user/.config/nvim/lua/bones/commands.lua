@@ -34,8 +34,9 @@ autocmd('TextYankPost', {
 })
 
 user_command('ToggleDiagnostics', function()
-    vim.diagnostic.enable(not vim.diagnostic.is_enabled())
-end, { desc = 'Toggle diagnostics' })
+    local filter = { bufnr = 0 }
+    vim.diagnostic.enable(not vim.diagnostic.is_enabled(filter), filter)
+end, { desc = 'Toggle diagnostics in current buffer' })
 
 user_command('ToggleWrap', function()
     ---@diagnostic disable:undefined-field
