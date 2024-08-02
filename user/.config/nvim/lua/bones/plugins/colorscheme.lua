@@ -97,6 +97,7 @@ PLUGIN.opts = {
         mason = true,
         cmp = true,
         treesitter = true,
+        render_markdown = true,
         native_lsp = {
             enabled = true,
             underlines = {

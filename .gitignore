@@ -9,3 +9,6 @@ __pycache__/
 .env
 .venv
 venv/
+
+# ruff linter & formatter
+.ruff_cache
