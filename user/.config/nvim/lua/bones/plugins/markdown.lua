@@ -1,8 +1,7 @@
-local PLUGIN = { 'MeanderingProgrammer/markdown.nvim' }
+local PLUGIN = { 'MeanderingProgrammer/render-markdown.nvim' }
 
 PLUGIN.dependencies = { 'nvim-treesitter/nvim-treesitter' }
 PLUGIN.ft = { 'markdown' }
-PLUGIN.main = 'render-markdown'
 
 ---@type render.md.UserConfig
 PLUGIN.opts = {
