@@ -79,13 +79,15 @@ function activate()
 
 function venv()
 {
-    local answer file
+    local answer files file
     local venv_name="${1:-.venv}"
 
-    ~/.local/bin/mkvenv "$venv_name" || return $?
+    mkvenv "$venv_name" || return $?
     activate "$venv_name" || return $?
 
-    for file in $(fd --type file --glob '*requirements*.txt'); do
+    mapfile -d $'\0' -t files < <(find . -type f -name '*requirements*.txt' -print0)
+
+    for file in "${files[@]}"; do
         read -p "Install from '$file' file? [Y/n] " -r answer
         if (shopt -s nocasematch; [[ $answer =~ ^(y(es)?)?$ ]]); then
             pip install --requirement "$file"
