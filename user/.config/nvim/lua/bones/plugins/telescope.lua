@@ -166,20 +166,20 @@ function PLUGIN.config()
         }
     end
 
-    local remap = vim.keymap.set
-    remap('n', '<leader>pf', builtin.find_files, { desc = 'Find files in the root directory' })
-    remap('n', '<leader>fs', file_siblings, { desc = 'Lists siblings of current file' })
-    remap('n', '<leader>pg', search_in_repo, { desc = 'Find files tracked by git' })
-    remap('n', '<leader>ps', search_pattern, { desc = 'Search for pattern in files' })
-    remap('n', '<leader>pd', builtin.diagnostics, { desc = 'Diagnostics for all open buffers' })
-    remap('n', '<leader>ld', current_diagnostics, { desc = 'Diagnostics for current buffer' })
-    remap('n', '<leader>lb', builtin.buffers, { desc = 'Lists open buffers in current instance' })
-    remap('n', '<leader>ts', builtin.treesitter, { desc = 'Lists functions and variables in buffer' })
-    remap('n', '<leader>fz', builtin.current_buffer_fuzzy_find)
-    remap('n', '<leader>gs', builtin.git_status)
-    remap('n', '<leader>?', builtin.help_tags, { desc = 'Search for vim help' })
-    remap('n', 'z=', builtin.spell_suggest)
-    remap('n', '<M-a>', builtin.man_pages)
+    local map = vim.keymap.set
+    map('n', '<leader>pf', builtin.find_files, { desc = 'Find files in the root directory' })
+    map('n', '<leader>fs', file_siblings, { desc = 'Lists siblings of current file' })
+    map('n', '<leader>pg', search_in_repo, { desc = 'Find files tracked by git' })
+    map('n', '<leader>ps', search_pattern, { desc = 'Search for pattern in files' })
+    map('n', '<leader>pd', builtin.diagnostics, { desc = 'Diagnostics for all open buffers' })
+    map('n', '<leader>ld', current_diagnostics, { desc = 'Diagnostics for current buffer' })
+    map('n', '<leader>lb', builtin.buffers, { desc = 'Lists open buffers in current instance' })
+    map('n', '<leader>ts', builtin.treesitter, { desc = 'Lists functions and variables in buffer' })
+    map('n', '<leader>fz', builtin.current_buffer_fuzzy_find)
+    map('n', '<leader>gs', builtin.git_status)
+    map('n', '<leader>?', builtin.help_tags, { desc = 'Search for vim help' })
+    map('n', 'z=', builtin.spell_suggest)
+    map('n', '<M-a>', builtin.man_pages)
 end
 
 return PLUGIN

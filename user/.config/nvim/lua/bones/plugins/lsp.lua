@@ -7,14 +7,16 @@ PLUGIN.dependencies = {
 }
 
 local servers = {
+    'basedpyright',
     'bashls',
     'cssls',
     'emmet_ls',
     'html',
     'jsonls',
-    'tsserver',
     'marksman',
-    'basedpyright',
+    'rust_analyzer',
+    'taplo',
+    'tsserver',
 }
 
 -- lua_ls doesn't support aarch64

@@ -47,7 +47,8 @@ M.uri = {
 }
 
 function M.uri.open()
-    local path = vim.fn.expand '<cfile>'
+    -- Strip common characters use for delimiting URLs
+    local path = vim.fn.trim(vim.fn.expand '<cfile>', '⟨⟩')
     local message, ok = do_open(path)
     if ok then
         vim.notify(message, vim.log.levels.INFO)

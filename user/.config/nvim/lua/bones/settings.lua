@@ -28,15 +28,18 @@ vim.opt.smartindent = true
 vim.opt.formatoptions:append 'r'
 vim.opt.formatoptions:append 'o'
 
-vim.opt.spell = true
-vim.opt.spelllang = 'en'
+-- This settings would be useful if not for the fact
+-- that it spell check a lot of files that should not
+-- be spelled checked. I'll wait until nvim-treesitter 1.0
+-- release since I'll have to implement my own autocmd
+-- to start tree-sitter and there I can activate this
+-- options, since tree-sitter buffers seems to have more
+-- appropriate spellchecking (or at least not as faulty).
+--vim.opt.spell = true
+--vim.opt.spelllang = 'en'
+--
 vim.opt.linebreak = true
 vim.opt.breakindent = true
-
---- Tree-sitter ---
-vim.treesitter.language.register('ini', 'systemd')
-vim.treesitter.language.register('latex', 'plaintex')
-vim.treesitter.language.register('python', 'gyp')
 
 --- LSP ---
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
@@ -70,16 +73,15 @@ vim.diagnostic.config {
 vim.filetype.add {
     extension = {
         h = 'c',
-        conf = 'ini',
         hook = 'ini',
         theme = 'ini',
         tex = 'tex',
     },
     filename = {
-        ['picom.conf'] = 'conf',
-        ['dunstrc'] = 'ini',
         ['.dmrc'] = 'ini',
         ['.megarc'] = 'ini',
+        ['dunstrc'] = 'ini',
+        ['picom.conf'] = 'conf',
         ['requirements.txt'] = 'requirements',
         ['requirements-dev.txt'] = 'requirements',
         ['dev-requirements.txt'] = 'requirements',
@@ -89,3 +91,7 @@ vim.filetype.add {
         ['%.?[Jj]ustfile'] = 'just',
     },
 }
+
+--- Tree-sitter ---
+vim.treesitter.language.register('ini', 'systemd')
+vim.treesitter.language.register('latex', 'plaintex')

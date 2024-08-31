@@ -16,3 +16,8 @@ wildcard
 wildcards
 catppuccin
 dotfiles
+yazi
+stderr
+stdout
+stdin
+pyright

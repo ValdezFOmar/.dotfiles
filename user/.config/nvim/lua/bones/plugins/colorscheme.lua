@@ -24,20 +24,18 @@ PLUGIN.opts = {
         local builtin = '#7d7ddb' -- Original builtin #8888C6
         local documentation = '#71a162'
         return {
-            ['@lsp.type.comment'] = {}, -- Disabled because it overrides usefull highlighting
-            -- General config
-            ['@constant.builtin'] = { fg = colors.pink, style = {} },
-            ['@variable.builtin'] = { style = { 'italic' } },
-            ['@module.builtin'] = { link = '@variable.builtin' },
-            ['@keyword.operator'] = { link = 'Keyword' },
-            ['@keyword.conditional.ternary'] = { link = 'Operator' },
+            -- Tree-sitter --
+            ['@attribute.diff'] = { fg = colors.sapphire },
             ['@attribute'] = { fg = colors.green },
             ['@attribute.builtin'] = { link = '@attribute' },
-            ['@lsp.type.decorator'] = { link = '@attribute' },
-            ['@attribute.diff'] = { fg = colors.sapphire },
+            ['@constant.builtin'] = { fg = colors.pink, style = {} },
             ['@function.builtin'] = { fg = builtin },
-            ['@function.builtin.bash'] = { fg = builtin, style = {} },
+            ['@function.builtin.bash'] = { link = '@function.builtin' },
+            ['@keyword.conditional.ternary'] = { link = '@operator' },
+            ['@keyword.operator'] = { link = '@keyword' },
+            ['@module.builtin'] = { fg = colors.red, style = { 'italic' } },
             ['@string.documentation'] = { fg = documentation },
+            ['@tag.delimiter'] = { link = 'Delimiter' },
             -- markup
             ['@markup.quote'] = { fg = colors.mauve },
             ['@markup.link.url'] = { style = { 'underline' } },
@@ -46,10 +44,14 @@ PLUGIN.opts = {
             -- SQL
             ['@keyword.sql'] = { fg = colors.mauve },
             ['@keyword.operator.sql'] = { fg = colors.mauve },
-            -- HTML
-            ['@tag.delimiter'] = { link = 'Delimiter' },
-            ['@punctuation.bracket.htmldjango'] = { fg = colors.pink },
-            -- GUI
+            -- LSP --
+            ['@lsp.type.comment'] = {}, -- Disabled because it overrides usefull highlighting
+            ['@lsp.type.decorator'] = { link = '@attribute' },
+            ['@lsp.type.macro'] = { link = '@function.macro' },
+            ['@lsp.typemod.macro.defaultLibrary'] = { link = '@function.macro' },
+            ['@lsp.typemod.method.defaultLibrary.rust'] = {}, -- I don't like these highlights
+            ['@lsp.typemod.function.defaultLibrary.rust'] = {},
+            -- GUI --
             FloatTitle = { link = '@markup.heading' },
             TabLineSel = { fg = colors.subtext1, bg = colors.surface0 },
             -- Telescope

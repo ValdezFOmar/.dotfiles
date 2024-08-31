@@ -17,7 +17,7 @@ return {
     {
         'kylechui/nvim-surround',
         version = '*',
-        event = 'InsertEnter',
+        lazy = false,
         config = true,
     },
     -- Lua LS config for neovim configuration
