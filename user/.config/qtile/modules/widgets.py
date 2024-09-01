@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import subprocess
-from typing import TYPE_CHECKING, assert_never
+import socket
+from typing import TYPE_CHECKING
 
 from libqtile.lazy import lazy
 from libqtile.widget.battery import BatteryState, BatteryStatus
@@ -26,23 +26,11 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 
-def get_wifi_interface() -> str:
-    try:
-        process = subprocess.run(
-            ['nmcli', '--fields', 'TYPE,DEVICE', 'device'],
-            encoding='utf-8',
-            check=True,
-            capture_output=True,
-            timeout=10,
-        )
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
-        return ''
-    # First line is the fields header
-    for row in process.stdout.splitlines()[1:]:
-        device_type, device_name = row.split()
-        if device_type == 'wifi':
-            return device_name
-    return ''
+# See systemd.net-naming-scheme(7)
+def get_wifi_interface() -> str | None:
+    for _, interface in socket.if_nameindex():
+        if interface.startswith('wl'):
+            return interface
 
 
 def clamp[T: (int, float)](lower: T, value: T, upper: T) -> T:
@@ -101,6 +89,7 @@ class NerdFontBattery(widget.Battery):
 
     def build_string(self, status: BatteryStatus) -> str:
         self.__update_colour(status)
+        char = ''
 
         match status.state:
             case BatteryState.FULL:
@@ -118,8 +107,6 @@ class NerdFontBattery(widget.Battery):
                 char = self.unknown_char
             case BatteryState.NOT_CHARGING:
                 char = self.not_charging_char
-            case _:  # pyright: ignore[reportUnnecessaryComparison]
-                assert_never(status.state)
 
         percent_formated = clamp(0, int(status.percent * 100), 100)
         return self.format.format(char=char, percent=percent_formated)
@@ -223,13 +210,22 @@ battery = NerdFontBattery(
     decorations=[group_decoration],
 )
 
-# Check interface with `iwconfig`
-wifi = widget.WiFiIcon(
-    interface=get_wifi_interface(),
-    expanded_timeout=15,
-    active_colour=Color.green,
-    foreground=Color.green,
-    fontsize=12,
-    padding_y=7,
-    decorations=[group_decoration],
+# Check for interfaces with `nmcli device`
+wifi = (
+    widget.WiFiIcon(
+        interface=interface,
+        expanded_timeout=15,
+        active_colour=Color.green,
+        foreground=Color.green,
+        fontsize=12,
+        padding_y=7,
+        decorations=[group_decoration],
+    )
+    if (interface := get_wifi_interface()) is not None
+    else widget.TextBox(
+        fmt='No wireless interface found',
+        padding_y=7,
+        foreground=Color.green,
+        decorations=[group_decoration],
+    )
 )
