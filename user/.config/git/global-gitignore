@@ -1,0 +1,22 @@
+# Global .gitignore for excluding files/directories on all repositories
+
+# PyCharm
+.idea/
+
+# visual studio code
+.vscode/
+
+# LibreOffice temporal files
+.~lock.*
+
+# For testing code that isn't supposed to be commited
+.ignore[-_]code
+ignore[-_]code
+.forget[-_]code
+forget[-_]code
+
+# enviromental variables files
+.env
+.env.local
+
+# vim: ft=gitignore
