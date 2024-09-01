@@ -13,9 +13,9 @@ alias la='ls -AvF'
 alias ll='ls -Alvh'
 
 alias cd..='cd ..'
-alias cp='cp -i '
-alias mv='mv -i '
-alias rm='rm -I '
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -I'
 alias md='mkdir --parents'
 
 alias vim='nvim'
@@ -94,5 +94,3 @@ function venv()
         fi
     done
 }
-
-# vim: set ft=bash:

@@ -1,10 +1,61 @@
-export LC_TIME=es_MX.UTF-8
-# export QT_QPA_PLATFORMTHEME=qt5ct
+#!/bin/sh
 
+# This file needs to be compatible with a POSIX shell
+# so it can be sourced from ~/.xprofile using /bin/sh
+
+#
+#   default programs
+#
+export EDITOR=nvim
+export VISUAL=$EDITOR
+export SUDO_EDITOR=$EDITOR
+export BROWSER=firefox
+
+
+#
+#   XDG directories
+#
+# Eventually change to ~/.local/bin and use ~/bin for personal scripts
+export XDG_BIN_HOME="$HOME/bin"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Media
+export XDG_DOCUMENTS_DIR="$HOME/Documents"
+export XDG_DOWNLOAD_DIR="$HOME/Downloads"
+export XDG_MUSIC_DIR="$HOME/Media/music"
+export XDG_PICTURES_DIR="$HOME/Media/images"
+export XDG_SCREENSHOTS_DIR="$HOME/Media/images/screenshots"
+export XDG_VIDEOS_DIR="$HOME/Media/videos"
+
+# Dates/Time formatting
+export LC_TIME=es_MX.UTF-8
+
+# Qt theme customization, but only if installed
+[ -x /usr/bin/qt5ct ] && export QT_QPA_PLATFORMTHEME=qt5ct
+
+
+#
+#   Path
+#
+[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+
+
+#
+#   Default monitor configuration from arandr
+#
+[ -x ~/.screenlayout/default.sh ] && ~/.screenlayout/default.sh
+
+
+#
+#   Programs to run at startup
+#
 picom --daemon
 udiskie &
 light-locker --lock-after-screensaver=60 --lock-on-suspend --lock-on-lid &
 gnome-keyring-daemon --start --daemonize --components=pkcs11,secrets,ssh
 gpaste-client start
 dunst &
-# vim: set ft=sh:
