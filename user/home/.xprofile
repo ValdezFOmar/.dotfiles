@@ -33,6 +33,9 @@ export XDG_VIDEOS_DIR="$HOME/Media/videos"
 # Dates/Time formatting
 export LC_TIME=es_MX.UTF-8
 
+# GTK
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+
 # Qt theme customization, but only if installed
 [ -x /usr/bin/qt5ct ] && export QT_QPA_PLATFORMTHEME=qt5ct
 
