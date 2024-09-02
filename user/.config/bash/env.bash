@@ -38,6 +38,9 @@ export TLDR_COLOR_EXAMPLE=
 export TLDR_COLOR_COMMAND=blue
 export TLDR_COLOR_PARAMETER=red
 
+# bat
+export BAT_THEME=TwoDark
+
 # fzf
 export FZF_DEFAULT_OPTS="
 --layout=reverse --border --prompt='choose❯ ' --pointer=❯ --marker=❯
