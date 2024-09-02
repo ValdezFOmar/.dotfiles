@@ -48,7 +48,7 @@ function cl()
         echo "cl: No directory provided"
         return 1
     fi
-    la -- "$1" && cd -- "$1" || return 1
+    la -- "$1" && cd -- "$1" || return $?
 }
 
 function mcd()
@@ -57,7 +57,7 @@ function mcd()
         echo "mcd: No name provided"
         return 1
     fi
-    mkdir -p -- "$1" && cd -P -- "$1" || return 1
+    mkdir --parents -- "$1" && cd -P -- "$1" || return $?
 }
 
 # pretty print paths in $PATH
@@ -94,3 +94,15 @@ function venv()
         fi
     done
 }
+
+if [[ -n $DOTFILES ]]; then
+    function save-packages() {
+        pacman --query --quiet --explicit --native | \
+            sed '/amd\|intel\|ucode\|xf86-video/d' > "$DOTFILES/system/packages.txt"
+    }
+
+    function save-aur-packages() {
+        pacman --query --quiet --explicit --foreign | \
+            sed '/paru/d' > "$DOTFILES/system/aur-packages.txt"
+    }
+fi

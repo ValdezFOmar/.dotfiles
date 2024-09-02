@@ -1,6 +1,7 @@
 acpilight
 adobe-source-sans-fonts
 alsa-utils
+arandr
 archlinux-wallpaper
 base
 base-devel
@@ -15,7 +16,6 @@ fastfetch
 fd
 firefox
 fzf
-gimp
 git
 gnome-keyring
 gnome-screenshot
@@ -26,6 +26,7 @@ gvfs-mtp
 htop
 jdk-openjdk
 kitty
+less
 libreoffice-fresh
 light-locker
 lightdm-slick-greeter
@@ -53,6 +54,7 @@ pulseaudio
 pulseaudio-alsa
 pulseaudio-bluetooth
 pyenv
+python
 python-dbus-next
 python-iwlib
 python-pipx
@@ -67,6 +69,7 @@ thunderbird-dark-reader
 tk
 tldr
 tree
+tree-sitter-cli
 ttf-cascadia-code
 ttf-cascadia-code-nerd
 udiskie

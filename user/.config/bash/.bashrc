@@ -6,7 +6,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-export DOTFILES="$HOME/.dotfiles"
+if [[ -d ~/.dotfiles ]]; then
+    export DOTFILES=~/.dotfiles
+fi
 
 source ~/.config/bash/env.bash
 source ~/.config/bash/aliases.bash
