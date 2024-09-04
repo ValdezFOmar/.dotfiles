@@ -5,8 +5,8 @@
 - [ ] Cleanup shellscripts that are not needed (*_reload.sh files) and
    rename to use hyphens `-`
 
-- [ ] Update README.md about new installation script
-  - [ ] Update scripts and anything that references this change
+- [x] Update README.md about new installation script
+  - [x] Update scripts and anything that references this change
 
 - [ ] Change frequencymenu script to be a shellscript for use in a terminal
    `tr ' ' '\n' < /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors`

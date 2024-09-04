@@ -6,32 +6,41 @@ Dotfiles and installation scripts for my Arch Linux setup.
 
 ## Setup
 
-Clone the repository.
+Dependencies:
+
+- `git`
+- `stow`
+
+On a fresh installation of Arch, clone this repository.
 
 ```sh
-git clone https://github.com/ValdezFOmar/.dotfiles.git && cd .dotfiles/
+git clone https://github.com/ValdezFOmar/.dotfiles.git ~/.dotfiles
 ```
 
-> [!IMPORTANT]
-> This will install all the config files. Use `--help` to see more
-> options.
-
-Install the system configurations:
+Then run the installation script for user and system configurations, in
+that order:
 
 ```sh
-python -m install.system_config --all
+cd ~/.dotfiles/
+./install.sh
+sudo ./etc/install.sh
 ```
 
-Install the user configurations:
-
-```sh
-python -m install.user_config --all
-```
+> [!WARNING]
+> This will download and install multiple packages, create directories
+> on `~/`, symlink user configuration files, replace some system
+> configuration files and enable some services.
+>
+> For only installing user configurationfiles run:
+>
+> ```bash
+> cd ~/.dotfiles && stow home
+> ```
 
 ## Extra
 
 For Additional installation info:
 
-1. [Arch Linux installation guide](/notes/installation-guide.md).
-2. [Wi-Fi Connection](/notes/connect-wifi.md)
-3. [GUI setup](/notes/gui-config.md)
+1. [Arch Linux installation guide](home/notes/installation-guide.md).
+2. [Wi-Fi Connection](home/notes/connect-wifi.md)
+3. [GUI setup](home/notes/gui-config.md)
