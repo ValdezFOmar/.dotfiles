@@ -25,12 +25,11 @@ select = ['E4', 'E7', 'E9', 'F', 'I', 'UP']
 
 [tool.basedpyright]
 include = [
-    'install/',
-    'user/.config/qtile',
-    'user/bin',
+    'home/.config/qtile',
+    'home/bin',
 ]
 # The default value excludes '**/.*', which prevents
-# files in 'user/.config' from being type checked
+# files in 'home/.config' from being type checked
 exclude = [
     '**/__pycache__',
     '**/.venv',

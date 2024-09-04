@@ -20,7 +20,7 @@ mkdir --verbose --parents \
     ~/projects \
     ~/repos
 
-stow --verbose --dir "$dotfiles" --target ~ user
+stow --verbose --dir "$dotfiles" --target ~ home
 
 # quote heredoc label to avoid expanding variables
 cat >> ~/.bashrc << 'BASH'
@@ -31,13 +31,13 @@ BASH
 
 if ! command -v paru > /dev/null; then
     # Download the binary version to avoid compilation
-    git clone https://aur.archlinux.org/paru-bin.git ~/repos/paru
-    cd ~/repos/paru
+    git clone https://aur.archlinux.org/paru-bin.git ~/repos/paru-bin
+    cd ~/repos/paru-bin
     makepkg --syncdeps --install
 fi
 
-paru -S --needed - < "$dotfiles/system/packages.txt"
-paru -S --needed - < "$dotfiles/system/aur-packages.txt"
+paru -S --needed - < "$dotfiles/etc/packages.txt"
+paru -S --needed - < "$dotfiles/etc/aur-packages.txt"
 
 systemctl --user enable \
     tldrcache.timer \

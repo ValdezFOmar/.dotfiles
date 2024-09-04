@@ -7,18 +7,18 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-system_dir=$(dirname "$(realpath "$0")")
+etc_dir=$(dirname "$(realpath "$0")")
 
 # slick-greeter
 badges_dir=/usr/share/slick-greeter/badges
 
-command cp --verbose --backup=numbered "$system_dir/slick-greeter.conf" /etc/lightdm
-command cp --verbose "$system_dir/qtile.png" "$badges_dir"
+command cp --verbose --backup=numbered "$etc_dir/slick-greeter.conf" /etc/lightdm
+command cp --verbose "$etc_dir/qtile.png" "$badges_dir"
 ln --verbose --symbolic --force qtile.png "$badges_dir/qtile-wayland.png"
 unset badges_dir
 
 # reflector
-command cp --verbose --backup=numbered "$system_dir/reflector.conf" /etc/xdg/reflector
+command cp --verbose --backup=numbered "$etc_dir/reflector.conf" /etc/xdg/reflector
 
 mirrorlist=/etc/pacman.d/mirrorlist
 [[ -f $mirrorlist.bak ]] || cp "$mirrorlist" "$mirrorlist.bak"

@@ -95,14 +95,14 @@ function venv()
     done
 }
 
-if [[ -n $DOTFILES ]]; then
+if [[ -n $DOTFILES ]] && command -v pacman > /dev/null; then
     function save-packages() {
         pacman --query --quiet --explicit --native | \
-            sed '/amd\|intel\|ucode\|xf86-video/d' > "$DOTFILES/system/packages.txt"
+            sed '/amd\|intel\|ucode\|xf86-video/d' > "$DOTFILES/etc/packages.txt"
     }
 
     function save-aur-packages() {
         pacman --query --quiet --explicit --foreign | \
-            sed '/paru/d' > "$DOTFILES/system/aur-packages.txt"
+            sed '/paru/d' > "$DOTFILES/etc/aur-packages.txt"
     }
 fi

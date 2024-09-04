@@ -11,12 +11,12 @@
 - [ ] Change frequencymenu script to be a shellscript for use in a terminal
    `tr ' ' '\n' < /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors`
 
-- [ ] Use GNU stow for dotfiles management.
+- [x] Use GNU stow for dotfiles management.
   - [x] Move more files under `.config/` and delete them from home
-  - [ ] Change repo structure to have a single `home` directory at the
+  - [x] Change repo structure to have a single `home` directory at the
      root and all user configuration files will be there
-       - [ ] Update mentions of this in `install.sh`
-  - [ ] Rename `system` directory to `etc`
+       - [x] Update mentions of this in `install.sh`
+  - [x] Rename `system` directory to `etc`
   - [x] Change XDG_BIN_HOME to point to ~/.local/bin and move scripts to ~/bin
     - [x] Delete `PIPX_BIN_HOME` variable, it points to ~/.local/bin by
        default

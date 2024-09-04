@@ -1,10 +1,8 @@
 exclude: |
   (?x)^(
-    system/.+
-    |user/\.icons/.+
-    |user/\.config/nvim/lazy-lock\.json
-    |user/\.config/systemd/user/.+
-    |user/home/\.dmrc
+    home/\.config/nvim/lazy-lock\.json
+    |home/\.config/systemd/user/.+
+    |home/\.dmrc
     |desktop_screenshot\.png
   )$
 
@@ -24,7 +22,7 @@ repos:
     hooks:
       - id: stylua-github
         alias: stylua
-        files: ^user/\.config/nvim/
+        files: ^home/\.config/nvim/
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.5
