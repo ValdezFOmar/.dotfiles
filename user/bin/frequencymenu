@@ -15,50 +15,50 @@ Where `user` is your username.
 
 import subprocess
 import sys
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Sequence
 
-PATH_TO_GOVERNORS = Path("/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors")
-ROFI_CONFIG = Path.home() / ".config" / "rofi"
+PATH_TO_GOVERNORS = Path('/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors')
+ROFI_CONFIG = Path.home() / '.config' / 'rofi'
 SCRIPT = Path(__file__).stem
 
 
-def send_notification(title: str, body: str, urgency="normal") -> None:
-    subprocess.run(["notify-send", "--app-name", SCRIPT, "--urgency", urgency, title, body])
+def send_notification(title: str, body: str, urgency: str = 'normal') -> None:
+    subprocess.run(['notify-send', '--app-name', SCRIPT, '--urgency', urgency, title, body])
 
 
 def get_governors(path: Path) -> tuple[str, ...]:
     if not path.exists():
-        send_notification("Error", "Scaling governors file not found.")
+        send_notification('Error', 'Scaling governors file not found.')
         sys.exit(1)
-    with open(path, "r", encoding="utf-8") as file:
+    with open(path, encoding='utf-8') as file:
         governors = file.read()
     return tuple(governors.split())
 
 
 def set_gorvernor(governor: str) -> None:
     cpupower = subprocess.run(
-        ["sudo", "cpupower", "frequency-set", "--governor", governor],
+        ['sudo', 'cpupower', 'frequency-set', '--governor', governor],
         capture_output=True,
     )
     if cpupower.returncode != 0:
         if sys.stderr.isatty():
-            print(f"{SCRIPT}: an error occurred.", file=sys.stderr)
+            print(f'{SCRIPT}: an error occurred.', file=sys.stderr)
             print(cpupower.stderr, file=sys.stderr)
         else:
-            send_notification("CPU Frequency", "An error occurred", "critical")
+            send_notification('CPU Frequency', 'An error occurred', 'critical')
         sys.exit(cpupower.returncode)
 
 
 def launch_rofi_menu(options: Sequence[str]) -> str:
-    fmt_options = "\n".join(options)
+    fmt_options = '\n'.join(options)
     lines = str(len(options))
-    args = ["rofi", "-dmenu", "-l", lines, "-i", "-p", "CPU Frequency:"]
+    args = ['rofi', '-dmenu', '-l', lines, '-i', '-p', 'CPU Frequency:']
 
-    if (theme := ROFI_CONFIG / "frequencymenu.rasi").exists():
-        args.extend(["-theme-str", f'@import "{theme}"'])
+    if (theme := ROFI_CONFIG / 'frequencymenu.rasi').exists():
+        args.extend(['-theme-str', f'@import "{theme}"'])
 
-    rofi_process = subprocess.run(args, input=fmt_options, encoding="utf-8", capture_output=True)
+    rofi_process = subprocess.run(args, input=fmt_options, encoding='utf-8', capture_output=True)
     return rofi_process.stdout.strip()
 
 
@@ -70,13 +70,13 @@ def main() -> int:
     if not selected_governor:
         return 0
     if selected_governor not in governors:
-        send_notification("CPU Frequency", f"{selected_governor!r} is not a valid governor")
+        send_notification('CPU Frequency', f'{selected_governor!r} is not a valid governor')
         return 1
 
     set_gorvernor(selected_governor)
-    send_notification("CPU Frequency", f"Changed to governor {selected_governor!r}")
+    send_notification('CPU Frequency', f'Changed to governor {selected_governor!r}')
     return 0
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main())

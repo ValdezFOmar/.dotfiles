@@ -27,10 +27,10 @@ select = ['E4', 'E7', 'E9', 'F', 'I', 'UP']
 include = [
     'install/',
     'user/.config/qtile',
-    'user/.local/bin',
+    'user/bin',
 ]
-# The default value excludes '**/.*', which prevents files in 'user/.config' and
-# 'user/.local/bin' from being type checked
+# The default value excludes '**/.*', which prevents
+# files in 'user/.config' from being type checked
 exclude = [
     '**/__pycache__',
     '**/.venv',

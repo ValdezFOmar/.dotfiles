@@ -27,7 +27,7 @@ export MDCAT_PAGER='less --raw-control-chars --quit-if-one-screen'
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 # export GIT_PS1_SHOWUNTRACKEDFILES=true
-export PIPX_BIN_DIR="$HOME/bin"
+export PIPX_BIN_DIR=$XDG_BIN_HOME
 export POETRY_VIRTUALENVS_IN_PROJECT=1
 export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=1
 
@@ -50,3 +50,5 @@ export FZF_DEFAULT_OPTS="
 --color=prompt:blue:regular,label:blue,header:blue
 --color=pointer:green,info:green,spinner:cyan,marker:magenta
 "
+
+unset -f history-path

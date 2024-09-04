@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# This file needs to be compatible with a POSIX shell
-# so it can be sourced from ~/.xprofile using /bin/sh
+# This script needs to be compatible with POSIX sh,
+# so the display manager can sourced it using /bin/sh
 
 #
 #   default programs
@@ -15,8 +15,7 @@ export BROWSER=firefox
 #
 #   XDG directories
 #
-# Eventually change to ~/.local/bin and use ~/bin for personal scripts
-export XDG_BIN_HOME="$HOME/bin"
+export XDG_BIN_HOME="$HOME/.local/bin"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -37,14 +36,14 @@ export LC_TIME=es_MX.UTF-8
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 
 # Qt theme customization, but only if installed
-[ -x /usr/bin/qt5ct ] && export QT_QPA_PLATFORMTHEME=qt5ct
+command -v qt5ct > /dev/null && export QT_QPA_PLATFORMTHEME=qt5ct
 
 
 #
 #   Path
 #
+[ -d "$XDG_BIN_HOME" ] && PATH="$XDG_BIN_HOME:$PATH"
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
-[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
 
 
 #

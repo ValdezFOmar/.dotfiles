@@ -65,4 +65,4 @@ usermod --apend --groups video $(whoami)
 
 [cpu-frequency]: https://wiki.archlinux.org/title/CPU_frequency_scaling
 [power-governors]: https://wiki.archlinux.org/title/CPU_frequency_scaling#Scaling_governors
-[cpu-frequency-script]: ../user/.local/bin/frequencymenu
+[cpu-frequency-script]: ../bin/frequencymenu
