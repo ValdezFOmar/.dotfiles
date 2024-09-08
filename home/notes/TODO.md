@@ -2,37 +2,18 @@
 
 ## General
 
-- [ ] Cleanup shellscripts that are not needed (*_reload.sh files) and
-   rename to use hyphens `-`
-
-- [x] Update README.md about new installation script
-  - [x] Update scripts and anything that references this change
-
+- [ ] Move env vars in .xprofile to a separate file in order to be able
+  to source it and export the variables in enviroments where .xprofile
+  might not run (like Termux) (Maybe export a variable like
+  `_BONES_LOADED_ENVS`, if it's set the don't load them again, if it's
+  not then load'em).
 - [ ] Change frequencymenu script to be a shellscript for use in a terminal
    `tr ' ' '\n' < /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors`
-
-- [x] Use GNU stow for dotfiles management.
-  - [x] Move more files under `.config/` and delete them from home
-  - [x] Change repo structure to have a single `home` directory at the
-     root and all user configuration files will be there
-       - [x] Update mentions of this in `install.sh`
-  - [x] Rename `system` directory to `etc`
-  - [x] Change XDG_BIN_HOME to point to ~/.local/bin and move scripts to ~/bin
-    - [x] Delete `PIPX_BIN_HOME` variable, it points to ~/.local/bin by
-       default
   - [ ] Add a 'add-bin' shell function to quickly symlink an executable
      to an entry under XDG_BIN_HOME
   - [ ] Add paru configuration
   - [ ] Add yazi configuration
   - [ ] Add mime apps configuration
-  - [x] Delete unnecessary files from home (git integration files)
-  - [x] Delete `icons` directory, it should not be in version control
-  - [x] Automate installation with a shellscript (convert the existing
-     python scripts).
-- [x] ~Look into [`polkit`](https://polkit.pages.freedesktop.org/polkit/) for creating rules to
-   call `cpupower frequency-set` without root permission.~
-   will be converted to a shellscript, see above
-
 - [ ] Look into configuring Firefox with a plain text file
 - [ ] Learn [touch typing](https://www.typingclub.com/)
 - [ ] Configure Bluetooth
@@ -83,6 +64,10 @@
 
 ## General
 
+- [x] Cleanup shellscripts that are not needed (*_reload.sh files) and
+   rename to use hyphens `-`
+- [x] Update README.md about new installation script
+  - [x] Update scripts and anything that references this change
 - [x] Add `XDG_BIN_HOME` environmental variable for programs to install
   executable binaries to.
 - [x] Consider changing python workflow by using `virtualenv` instead of `venv` builtin module
@@ -97,6 +82,22 @@
   - Instead use one of the AUR `Qogir` themes.
   - ~~Use command `git -C path/to/repo rev-parse --is-inside-work-tree`~~
   - ~~Use `git -C path/to/repo remote get-url`~~
+- [x] Delete unnecessary files from home (git integration files)
+- [x] Delete `icons` directory, it should not be in version control
+- [x] Automate installation with a shellscript (convert the existing
+   python scripts).
+- [x] ~Look into [`polkit`](https://polkit.pages.freedesktop.org/polkit/) for creating rules to
+   call `cpupower frequency-set` without root permission.~
+   will be converted to a shellscript, see above
+- [x] Use GNU stow for dotfiles management.
+  - [x] Move more files under `.config/` and delete them from home
+  - [x] Change repo structure to have a single `home` directory at the
+     root and all user configuration files will be there
+       - [x] Update mentions of this in `install.sh`
+  - [x] Rename `system` directory to `etc`
+  - [x] Change XDG_BIN_HOME to point to ~/.local/bin and move scripts to ~/bin
+    - [x] Delete `PIPX_BIN_HOME` variable, it points to ~/.local/bin by
+       default
 
 ## BASH Prompt (`PS1`)
 

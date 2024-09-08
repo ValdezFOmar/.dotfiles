@@ -1,5 +1,5 @@
 # Symlinks created by systemd
-home/.config/systemd/user/*.wants/
+*.wants/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

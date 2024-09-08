@@ -12,6 +12,9 @@ trim_trailing_whitespace = true
 [*.{py,rasi,sh}]
 indent_size = 4
 
+[dunstrc]
+indent_size = 2
+
 [*.{yaml,json,jsonc,scm}]
 indent_size = 2
 

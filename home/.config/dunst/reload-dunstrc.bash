@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 # Simple useful script for reloading dunst's and testing config
-# Use it like this:
-# $ ls path/to/dunstrc | entr -p ./reload_config
+
+# To automatically run this script when you save 'dunstrc':
+# $ fd dunstrc | entr -p ./reload-dunstrc.bash
 
 pkill dunst >/dev/null
 notify-send --hint int:value:12 --urgency=low 'Test Title' 'This is the body.'

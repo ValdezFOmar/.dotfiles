@@ -2,21 +2,25 @@
 
 # Notify volume change using dunst, pulseaudio and pamixer
 
-main()
-{
-    # Don't show indicator when the volume is muted
-    if [[ $(pamixer --get-mute) = true ]]; then
-        return
-    fi
+# Use for matching rule in `dunstrc`
+stack_tag=volume_indicator
 
-    # Use for matching rule in `dunstrc`
-    local stack_tag='volume_indicator'
-    local volume
+volume=$(pamixer --get-volume)
+summary="${volume}%"
 
-    volume=$(pamixer --get-volume)
-    dunstify --hints "string:x-dunst-stack-tag:$stack_tag" \
-             --hints "int:value:$volume" \
-             --urgency low "volume"
-}
+if [[ $(pamixer --get-mute) == true ]]; then
+    icon=audio-volume-muted
+elif (( volume < 30 )); then
+    icon=audio-volume-low
+elif (( volume < 70 )); then
+    icon=audio-volume-medium
+else
+    icon=audio-volume-high
+fi
 
-main
+dunstify --appname volume-notify \
+    --urgency low \
+    --icon "$icon" \
+    --hints "string:x-dunst-stack-tag:$stack_tag" \
+    --hints "int:value:$volume" \
+    "$summary"
