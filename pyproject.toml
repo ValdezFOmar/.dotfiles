@@ -8,7 +8,6 @@ include = [
     '*.py',
     '*.pyi',
     '**/pyproject.toml',
-    '**/bin/frequencymenu',
     '**/bin/notes',
     '**/bin/view-images',
     '**/bin/mkvenv',

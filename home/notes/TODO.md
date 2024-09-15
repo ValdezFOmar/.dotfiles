@@ -7,8 +7,7 @@
   might not run (like Termux) (Maybe export a variable like
   `_BONES_LOADED_ENVS`, if it's set the don't load them again, if it's
   not then load'em).
-- [ ] Change frequencymenu script to be a shellscript for use in a terminal
-   `tr ' ' '\n' < /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors`
+- [x] Change frequencymenu script to be a shellscript for use in a terminal
   - [ ] Add a 'add-bin' shell function to quickly symlink an executable
      to an entry under XDG_BIN_HOME
   - [ ] Add paru configuration

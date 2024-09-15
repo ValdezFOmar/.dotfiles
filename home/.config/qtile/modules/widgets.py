@@ -204,7 +204,6 @@ battery = NerdFontBattery(
     low_foreground=Color.hot_red,
     low_percentage=0.2,
     update_interval=5,  # seconds
-    mouse_callbacks={'Button1': lazy.spawn(vars.frequency_menu)},
     notify_below=21,
     notification_timeout=30,
     decorations=[group_decoration],

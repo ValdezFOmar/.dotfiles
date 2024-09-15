@@ -50,6 +50,5 @@ menu_launcher = 'rofi -show drun'
 qtile_log = os.path.expanduser('~/.local/share/qtile/qtile.log')
 local_bin = os.path.expanduser('~/bin')
 power_menu = os.path.join(local_bin, 'powermenu')
-frequency_menu = os.path.join(local_bin, 'frequencymenu')
 notify_volume = os.path.join(local_bin, 'volume-notify')
 toggle_touchpad = os.path.join(local_bin, 'toggle-touchpad-tapping')
