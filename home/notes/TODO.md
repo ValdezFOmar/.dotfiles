@@ -10,7 +10,7 @@
 - [x] Change frequencymenu script to be a shellscript for use in a terminal
   - [ ] Add a 'add-bin' shell function to quickly symlink an executable
      to an entry under XDG_BIN_HOME
-  - [ ] Add paru configuration
+  - [x] Add paru configuration
   - [ ] Add yazi configuration
   - [ ] Add mime apps configuration
 - [ ] Look into configuring Firefox with a plain text file
@@ -27,6 +27,8 @@
 
 ## Neovim
 
+- [ ] Consider using [nvim-highlight-colors] instead of `nvim-colorizer
+   as it's unmantained.
 - [ ] Add highlight groups for C# doc comments. Omnisharp reports semantic tokens
     in the form of `@lsp.type.xmlDocument*`, so this highlight groups should be linked to a}
     tag highlight groups (like `@tag.*`).
@@ -135,3 +137,4 @@
 ---
 
 [roslyn-semantic-tokens]: https://github.com/dotnet/roslyn/src/Workspaces/Core/Portable/Classification/ClassificationTypeNames.cs#L57C8-L77C24
+[nvim-highlight-colors]: https://github.com/brenoprata10/nvim-highlight-colors
