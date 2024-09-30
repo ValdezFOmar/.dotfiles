@@ -56,10 +56,15 @@ _color_exit()
     fi
 }
 
-git_prompt=/usr/share/git/completion/git-prompt.sh
+# Source git prompt if available and check using PREFIX in Termux
+for dir in '/usr/share/git/completion' "$PREFIX/etc/bash_completion.d"; do
+    if [[ -f $dir/git-prompt.sh ]]; then
+        source "$dir/git-prompt.sh"
+        break
+    fi
+done
 
-if [[ -f $git_prompt ]]; then
-    source "$git_prompt"
+if command -v __git_ps1 > /dev/null; then
     PS1="$normal$orange\$(__git_ps1 '(%s) ')$purple$italic\u@\h$normal:$blue\w\n\[\$(_color_exit)\]❯$normal "
 else
     PS1="$normal$purple$italic\u@\h$normal:$blue\w\n\[\$(_color_exit)\]❯$normal "
@@ -67,28 +72,25 @@ fi
 
 PS2="$_green❯$normal "
 
-unset -v normal italic orange blue purple
+unset -v normal italic orange blue purple dir
 
 #
 #   ssh-agent
 #
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+if ! pgrep --euid "$EUID" ssh-agent > /dev/null; then
     ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
 fi
 if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
 fi
 
 #
 #   pyenv
 #
-export PYENV_ROOT="$XDG_STATE_HOME/pyenv"
+export PYENV_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/pyenv"
 if command -v pyenv > /dev/null; then
     eval "$(pyenv init -)"
 elif [[ -x $PYENV_ROOT/bin/pyenv ]]; then
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init -)"
 fi
-
-# Build a static library when installing python versions from pyenv
-export PYTHON_CONFIGURE_OPTS=--disable-shared

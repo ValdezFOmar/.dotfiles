@@ -8,22 +8,23 @@ PLUGIN.dependencies = {
 
 local servers = {
     'basedpyright',
-    'bashls',
+    'bashls', -- needs 'shellcheck' and 'shfmt'
     'cssls',
     'emmet_ls',
     'html',
     'jsonls',
     'marksman',
-    'rust_analyzer',
-    'taplo',
-    'tsserver',
+    'ts_ls',
 }
 
--- lua_ls doesn't support aarch64
+-- Skip this servers in TERMUX since the platform is unsupported
 if vim.uv.os_uname().machine ~= 'aarch64' then
     table.insert(servers, 'lua_ls')
+    table.insert(servers, 'rust_analyzer')
 end
 
+---@param config table?
+---@return function
 local function server_config(config)
     config = config or {}
     return function(server)

@@ -11,14 +11,24 @@ function history-path() {
     echo -n "$dir_state/history"
 }
 
+# Termux doesn't set XDG_RUNTIME_DIR
+if [[ -z $XDG_RUNTIME_DIR && -w $TMPDIR ]]; then
+    XDG_RUNTIME_DIR="$TMPDIR/$UID"
+    mkdir --mode=700 "$XDG_RUNTIME_DIR"
+    export XDG_RUNTIME_DIR
+fi
+
 # bash(1) "Shell Variables" section
 export HISTCONTROL=ignoredups
-export HISTIGNORE='ls *:la *:ll *:cd *'
+export HISTIGNORE='history*:ls*:la*:ll*:cd .*:cd:exit:clear'
 export HISTFILE=$(history-path bash)
 
 # python 3.13+ only
 export PYTHON_HISTORY=$(history-path python)
 export NODE_REPL_HISTORY=$(history-path node)
+
+# Build a static library when installing python versions (e.g. pyenv)
+export PYTHON_CONFIGURE_OPTS=--disable-shared
 
 # Use italics instead of underlines
 export MANROFFOPT=-P-i
