@@ -65,9 +65,6 @@ function PLUGIN.config()
             },
         },
     }
-
-    -- Add a border for transparent colorschemes
-    require('lspconfig.ui.windows').default_options.border = 'rounded'
 end
 
 return PLUGIN
