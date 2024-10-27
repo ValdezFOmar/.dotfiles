@@ -5,31 +5,22 @@ PLUGIN.dependencies = {
     'L3MON4D3/LuaSnip',
 }
 
-local function luasnip_jump_forward()
+---Jump between snippet placeholders
+---@param direction -1|1
+---@return function
+local function luasnip_jump(direction)
     local luasnip = require 'luasnip'
     local cmp = require 'cmp'
     return cmp.mapping(function(fallback)
-        if luasnip.jumpable(1) then
-            luasnip.jump(1)
+        if luasnip.locally_jumpable(direction) then
+            luasnip.jump(direction)
         else
             fallback()
         end
     end, { 'i', 's' })
 end
 
-local function luasnip_jump_backward()
-    local luasnip = require 'luasnip'
-    local cmp = require 'cmp'
-    return cmp.mapping(function(fallback)
-        if luasnip.jumpable(-1) then
-            luasnip.jump(-1)
-        else
-            fallback()
-        end
-    end, { 'i', 's' })
-end
-
-local function confirm_selected_or_first_item()
+local function confirm_first_or_selected()
     local cmp = require 'cmp'
     return cmp.mapping(function(fallback)
         if not cmp.visible() then
@@ -43,31 +34,15 @@ local function confirm_selected_or_first_item()
     end, { 'i', 's' })
 end
 
-local function previous_suggestion()
-    local cmp = require 'cmp'
-    return cmp.mapping(function(fallback)
-        if cmp.visible() then
-            cmp.select_prev_item { behavior = cmp.SelectBehavior.Select }
-        else
-            fallback()
-        end
-    end, { 'i', 's' })
-end
-
-local function next_suggestion()
-    local cmp = require 'cmp'
-    return cmp.mapping(function(fallback)
-        if cmp.visible() then
-            cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
-        else
-            fallback()
-        end
-    end, { 'i', 's' })
-end
-
 function PLUGIN.config()
+    local MAX_WIDTH = 28
+    local FORWARD = 1
+    local BACKWARD = -1
+    local SCROLL_DOWN = 5
+    local SCROLL_UP = -SCROLL_DOWN
+    local CUTOFF_CHAR = '…'
+
     local cmp = require 'cmp'
-    local maxwidth = 28
 
     cmp.setup {
         snippet = {
@@ -97,23 +72,25 @@ function PLUGIN.config()
                 elseif name == 'nvim_lua' then
                     item.menu = '[neovim]'
                 else
-                    item.menu = ('[%s]'):format(name)
+                    item.menu = '[' .. name .. ']'
                 end
-                if #item.abbr > maxwidth then
-                    item.abbr = item.abbr:sub(1, maxwidth - 1) .. '…'
+                if #item.abbr > MAX_WIDTH then
+                    item.abbr = item.abbr:sub(1, MAX_WIDTH - #CUTOFF_CHAR) .. CUTOFF_CHAR
                 end
                 return item
             end,
         },
         mapping = cmp.mapping.preset.insert {
-            ['<Tab>'] = confirm_selected_or_first_item(),
-            ['<C-k>'] = previous_suggestion(),
-            ['<C-j>'] = next_suggestion(),
+            ['<Tab>'] = confirm_first_or_selected(),
+            ['<A-k>'] = cmp.mapping.select_prev_item(),
+            ['<A-j>'] = cmp.mapping.select_next_item(),
+            ['<C-k>'] = cmp.mapping.scroll_docs(SCROLL_UP),
+            ['<C-j>'] = cmp.mapping.scroll_docs(SCROLL_DOWN),
             ['<C-Space>'] = cmp.mapping.complete(),
             -- Navigate between snippet placeholder
-            ['<A-Tab>'] = luasnip_jump_forward(),
-            ['<A-f>'] = luasnip_jump_forward(),
-            ['<A-b>'] = luasnip_jump_backward(),
+            ['<A-Tab>'] = luasnip_jump(FORWARD),
+            ['<A-f>'] = luasnip_jump(FORWARD),
+            ['<A-b>'] = luasnip_jump(BACKWARD),
         },
     }
 end
