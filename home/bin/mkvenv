@@ -5,23 +5,27 @@
 # - python
 # - virtualenv
 
-# shellcheck disable=SC2155
-
 # Exit on errors
 set -o errexit
 set -o nounset
 set -o pipefail
 
+# foreground colors
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+yellow=$(tput setaf 3)
+normal=$(tput sgr0)
+readonly red green yellow normal
+
 readonly default_venv=.venv
 readonly program=${0##*/}
 
-# ansi scape codes
-readonly green=$(tput setaf 2)
-readonly yellow=$(tput setaf 3)
-readonly normal=$(tput sgr0)
-
 function error() {
-    >&2 echo "$program: $*"
+    >&2 echo "$program: ${red}error${normal}: $*"
+}
+
+function warning() {
+    >&2 echo "$program: ${yellow}warning${normal}: $*"
 }
 
 function die() {
@@ -54,18 +58,19 @@ function trim() {
 function mkvenv() {
     local venv=$1 prompt version
 
-    [[ -f $venv ]] && die "venv '$venv' already exists"
+    [[ -e $venv ]] && die "venv '$venv' already exists"
 
-    # green prompt
     prompt="\[$green\]$venv\[$normal\]"
 
     if ! command -v virtualenv > /dev/null; then
+        # shellcheck disable=SC2016
+        warning 'virtualenv not found, using `python -m venv`'
         python -m venv "$venv" --prompt "$prompt" --copies --upgrade-deps
         return
     fi
 
     if ! command -v pyenv > /dev/null || ! pyenv local &> /dev/null; then
-        error "${yellow}WARNING${normal}: python version not set with pyenv"
+        warning 'python version not set with pyenv'
         virtualenv "$venv" --prompt "$prompt" --copies --download
         return
     fi
@@ -75,6 +80,7 @@ function mkvenv() {
 }
 
 function main() {
+    local venv
     if [[ $# -eq 0 ]]; then
         mkvenv "$default_venv"
     elif [[ $# -eq 1 ]]; then
@@ -83,15 +89,18 @@ function main() {
                 usage
                 exit 0
                 ;;
+            -*)
+                error "unrecognized argument: $1"
+                exit 1
+                ;;
             *)
-                local venv=$(trim "$1")
+                venv=$(trim "$1")
                 [[ -z $venv ]] && die 'empty venv name'
                 mkvenv "$venv"
                 ;;
         esac
     else
         error 'too many arguments'
-        usage
         exit 1
     fi
 }
