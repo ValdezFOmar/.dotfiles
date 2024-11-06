@@ -2,48 +2,67 @@
 
 ## General
 
-- [ ] Move env vars in .xprofile to a separate file in order to be able
-  to source it and export the variables in enviroments where .xprofile
+- [ ] Move env vars in `.xprofile` to a separate file in order to be able
+  to source it and export the variables in environments where `.xprofile`
   might not run (like Termux) (Maybe export a variable like
   `_BONES_LOADED_ENVS`, if it's set the don't load them again, if it's
   not then load'em).
-- [x] Change frequencymenu script to be a shellscript for use in a terminal
-  - [ ] Add a 'add-bin' shell function to quickly symlink an executable
-     to an entry under XDG_BIN_HOME
-  - [x] Add paru configuration
-  - [ ] Add yazi configuration
-  - [ ] Add mime apps configuration
+- [ ] Home directory cleaning
+  - [ ] Move `.wine` prefix to `$XDG_STATE_HOME/wine`
+  - [ ] Move `.cargo` to `$XDG_STATE_HOME/cargo` and add `cargo/bin`
+    to `$HOME`
+  - [ ] Move `.rustup` to `$XDG_STATE_HOME/rustup`
+  - [ ] Move `.screenlayout` to `$XDG_STATE_HOME/layout` and fix
+    reference in `.xprofile`
 - [ ] Look into configuring Firefox with a plain text file
-- [ ] Learn [touch typing](https://www.typingclub.com/)
 - [ ] Configure Bluetooth
 
+## .dotfiles
+
+- [ ] Create widgets with <https://github.com/elkowar/eww>
+- [ ] Add some options to the `install.sh` script for easier
+   installation in other platforms (`termux`).
+- [ ] Don't create `~/bin` directory and instead make it a symbolic link
+  to `~/.dotfiles/home/bin` since some language servers seem to break
+  when the parent directory is a symlink.
+- [ ] Add configuration files
+  - [x] Add paru configuration
+  - [ ] Add yazi configuration
+  - [ ] Add `mpv` config
+  - [ ] Add `.ssh/config` config
+  - [ ] Add mime apps configuration
+
+### pre-commit
+
+- [ ] Add `pre-commit` hooks for linting and formatting shell scripts:
+  - [ ] Format all shell scripts
+  - [ ] Include the changes specified in `.editorconfig`
+  - [ ] <https://github.com/scop/pre-commit-shfmt>
+  - [ ] <https://github.com/shellcheck-py/shellcheck-py>
+
+- [ ] Add `pre-commit` hook for formatting markdown files: <https://mdformat.readthedocs.io/en/stable/>
+  - [ ] Format all markdown files
 
 ## Kitty
 
-- [ ] Replace `CaskaydiaCove NF` for plain `CascadiaCode` and use kitty's Unicode points
-    options for displaying all kinds of special symbols. This will solve the issue with
-    some ligatures (like `<<=` and `|-`). Keep the Nerd Font variant since is use in other
-    programs (mainly `rofi`).
+- [ ] Replace `CaskaydiaCove NF` for plain `CascadiaCode` and use kitty's
+  Unicode points options for displaying all kinds of special symbols.
+  This will solve the issue with some ligatures (like `<<=` and `|-`). Keep
+  the Nerd Font variant since is use in other programs (mainly `rofi`
+  and `qtile`).
 
 ## Neovim
 
-- [ ] Consider using [nvim-highlight-colors] instead of `nvim-colorizer
-   as it's unmantained.
-- [ ] Add highlight groups for C# doc comments. Omnisharp reports semantic tokens
-    in the form of `@lsp.type.xmlDocument*`, so this highlight groups should be linked to a}
-    tag highlight groups (like `@tag.*`).
-    A complete list of all the semantic tokens can be found at [the roslyn repository][roslyn-semantic-tokens]
-
-  ```cs
-  /// <summary>
-  /// Some description <c>Program</c>
-  /// </summary>
-  ```
-
-
-## Qtile
-- [x] Add group for Thunderbird
-- [ ] Re-enable system tray for qtile and install Thunderbird system tray icon `systray-x-common`
+- [ ] Heavy refactor of settings, keymaps, etc. into `init.lua`
+- [ ] Move some configuration of `after/ftplugin` to an autocommand
+- [ ] Move queries out of `after/queries` and into `queries/`
+- [ ] Add snippets in vs-code format (JSON files basically)
+- [ ] Consider using [nvim-highlight-colors] instead of `nvim-colorizer`
+   as it's unmaintained.
+- [ ] Add highlight groups for C# doc comments. Omnisharp reports semantic
+  tokens in the form of `@lsp.type.xmlDocument*`, so this highlight
+  groups should be linked to a tag highlight groups (like `@tag.*`).
+  A complete list of all the semantic tokens can be found at [the roslyn repository][roslyn-semantic-tokens]
 
 ## Rofi
 - [ ] Create a `simple_dmenu.rasi` shared between multiple menu that don't use icons
@@ -60,11 +79,12 @@
 
 - [x] Change python scripts' names in `install/` (`-` to `_`)
 - [x] fixed the implicit relative imports, so is possible to run the scripts like
-      `python -m install.user_config`. Maybe even consider adding a `__main__`
-      to run it like this: `python -m install`
+  `python -m install.user_config`. Maybe even consider adding a `__main__`
+  to run it like this: `python -m install`
 
 ## General
 
+- [x] Change frequencymenu script to be a shellscript for use in a terminal
 - [x] Cleanup shellscripts that are not needed (*_reload.sh files) and
    rename to use hyphens `-`
 - [x] Update README.md about new installation script
@@ -99,6 +119,11 @@
   - [x] Change XDG_BIN_HOME to point to ~/.local/bin and move scripts to ~/bin
     - [x] Delete `PIPX_BIN_HOME` variable, it points to ~/.local/bin by
        default
+
+## Qtile
+- [x] Add group for Thunderbird
+- [x] Re-enable system tray for qtile and install Thunderbird system tray icon `systray-x-common`
+
 
 ## BASH Prompt (`PS1`)
 
