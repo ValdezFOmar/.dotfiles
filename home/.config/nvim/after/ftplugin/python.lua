@@ -37,7 +37,7 @@ local function format_current_file()
         return
     end
     if not vim.uv.fs_stat(filename) then
-        vim.notify(("File %s doesn't exist"):format(filename), vim.log.levels.ERROR)
+        vim.notify(("File '%s' doesn't exist"):format(filename), vim.log.levels.ERROR)
         return
     end
     vim.cmd.write { filename, mods = { silent = true } }
@@ -46,4 +46,4 @@ local function format_current_file()
     vim.cmd.edit { filename }
 end
 
-vim.keymap.set('n', '<leader>ff', format_current_file, { buffer = true })
+vim.keymap.set('n', '<F3>', format_current_file, { buffer = true })

@@ -21,3 +21,4 @@ stderr
 stdout
 stdin
 pyright
+json
