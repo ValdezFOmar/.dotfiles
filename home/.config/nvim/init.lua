@@ -1,9 +1,24 @@
+local uri = require 'bones.uri'
+
 local api = vim.api
 local lsp = vim.lsp
 local map = vim.keymap.set
 local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
 local user_command = api.nvim_create_user_command
+
+---Use `key` if buffer can be modified, if not use `fallback`
+---@param key string
+---@param fallback string
+---@return fun(): string
+local function modify_or(key, fallback)
+    return function()
+        local bufnr = api.nvim_get_current_buf()
+        local bo = vim.bo[bufnr]
+        local can_modify = bo.modifiable or not bo.readonly
+        return can_modify and key or fallback
+    end
+end
 
 -- Old language providers are slow, disable them:
 -- https://github.com/neovim/neovim/issues/7063#issuecomment-2382641641
@@ -111,8 +126,8 @@ vim.treesitter.language.register('vimdoc', { 'checkhealth' })
 vim.treesitter.language.register('editorconfig', { 'paru' })
 
 --- Keymaps ---
-map('n', 'L', vim.diagnostic.open_float)
-map('n', '<leader>xx', '<Cmd>!chmod u+x %<Enter>')
+map('n', '<leader>xx', '<Cmd>silent !chmod u+x %<Enter>')
+map('n', 'gx', uri.open, { desc = 'Open a URI like `gx`, but better' })
 
 -- copy/paste
 map('n', '<C-a>', 'mzggVG', { desc = 'Select all text' })
@@ -122,14 +137,27 @@ map('x', '<leader>Y', [["+y]], { desc = 'Copy selected text to clipboard' })
 map({ 'n', 'x' }, '<leader>P', [["+p]], { desc = 'Paste from clipboard' })
 
 -- editor
+map('n', 'L', vim.diagnostic.open_float)
 map('n', '<Esc>', '<Cmd>nohlsearch<Enter>')
 map('n', '<leader>w', '<Cmd>silent write<Enter>')
 map('n', '<leader>q', '<Cmd>quit<Enter>')
-map('n', 'U', '<C-r>', { desc = 'Redo changes with `U`' })
-map('n', 'J', 'mzJ`z', { desc = 'Same as `J`, but does not move the cursor' })
 map('n', '<M-n>', '<Cmd>cnext<Enter>', { desc = 'Next error in quickfix' })
 map('n', '<M-p>', '<Cmd>cNext<Enter>', { desc = 'Previous error in quickfix' })
 map({ 'n', 'v', 'i' }, '<C-z>', '<Nop>', { desc = "Dont't send neovim to the background" })
+
+-- text editing
+map('n', 'U', '<C-r>', { desc = 'Redo changes with `U`' })
+map('n', 'J', 'mzJ`z', { desc = 'Same as `J`, but does not move the cursor' })
+map('n', '<S-Enter>', modify_or('mzO<Esc>0"_D`z', '<S-Enter>'), {
+    expr = true,
+    desc = 'Add new line above the cursor',
+    noremap = true,
+})
+map('n', '<Enter>', modify_or('mzo<Esc>0"_D`z', '<Enter>'), {
+    expr = true,
+    desc = 'Add new line under the cursor',
+    noremap = true,
+})
 
 -- indentation
 map('n', '<Tab>', '>>', { desc = 'Add 1 level of indentation' })
@@ -212,7 +240,6 @@ user_command('ToggleDiagnostics', function()
 end, { desc = 'Toggle diagnostics in current buffer' })
 
 --- lazy.nvim ---
-
 local lazy_setup = require 'bones.lazy'
 local ok, installed = pcall(lazy_setup.install)
 

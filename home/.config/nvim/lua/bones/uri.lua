@@ -1,24 +1,8 @@
+local api = vim.api
+local fn = vim.fn
+local ts = vim.treesitter
+
 local M = {}
-
----@return boolean
-local function current_buf_writeable()
-    local buf = vim.api.nvim_get_current_buf()
-    local buf_opts = vim.bo[buf]
-    return buf_opts.modifiable and not buf_opts.readonly
-end
-
----Use `key` if buffer can be modified, if not use `fallback`
----@param key string
----@param fallback string
----@return fun(): string
-function M.trykey(key, fallback)
-    return function()
-        if not current_buf_writeable() then
-            return fallback
-        end
-        return key
-    end
-end
 
 ---Handle opening a path
 ---@param path string Path to open
@@ -42,19 +26,21 @@ local function do_open(path)
     end
 end
 
-M.uri = {
-    filetypes = {}, ---@type table<string, fun(path: string): string?>
-}
+-- Characters commonly use for delimiting URLs
+local delimiters = '⟨⟩'
 
-function M.uri.open()
-    -- Strip common characters use for delimiting URLs
-    local path = vim.fn.trim(vim.fn.expand '<cfile>', '⟨⟩')
+---Open `text` using `vim.ui.open`.
+---Open `<cfile>` when `text` is `nil`.
+---@param text string?
+function M.open(text)
+    text = text or fn.expand '<cfile>'
+    local path = fn.trim(text, delimiters)
     local message, ok = do_open(path)
     if ok then
         vim.notify(message, vim.log.levels.INFO)
         return
     end
-    local func = M.uri.filetypes[vim.bo.filetype]
+    local func = M.filetypes[vim.bo.filetype]
     if type(func) ~= 'function' then
         vim.notify(message, vim.log.levels.ERROR)
         return
@@ -72,31 +58,35 @@ function M.uri.open()
     vim.notify(message, vim.log.levels.INFO)
 end
 
-function M.uri.filetypes.markdown()
-    local buffer = vim.api.nvim_get_current_buf()
-    local node = vim.treesitter.get_node { bufnr = buffer, ignore_injections = false }
+---@type table<string, fun(path: string): string?>
+M.filetypes = {}
+
+function M.filetypes.markdown()
+    local bufnr = api.nvim_get_current_buf()
+    local node = ts.get_node { bufnr = bufnr, ignore_injections = false }
     if not node then
         return
     end
-    if node:type() == 'inline_link' then
+    local node_name = node:type()
+    if node_name == 'inline_link' then
         local link = node:named_child(1)
-        if not (link and link:type() == 'link_destination') then
+        if not link or link:type() ~= 'link_destination' then
             return
         end
-        return vim.treesitter.get_node_text(link, buffer)
-    elseif node:type() == 'link_text' then
+        return ts.get_node_text(link, bufnr)
+    elseif node_name == 'link_text' then
         local link = node:next_named_sibling()
-        if not (link and link:type() == 'link_destination') then
+        if not link or link:type() ~= 'link_destination' then
             return
         end
-        return vim.treesitter.get_node_text(link, buffer)
-    elseif node:type() == 'email_autolink' then
-        local email = vim.treesitter.get_node_text(node, buffer)
-        return 'mailto:' .. vim.fn.trim(email, '<>')
+        return ts.get_node_text(link, bufnr)
+    elseif node_name == 'email_autolink' then
+        local email = ts.get_node_text(node, bufnr)
+        return 'mailto:' .. fn.trim(email, '<>')
     end
 end
 
-function M.uri.filetypes.lua(path)
+function M.filetypes.lua(path)
     if path:match '^[^/]+/[^/]+$' then
         return 'https://github.com/' .. path
     end
