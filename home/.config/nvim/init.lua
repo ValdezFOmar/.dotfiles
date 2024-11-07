@@ -7,7 +7,7 @@ local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
 local user_command = api.nvim_create_user_command
 
----Use `key` if buffer can be modified, if not use `fallback`
+---Use `key` if buffer can be modified, use `fallback` otherwise
 ---@param key string
 ---@param fallback string
 ---@return fun(): string
@@ -15,8 +15,8 @@ local function modify_or(key, fallback)
     return function()
         local bufnr = api.nvim_get_current_buf()
         local bo = vim.bo[bufnr]
-        local can_modify = bo.modifiable or not bo.readonly
-        return can_modify and key or fallback
+        local modifiable = bo.modifiable and not bo.readonly
+        return modifiable and key or fallback
     end
 end
 
@@ -218,7 +218,7 @@ autocmd('LspAttach', {
 --- Autocommands & User commands ---
 
 autocmd('FileType', {
-    --- TODO: remove when nvim-treesitter 2.0 is release
+    --- TODO: remove when nvim-treesitter 1.0 is release
     group = augroup('SpellCheckText', {}),
     pattern = { 'gitcommit', 'markdown', 'html' },
     callback = function()

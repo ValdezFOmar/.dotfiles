@@ -26,7 +26,7 @@ trim_trailing_whitespace = false
 # See: https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/README_EN.md
 [*.lua]
 indent_size = 4
-max_line_length = 120
+max_line_length = 100
 quote_style = single
 align_array_table = false
 trailing_table_separator = smart

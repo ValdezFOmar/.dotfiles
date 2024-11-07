@@ -26,7 +26,8 @@ return {
         ft = 'lua',
         opts = {
             library = {
-                { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+                'lazy.nvim',
+                'luvit-meta/library',
             },
         },
     },
@@ -39,9 +40,9 @@ return {
         config = function()
             require('nvim-autopairs').setup { enable_check_bracket_line = false }
             local cmp = require 'cmp'
-            local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+            local cmp_ap = require 'nvim-autopairs.completion.cmp'
             -- If you want to insert `(` after the selected function or method item
-            cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done { filetypes = { sh = false } })
+            cmp.event:on('confirm_done', cmp_ap.on_confirm_done { filetypes = { sh = false } })
         end,
     },
 }
