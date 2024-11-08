@@ -1,6 +1,6 @@
 [Unit]
 Description=Refresh tldr pages cache weekly
-# The tldr CLI by default updates it cache when it's more than 
+# The tldr CLI by default updates it cache when it's more than
 # a week old, but only does it when the user consults a page
 
 [Timer]
