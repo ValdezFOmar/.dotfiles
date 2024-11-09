@@ -1,8 +1,5 @@
 ; extends
 
-((setting_value) @string
-  (#lua-match? @string "^%s*\".*\"%s*$"))
-
 ((setting_value) @number
   (#lua-match? @number "^%s*[-]?%d+%s*$"))
 
