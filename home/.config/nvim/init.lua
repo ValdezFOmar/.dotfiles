@@ -7,19 +7,6 @@ local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
 local user_command = api.nvim_create_user_command
 
----Use `key` if buffer can be modified, use `fallback` otherwise
----@param key string
----@param fallback string
----@return fun(): string
-local function modify_or(key, fallback)
-    return function()
-        local bufnr = api.nvim_get_current_buf()
-        local bo = vim.bo[bufnr]
-        local modifiable = bo.modifiable and not bo.readonly
-        return modifiable and key or fallback
-    end
-end
-
 -- Old language providers are slow, disable them:
 -- https://github.com/neovim/neovim/issues/7063#issuecomment-2382641641
 vim.g.loaded_node_provider = 0
@@ -148,16 +135,6 @@ map({ 'n', 'v', 'i' }, '<C-z>', '<Nop>', { desc = "Dont't send neovim to the bac
 -- text editing
 map('n', 'U', '<C-r>', { desc = 'Redo changes with `U`' })
 map('n', 'J', 'mzJ`z', { desc = 'Same as `J`, but does not move the cursor' })
-map('n', '<S-Enter>', modify_or('mzO<Esc>0"_D`z', '<S-Enter>'), {
-    expr = true,
-    desc = 'Add new line above the cursor',
-    noremap = true,
-})
-map('n', '<Enter>', modify_or('mzo<Esc>0"_D`z', '<Enter>'), {
-    expr = true,
-    desc = 'Add new line under the cursor',
-    noremap = true,
-})
 
 -- indentation
 map('n', '<Tab>', '>>', { desc = 'Add 1 level of indentation' })
