@@ -63,6 +63,7 @@ qtile
 reflector
 ripgrep
 rofi
+rustup
 terminus-font
 thunderbird
 thunderbird-dark-reader

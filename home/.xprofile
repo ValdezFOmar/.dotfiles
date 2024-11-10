@@ -38,12 +38,20 @@ export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 # Qt theme customization, but only if installed
 command -v qt5ct > /dev/null && export QT_QPA_PLATFORMTHEME=qt5ct
 
+# Rust
+export RUSTUP_HOME="$XDG_STATE_HOME/rustup"
+export CARGO_HOME="$XDG_STATE_HOME/cargo"
+
+# npm
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
 #
 #   Path
 #
-[ -d "$XDG_BIN_HOME" ] && PATH="$XDG_BIN_HOME:$PATH"
-[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
+# Sorted from lowest to highest priority
+PATH="$CARGO_HOME/bin:$PATH"
+PATH="$XDG_BIN_HOME:$PATH"
+PATH="$HOME/bin:$PATH"
 
 
 #

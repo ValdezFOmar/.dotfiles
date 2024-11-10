@@ -9,9 +9,9 @@
   not then load'em).
 - [ ] Home directory cleaning
   - [ ] Move `.wine` prefix to `$XDG_STATE_HOME/wine`
-  - [ ] Move `.cargo` to `$XDG_STATE_HOME/cargo` and add `cargo/bin`
+  - [x] Move `.cargo` to `$XDG_STATE_HOME/cargo` and add `cargo/bin`
     to `$HOME`
-  - [ ] Move `.rustup` to `$XDG_STATE_HOME/rustup`
+  - [x] Move `.rustup` to `$XDG_STATE_HOME/rustup`
   - [ ] Move `.screenlayout` to `$XDG_STATE_HOME/layout` and fix
     reference in `.xprofile`
 - [ ] Look into configuring Firefox with a plain text file
@@ -57,6 +57,7 @@
 - [ ] Move some configuration of `after/ftplugin` to an autocommand
 - [ ] Move queries out of `after/queries` and into `queries/`
 - [ ] Add snippets in vs-code format (JSON files basically)
+- [ ] Default indentation of 2 for `test` files
 - [ ] Consider using [nvim-highlight-colors] instead of `nvim-colorizer`
    as it's unmaintained.
 - [ ] Add highlight groups for C# doc comments. Omnisharp reports semantic
@@ -158,8 +159,6 @@
 - [x] Remove option for margin, it causes programs inside the terminal to have an ugly margin
 - [x] Add keymaps for opening special files (.dofiles, nvim config, qtile config)
 - [x] Use captppuccin colors for terminal
-
----
 
 [roslyn-semantic-tokens]: https://github.com/dotnet/roslyn/src/Workspaces/Core/Portable/Classification/ClassificationTypeNames.cs#L57C8-L77C24
 [nvim-highlight-colors]: https://github.com/brenoprata10/nvim-highlight-colors
