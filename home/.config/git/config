@@ -8,7 +8,6 @@
 
 [core]
     editor = nvim
-    excludesfile = ~/.config/git/global-gitignore
 
 [alias]
     st = status

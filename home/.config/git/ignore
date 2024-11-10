@@ -18,5 +18,3 @@ forget[-_]code
 # enviromental variables files
 .env
 .env.local
-
-# vim: ft=gitignore
