@@ -27,6 +27,7 @@
   when the parent directory is a symlink.
 - [ ] Add configuration files
   - [x] Add paru configuration
+  - [x] Add `readline` configuration `inputrc` and set `INPUTRC` env var
   - [ ] Add yazi configuration
   - [ ] Add `mpv` config
   - [ ] Add `.ssh/config` config

@@ -1,0 +1,27 @@
+set completion-ignore-case on
+set colored-completion-prefix on
+
+# Threshold for asking to show all completions
+set completion-query-items 50
+
+# Don't try to ring the bell, just show the completions
+set bell-style none
+set show-all-if-unmodified on
+
+# Visual aid for files/directories
+set visible-stats on
+set colored-stats on
+set mark-directories on
+set mark-symlinked-directories on
+
+# Any program that uses GNU readline will use vi keybinds
+# set editing-mode vi
+
+$if mode=vi
+    Meta-0: beginning-of-line
+    Control-a: beginning-of-line
+    Control-e: end-of-line
+    Control-w: unix-word-rubout
+    Control-l: clear-screen
+$endif
+# Control-x: re-read-init-file

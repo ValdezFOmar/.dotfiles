@@ -20,12 +20,6 @@ shopt -s autocd
 # Disable CTRL+S (stop sending output to the terminal)
 stty -ixon
 
-# Readline variables
-bind "set colored-completion-prefix on"
-bind "set mark-directories on"
-bind "set mark-symlinked-directories on"
-
-
 #
 #   Prompt
 #

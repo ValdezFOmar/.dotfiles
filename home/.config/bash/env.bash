@@ -19,8 +19,9 @@ if [[ -z $XDG_RUNTIME_DIR && -w $TMPDIR ]]; then
 fi
 
 # bash(1) "Shell Variables" section
-export HISTCONTROL=ignoredups
-export HISTIGNORE='history*:ls*:la*:ll*:cd .*:cd:exit:clear'
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
+export HISTCONTROL=ignorespace,ignoredups,erasedups
+export HISTIGNORE='history*:ls .*:la .*:ll .*:cd .*:cd:exit:clear'
 export HISTFILE=$(history-path bash)
 
 # python 3.13+ only
