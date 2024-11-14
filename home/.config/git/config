@@ -1,7 +1,7 @@
 [user]
     name = Omar Valdez
     email = omarantoniovaldezf2@gmail.com
-    # signingkey = ~/.ssh/file.pub
+    signingkey = ~/.ssh/id_ed25519.pub
 
 [init]
     defaultBranch = main
