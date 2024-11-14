@@ -7,7 +7,10 @@
 
 (decimal_digits) @number
 
-(any_character) @character.special
+[
+  (flags)
+  (any_character)
+] @character.special
 
 [
   (boundary_assertion)
@@ -44,12 +47,17 @@
   (end_assertion)
 ] @punctuation.delimiter
 
+(inline_flags_group
+  "-" @operator)
+
 [
   "("
   ")"
   "(?"
   "(?:"
   "(?<"
+  "(?P<"
+  "(?P="
   ">"
   "["
   "]"
