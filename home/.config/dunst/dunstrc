@@ -14,7 +14,7 @@
   width = (50, 400)
   height = 300
   origin = top-right
-  offset = 4x40
+  offset = 10x40
   scale = 0
   corner_radius = 12
 
