@@ -33,6 +33,19 @@ return {
     },
     -- Types for vim.uv, used by lazydev
     { 'Bilal2453/luvit-meta', lazy = true },
+    -- A better way of writing SNAKE_CASE_CONSTANTS
+    {
+        'dmtrKovalenko/caps-word.nvim',
+        lazy = true,
+        opts = {},
+        keys = {
+            {
+                mode = 'i',
+                '<C-s>',
+                '<cmd>lua require("caps-word").toggle()<CR>',
+            },
+        },
+    },
     -- Autocomplete pairs parenthesis, brackets, quotes, etc.
     {
         'windwp/nvim-autopairs',

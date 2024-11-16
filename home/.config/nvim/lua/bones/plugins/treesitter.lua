@@ -1,57 +1,72 @@
-local PLUGIN = { 'nvim-treesitter/nvim-treesitter' }
+local parsers = {
+    -- This 5 should always be installed
+    'c',
+    'lua',
+    'vim',
+    'vimdoc',
+    'query',
+    -- python
+    'python',
+    'toml',
+    'htmldjango',
+    -- web
+    'html',
+    'css',
+    'json',
+    'javascript',
+    'typescript',
+    -- git
+    'gitignore',
+    'gitcommit',
+    'git_rebase',
+    'git_config',
+    'diff',
+    -- misc
+    'yaml',
+    'ini',
+    'bash',
+    'markdown',
+    'markdown_inline',
+    'editorconfig',
+    -- injections
+    'regex',
+    'printf',
+    'comment',
+    'luap',
+    'luadoc',
+    'jsdoc',
+}
 
-PLUGIN.lazy = false
-PLUGIN.build = ':TSUpdate'
-
-function PLUGIN.config()
-    ---@diagnostic disable-next-line:missing-fields
-    require('nvim-treesitter.configs').setup {
-        ensure_installed = {
-            -- This 5 should always be installed
-            'c',
-            'lua',
-            'vim',
-            'vimdoc',
-            'query',
-            -- python
-            'python',
-            'toml',
-            'htmldjango',
-            -- web
-            'html',
-            'css',
-            'json',
-            'javascript',
-            'typescript',
-            -- misc
-            'ini',
-            'bash',
-            'markdown',
-            'markdown_inline',
-            'gitignore',
-            -- For injections
-            'regex',
-            'printf',
-            'comment',
-            'luap',
-            'luadoc',
-            'jsdoc',
-        },
-        -- Install parsers synchronously (only applied to `ensure_installed`)
-        sync_install = false,
-        auto_install = true,
-        indent = {
-            enable = true,
-            disable = {
-                'css', -- it messes up the indentation of comments
-                'html', -- indenting issues when `head` and `body` tags are at the same level as `html`
+return {
+    {
+        'nvim-treesitter/nvim-treesitter',
+        lazy = false,
+        build = ':TSUpdate',
+        main = 'nvim-treesitter.configs',
+        opts = {
+            ensure_installed = parsers,
+            sync_install = false,
+            indent = {
+                enable = true,
+                disable = {
+                    'css', -- it messes up the indentation of comments
+                    -- indenting issues when `head` and `body` tags are at the same level as `html`
+                    'html',
+                    'htmldjango',
+                },
+            },
+            highlight = {
+                enable = true,
             },
         },
-        highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = false,
-        },
-    }
-end
-
-return PLUGIN
+    },
+    {
+        'tree-sitter-grammars/tree-sitter-test',
+        ft = 'test',
+        build = 'make parser/test.so',
+        init = function()
+            vim.g.tstest_fullwidth_rules = false
+            vim.g.tstest_rule_hlgroup = '@punctuation.delimiter'
+        end,
+    },
+}
