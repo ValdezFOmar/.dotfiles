@@ -9,6 +9,9 @@ function PLUGIN.config(_, opts)
     vim.cmd.colorscheme 'catppuccin'
 end
 
+-- Italics don't look good on termux, disable them
+local italic = vim.env.TERMUX_VERSION ~= nil and {} or { 'italic' }
+
 ---@type CatppuccinOptions
 PLUGIN.opts = {
     flavor = 'mocha',
@@ -16,9 +19,9 @@ PLUGIN.opts = {
     transparent_background = true,
     show_end_of_buffer = true,
     styles = {
-        conditionals = { 'italic' },
-        loops = { 'italic' },
-        keywords = { 'italic' },
+        conditionals = italic,
+        loops = italic,
+        keywords = italic,
     },
     custom_highlights = function(colors)
         local builtin = '#7d7ddb' -- Original builtin #8888C6
@@ -33,9 +36,13 @@ PLUGIN.opts = {
             ['@function.builtin.bash'] = { link = '@function.builtin' },
             ['@keyword.conditional.ternary'] = { link = '@operator' },
             ['@keyword.operator'] = { link = '@keyword' },
-            ['@module.builtin'] = { fg = colors.red, style = { 'italic' } },
+            ['@module.builtin'] = { fg = colors.red, style = italic },
             ['@string.documentation'] = { fg = documentation },
+            ['@string.special.path.editorconfig'] = { fg = colors.yellow },
+            ['@markup.heading.git_config'] = { fg = colors.yellow },
+            ['@markup.heading.ini'] = { fg = colors.yellow },
             ['@tag.delimiter'] = { link = 'Delimiter' },
+            ['@module.rust'] = { fg = colors.lavender },
             -- markup
             ['@markup.quote'] = { fg = colors.mauve },
             ['@markup.link.url'] = { style = { 'underline' } },

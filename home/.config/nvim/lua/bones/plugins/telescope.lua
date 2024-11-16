@@ -47,21 +47,18 @@ function PLUGIN.config()
             },
             mappings = {
                 i = {
-                    ['<leader>q'] = actions.close,
-                    ['<leader>h'] = actions.which_key,
-                    ['<leader>t'] = actions.select_tab,
-                    ['<C-k>'] = actions.move_selection_previous,
-                    ['<C-j>'] = actions.move_selection_next,
+                    ['<M-q>'] = actions.close,
+                    ['<M-h>'] = actions.which_key,
+                    ['<M-t>'] = actions.select_tab,
+                    ['<M-k>'] = actions.move_selection_previous,
+                    ['<M-j>'] = actions.move_selection_next,
                     ['<M-p>'] = actions_layout.toggle_preview,
-                    ['<M-t>'] = actions_layout.toggle_prompt_position,
                 },
                 n = {
-                    ['<leader>q'] = actions.close,
                     ['q'] = actions.close,
                     ['h'] = actions.which_key,
                     ['t'] = actions.select_tab,
                     ['<M-p>'] = actions_layout.toggle_preview,
-                    ['<M-t>'] = actions_layout.toggle_prompt_position,
                 },
             },
         },
@@ -158,8 +155,10 @@ function PLUGIN.config()
         builtin.diagnostics { bufnr = 0 }
     end
 
+    local file_browser = telescope.extensions.file_browser.file_browser
+
     local function file_siblings()
-        telescope.extensions.file_browser.file_browser {
+        file_browser {
             prompt_title = 'File Sibligs',
             select_buffer = true,
             path = '%:p:h',
@@ -167,6 +166,7 @@ function PLUGIN.config()
     end
 
     local map = vim.keymap.set
+    map('n', '<leader>e', file_browser)
     map('n', '<leader>pf', builtin.find_files, { desc = 'Find files in the root directory' })
     map('n', '<leader>fs', file_siblings, { desc = 'Lists siblings of current file' })
     map('n', '<leader>pg', search_in_repo, { desc = 'Find files tracked by git' })
