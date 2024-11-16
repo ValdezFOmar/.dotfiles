@@ -40,6 +40,7 @@ vim.opt.wrap = false
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = 'yes'
+vim.opt.fillchars = 'eob:·'
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 10
 vim.opt.virtualedit = { 'block' }
@@ -125,7 +126,6 @@ map({ 'n', 'x' }, '<leader>P', [["+p]], { desc = 'Paste from clipboard' })
 
 -- editor
 map('n', 'L', vim.diagnostic.open_float)
-map('n', '<Esc>', '<Cmd>nohlsearch<Enter>')
 map('n', '<leader>w', '<Cmd>silent write<Enter>')
 map('n', '<leader>q', '<Cmd>quit<Enter>')
 map('n', '<M-n>', '<Cmd>cnext<Enter>', { desc = 'Next error in quickfix' })
@@ -164,7 +164,7 @@ autocmd('LspAttach', {
         local client = assert(lsp.get_client_by_id(event.data.client_id))
         local opts = { buffer = event.buf }
 
-        if client.supports_method 'textdocument/rename' then
+        if client.supports_method 'textDocument/rename' then
             map({ 'n', 'i' }, '<F2>', lsp.buf.rename, opts)
         end
         if client.supports_method 'textDocument/formatting' then
@@ -194,8 +194,8 @@ autocmd('LspAttach', {
 
 --- Autocommands & User commands ---
 
+--- TODO: remove when nvim-treesitter 1.0 is release
 autocmd('FileType', {
-    --- TODO: remove when nvim-treesitter 1.0 is release
     group = augroup('SpellCheckText', {}),
     pattern = { 'gitcommit', 'markdown', 'html' },
     callback = function()
@@ -234,6 +234,11 @@ user_command('ToggleDiagnostics', function()
 end, { desc = 'Toggle diagnostics in current buffer' })
 
 --- lazy.nvim ---
+if vim.env.NO_PLUGINS then
+    vim.cmd.colorscheme 'retrobox'
+    return
+end
+
 local lazy_setup = require 'bones.lazy'
 local ok, installed = pcall(lazy_setup.install)
 
