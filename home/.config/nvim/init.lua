@@ -25,11 +25,13 @@ vim.g.maplocalleader = ' '
 
 vim.opt.cursorline = true
 vim.opt.guicursor = {
-    'a:blinkwait700-blinkon250-blinkoff400',
-    'i-ci-ve:ver25-Cursor/lCursor',
+    -- idle cursor in normal mode and blinking in any other mode
+    'a:blinkwait700-blinkon400-blinkoff250',
+    'n:blinkon0',
     'n-v-c:block-inverse',
-    'o:hor50-Cursor/lCursor',
     'r-cr:hor20-Cursor/lCursor',
+    'i-ci-ve:ver25-Cursor/lCursor',
+    'o:hor50-Cursor/lCursor',
     'sm:block-blinkwait175-blinkoff150-blinkon175',
 }
 
