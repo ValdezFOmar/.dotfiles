@@ -63,7 +63,7 @@ return {
     {
         'tree-sitter-grammars/tree-sitter-test',
         ft = 'test',
-        build = 'make parser/test.so',
+        build = 'mkdir -p parser && tree-sitter build -o parser/test.so',
         init = function()
             vim.g.tstest_fullwidth_rules = false
             vim.g.tstest_rule_hlgroup = '@punctuation.delimiter'
