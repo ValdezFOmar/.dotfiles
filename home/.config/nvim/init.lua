@@ -33,6 +33,8 @@ vim.opt.guicursor = {
     'sm:block-blinkwait175-blinkoff150-blinkon175',
 }
 
+vim.opt.title = true
+vim.opt.titlestring = '%F - NVIM'
 vim.opt.shortmess:append 'I'
 vim.opt.incsearch = true
 vim.opt.foldenable = false
