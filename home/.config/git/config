@@ -15,8 +15,6 @@
     amend = commit --amend --edit
     just-amend = commit --amend --no-edit
     # ~/bin/common-git-utils.sh
-    recover = "!common-git-utils.sh --recover-file"
-    cdiff = "!common-git-utils.sh --bat-diff"
     idiff = "!common-git-utils.sh --intersection-diff"
     restage = "!common-git-utils.sh --restage-files"
 
