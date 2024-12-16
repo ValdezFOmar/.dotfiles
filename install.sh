@@ -1,6 +1,12 @@
 #!/usr/bin/bash
 
-set -e
+# Exit on errors
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Print commands as they are executed
+set -o xtrace
 
 dotfiles=$(dirname "$(realpath "$0")")
 

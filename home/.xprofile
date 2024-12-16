@@ -11,7 +11,6 @@ export VISUAL=$EDITOR
 export SUDO_EDITOR=$EDITOR
 export BROWSER=firefox
 
-
 #
 #   XDG directories
 #
@@ -53,12 +52,10 @@ PATH="$CARGO_HOME/bin:$PATH"
 PATH="$XDG_BIN_HOME:$PATH"
 PATH="$HOME/bin:$PATH"
 
-
 #
 #   Default monitor configuration from arandr
 #
 [ -x ~/.screenlayout/default.sh ] && ~/.screenlayout/default.sh
-
 
 #
 #   Programs to run at startup

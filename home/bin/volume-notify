@@ -10,9 +10,9 @@ summary="${volume}%"
 
 if [[ $(pamixer --get-mute) == true ]]; then
     icon=audio-volume-muted
-elif (( volume < 30 )); then
+elif ((volume < 30)); then
     icon=audio-volume-low
-elif (( volume < 70 )); then
+elif ((volume < 70)); then
     icon=audio-volume-medium
 else
     icon=audio-volume-high

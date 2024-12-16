@@ -6,9 +6,9 @@
 
 function history-path() {
     local fallback="$HOME/.local/state"
-    local dir_state="${XDG_STATE_HOME:-$fallback}/$1"
-    [[ -d $dir_state ]] || mkdir --parents "$dir_state"
-    echo -n "$dir_state/history"
+    local directory="${XDG_STATE_HOME:-$fallback}/$1"
+    [[ -d $directory ]] || mkdir --parents "$directory"
+    printf '%s' "$directory/history"
 }
 
 # Termux doesn't set XDG_RUNTIME_DIR
@@ -56,8 +56,9 @@ export BAT_THEME=TwoDark
 export FZF_DEFAULT_OPTS="
 --layout=reverse --border --prompt='choose❯ ' --pointer=❯ --marker=❯
 
---color=fg:#63677f,fg+:white:regular,hl:cyan,hl+:cyan,query:white:regular
---color=bg+:-1,bg+:-1,border:bright-black
+--color=fg:#63677f,current-fg:white,selected-fg:magenta:bold,preview-fg:white
+--color=bg:-1,current-bg:-1,border:bright-black
+--color=hl:cyan,current-hl:cyan,query:white:regular
 --color=prompt:blue:regular,label:blue,header:blue
 --color=pointer:green,info:green,spinner:cyan,marker:magenta
 "

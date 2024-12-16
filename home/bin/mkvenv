@@ -34,7 +34,7 @@ function die() {
 }
 
 function usage() {
-    cat <<EOF
+    cat << EOF
 usage: ${program} [-h | venv]
 
 Easily create virtual enviroments using \`virtualenv\` and \`pyenv\`.

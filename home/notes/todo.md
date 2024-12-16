@@ -35,11 +35,11 @@
 
 ### pre-commit
 
-- [ ] Add `pre-commit` hooks for linting and formatting shell scripts:
-  - [ ] Format all shell scripts
-  - [ ] Include the changes specified in `.editorconfig`
-  - [ ] <https://github.com/scop/pre-commit-shfmt>
-  - [ ] <https://github.com/shellcheck-py/shellcheck-py>
+- [x] Add `pre-commit` hooks for linting and formatting shell scripts:
+  - [x] Format all shell scripts
+  - [x] Include the changes specified in `.editorconfig`
+  - [x] <https://github.com/scop/pre-commit-shfmt>
+  - [x] <https://github.com/shellcheck-py/shellcheck-py>
 
 - [ ] Add `pre-commit` hook for formatting markdown files: <https://mdformat.readthedocs.io/en/stable/>
   - [ ] Format all markdown files

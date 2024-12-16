@@ -31,3 +31,13 @@ quote_style = single
 align_array_table = false
 trailing_table_separator = smart
 align_continuous_inline_comment = false
+
+# Options for shfmt
+# `[[shell]]` is not in the editorconfig spec, but is used by
+# shfmt to match shellscripts even when they don't have an extension
+# See: https://github.com/mvdan/sh/blob/master/cmd/shfmt/shfmt.1.scd
+[[shell]]
+indent_size = 4
+indent_style = space
+space_redirects = true
+switch_case_indent = true

@@ -1,7 +1,4 @@
-#
-# ~/.bashrc
-#
-# shellcheck source=/dev/null
+# shellcheck shell=bash source=/dev/null
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -36,8 +33,7 @@ purple="\[$(tput setaf 5)\]"
 # white="\[$(tput setaf 7)\]"
 _yellow="\[$(tput setaf 11)\]"
 
-_color_exit()
-{
+_color_exit() {
     # Strip the '\[\]' characters and add them in the prompt,
     # they are interpreted literally otherwise
     local exit=$?
@@ -74,7 +70,7 @@ unset -v normal italic orange blue purple dir
 if ! pgrep --euid "$EUID" ssh-agent > /dev/null; then
     ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
 fi
-if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+if [[ ! -f $SSH_AUTH_SOCK ]]; then
     source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
 fi
 

@@ -3,18 +3,19 @@
 # This script contains useful or commonly used functionalities for git.
 # Primarily used with git aliases
 
-set -e
+# Exit on errors
+set -o errexit
+set -o nounset
+set -o pipefail
 
-die()
-{
+die() {
     # Bash parameter substitution
     local prog="${BASH_SOURCE[0]##*/}"
     >&2 echo "${prog}:" "$@"
     exit 1
 }
 
-recover-file()
-{
+recover-file() {
     local commit file=$1
 
     [[ -e $file ]] && die "File '$file' exists"
@@ -26,8 +27,7 @@ recover-file()
     git checkout "${commit}~1" -- "$file"
 }
 
-bat-diff()
-{
+bat-diff() {
     declare -a files
     mapfile -t files < <(git diff --name-only)
 
@@ -38,8 +38,7 @@ bat-diff()
     fi
 }
 
-intersection-diff()
-{
+intersection-diff() {
     # Show the diff for files that are staged and also have unstaged
     # modifications. Useful for reviewing changes made by pre-commit
     declare -a files
@@ -55,8 +54,7 @@ intersection-diff()
     fi
 }
 
-restage-files()
-{
+restage-files() {
     # Similar to `intersection-diff`, but stages the files instead
     declare -a files
 
@@ -71,8 +69,7 @@ restage-files()
     fi
 }
 
-main()
-{
+main() {
     case "$1" in
         --recover-file)
             [[ ! $2 ]] && die 'No file provided'
@@ -84,6 +81,5 @@ main()
         *) die "Unsupported option '$1'" ;;
     esac
 }
-
 
 main "$@"
