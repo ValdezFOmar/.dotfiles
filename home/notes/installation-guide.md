@@ -305,6 +305,12 @@ Enable the network manager so you can connect to the internet after rebooting
 systemctl enable NetworkManager.service
 ```
 
+Enable network time synchronization:
+
+```sh
+timedatectl set-ntp true
+```
+
 ## Bootloader
 
 ### Enable `os-prober`
@@ -332,9 +338,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ## Post installation
 
-Refer to [README](../README.md) to see the instructions for adding all
+Refer to [README](README.md) to see the instructions for adding all
 the additional software after successfully installing the system.
 For internet connection, use [`nmcli`](./connect-wifi.md#using-networkmanager).
-
 
 [arch-install-guide]: https://wiki.archlinux.org/title/Installation_guide

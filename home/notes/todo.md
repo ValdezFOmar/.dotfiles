@@ -46,6 +46,10 @@
 
 ## Kitty
 
+> [!BUG]
+> This seems to also get rid of the icons expanding when there is
+> available space...
+
 - [ ] Replace `CaskaydiaCove NF` for plain `CascadiaCode` and use kitty's
   Unicode points options for displaying all kinds of special symbols.
   This will solve the issue with some ligatures (like `<<=` and `|-`). Keep
@@ -54,13 +58,12 @@
 
 ## Neovim
 
-- [ ] Heavy refactor of settings, keymaps, etc. into `init.lua`
+- [x] Heavy refactor of settings, keymaps, etc. into `init.lua`
 - [ ] Move some configuration of `after/ftplugin` to an autocommand
-- [ ] Move queries out of `after/queries` and into `queries/`
+- [x] Move queries out of `after/queries` and into `queries/`
 - [ ] Add snippets in vs-code format (JSON files basically)
 - [ ] Default indentation of 2 for `test` files
-- [ ] Consider using [nvim-highlight-colors] instead of `nvim-colorizer`
-   as it's unmaintained.
+- [ ] Consider using [nvim-highlight-colors] instead of `nvim-colorizer`.
 - [ ] Add highlight groups for C# doc comments. Omnisharp reports semantic
   tokens in the form of `@lsp.type.xmlDocument*`, so this highlight
   groups should be linked to a tag highlight groups (like `@tag.*`).
