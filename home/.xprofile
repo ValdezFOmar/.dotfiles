@@ -23,10 +23,10 @@ export XDG_STATE_HOME="$HOME/.local/state"
 # Media
 export XDG_DOCUMENTS_DIR="$HOME/Documents"
 export XDG_DOWNLOAD_DIR="$HOME/Downloads"
-export XDG_MUSIC_DIR="$HOME/Media/music"
-export XDG_PICTURES_DIR="$HOME/Media/images"
-export XDG_SCREENSHOTS_DIR="$HOME/Media/images/screenshots"
-export XDG_VIDEOS_DIR="$HOME/Media/videos"
+export XDG_MUSIC_DIR="$HOME/Music"
+export XDG_PICTURES_DIR="$HOME/Pictures"
+export XDG_SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
+export XDG_VIDEOS_DIR="$HOME/Videos"
 
 # Dates/Time formatting
 export LC_TIME=es_MX.UTF-8
@@ -43,6 +43,10 @@ export CARGO_HOME="$XDG_STATE_HOME/cargo"
 
 # npm
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+
+# wine
+export WINEPREFIX="$XDG_STATE_HOME/wine/default"
+mkdir --parents "$WINEPREFIX"
 
 #
 #   Path

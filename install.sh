@@ -18,11 +18,10 @@ mkdir --verbose --parents \
     ~/.local/state \
     ~/Documents \
     ~/Downloads \
-    ~/Media/images/screenshots \
-    ~/Media/music \
-    ~/Media/videos \
+    ~/Pictures/Screenshots \
+    ~/Music \
+    ~/Videos \
     ~/archives \
-    ~/bin \
     ~/projects \
     ~/repos
 
