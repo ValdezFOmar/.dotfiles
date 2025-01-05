@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING, Any, assert_never
+from typing import TYPE_CHECKING, NamedTuple
 
-from libqtile.config import Click, Drag, EzKey, EzKeyChord, Key, KeyChord
+from libqtile.config import Click, Drag, EzKey, EzKeyChord
 from libqtile.lazy import LazyCall, lazy
 
 from . import vars
@@ -12,16 +12,36 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
 
-# technically dict[str, KeyDefinition], but this will cause problems for the 'kwargs' key
-type KeyChordDefinition = dict[str, Any]
-type KeyDefinition = tuple[LazyCall, str] | tuple[Sequence[LazyCall], str] | KeyChordDefinition
+type KeyAction = tuple[LazyCall, str] | tuple[Sequence[LazyCall], str] | KeyChordAction
+type KeyMappings = dict[str, KeyAction]
+
+
+class KeyChordAction(NamedTuple):
+    name: str
+    desc: str
+    mappings: KeyMappings
+
+
+def to_ezkey(key: str, action: KeyAction) -> EzKey | EzKeyChord:
+    match action:
+        case KeyChordAction(name, desc, mappings):
+            return EzKeyChord(
+                key,
+                [to_ezkey(key, action) for key, action in mappings.items()],
+                name=name,
+                desc=desc,
+            )
+        case ([*commands], desc):
+            return EzKey(key, *commands, desc=desc)
+        case (command, desc):
+            return EzKey(key, command, desc=desc)
 
 
 cmd = lazy.spawn
 no_fullscreen = lazy.window.disable_fullscreen
 
 
-keybinds: dict[str, KeyDefinition] = {
+keybinds: KeyMappings = {
     'M-C-r': (lazy.reload_config(), 'Reload the config'),
     # Move window focus
     'M-<space>': ([no_fullscreen(), lazy.layout.next()], 'Move window focus to the next window'),
@@ -52,7 +72,7 @@ keybinds: dict[str, KeyDefinition] = {
     '<XF86MonBrightnessDown>': (cmd('xbacklight -perceived -dec 5'), 'Decrese brightness'),
     '<XF86AudioRaiseVolume>': ([cmd('pamixer -i 5 --gamma 2'), cmd(vars.notify_volume)], 'Increase volume'),
     '<XF86AudioLowerVolume>': ([cmd('pamixer -d 5 --gamma 2'), cmd(vars.notify_volume)], 'Decrease volume'),
-    '<XF86AudioMute>': (cmd('pamixer --toggle-mute'), 'Toggle mute'),
+    '<XF86AudioMute>': ([cmd('pamixer --toggle-mute'), cmd(vars.notify_volume)], 'Toggle mute'),
     # Programs / Applications
     'M-<Return>': (cmd(vars.terminal), 'Launch terminal'),
     'M-b': (cmd('firefox'), 'Launch firefox browser'),
@@ -61,38 +81,23 @@ keybinds: dict[str, KeyDefinition] = {
     'M-q': (cmd(vars.power_menu), 'Launch power menu'),
     'M-m': (cmd(vars.menu_launcher), 'Open menu launcher for programs'),
     # Chords
-    'M-t': {
-        'p': (cmd('xcolor --format HEX --preview-size 155 --selection clipboard'), 'Color picker'),
-        'h': (cmd('gpaste-client ui'), 'Clipboard history'),
-        'l': (
-            cmd(f"{vars.terminal} bat --plain --pager 'less +F -RFS' {vars.qtile_log}"),
-            'Open Qtile log file',
-        ),
-        't': (cmd(vars.toggle_touchpad), 'Enbale/Disable touchpad tapping'),
-        'kwargs': {
-            'name': 'tool',
-            'desc': 'Tooling (mod + T + <key>), for using general purpose tools',
+    'M-t': KeyChordAction(
+        name='tool',
+        desc='Tooling (mod + T + <key>), for using general purpose tools',
+        mappings={
+            'p': (cmd('xcolor --format HEX --preview-size 155 --selection clipboard'), 'Color picker'),
+            'h': (cmd('gpaste-client ui'), 'Clipboard history'),
+            'l': (cmd(f'{vars.terminal} less +F -S {vars.qtile_log}'), 'Open Qtile log file'),
+            't': (cmd(vars.toggle_touchpad), 'Enbale/Disable touchpad tapping'),
         },
-    },
+    ),
 }
 
 
-def def_to_ezkey(key: str, action: KeyDefinition) -> Key | KeyChord:
-    match action:
-        case dict(submappings):
-            kwargs = submappings.pop('kwargs', {})
-            return EzKeyChord(key, [def_to_ezkey(*submap) for submap in submappings.items()], **kwargs)
-        case ([*commands], desc):
-            return EzKey(key, *commands, desc=desc)
-        case (command, desc):
-            return EzKey(key, command, desc=desc)
-        case _:  # pyright: ignore[reportUnnecessaryComparison]
-            assert_never(action)
-
-
-keys = [def_to_ezkey(key, action) for key, action in keybinds.items()]
+keys = [to_ezkey(key, action) for key, action in keybinds.items()]
 
 # Drag floating layouts.
+# TODO: Use EzDrag and EzClick?
 mouse = [
     Drag([mod], 'Button1', lazy.window.set_position_floating(), start=lazy.window.get_position()),
     Drag([mod], 'Button3', lazy.window.set_size_floating(), start=lazy.window.get_size()),

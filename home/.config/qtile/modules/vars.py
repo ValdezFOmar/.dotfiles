@@ -1,6 +1,11 @@
 import os
 
+# Maybe rename to `common`?
+# Maybe just move every variable to the place where it is actually used?
 
+
+# Maybe an enum? Maybe even install python catpuccin https://github.com/catppuccin/python
+# paru -S python-catppuccin
 class Color:
     pink = '#f2a7de'
     purple = '#9e6ffe'

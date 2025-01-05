@@ -24,7 +24,7 @@ max_config.update(only_focused=True, border_width=0)
 
 monad_config = layouts_config.copy()
 monad_config.update(
-    ratio=0.55,
+    ratio=0.50,
     single_border_width=0,
     # single_margin=0,
 )
@@ -55,6 +55,7 @@ floating_layout = layout.Floating(
         Match(wm_class='gnome-screenshot'),  # Preview screenshot window
         Match(title='Dear PyGui', wm_class='Dear PyGui'),
         Match(wm_class='Matplotlib'),
+        Match(title=re.compile('(?!AntiMicroX)'), wm_class='antimicrox'),
         *[
             Match(wm_class=re.compile(regex, re.IGNORECASE))
             for regex in (
@@ -66,6 +67,6 @@ floating_layout = layout.Floating(
             )
         ],
         # Float all windows that are the child of a parent window
-        # Match(func=lambda c: bool(c.is_transient_for())),
+        Match(func=lambda c: bool(c.is_transient_for())),
     ],
 )

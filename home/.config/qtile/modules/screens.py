@@ -29,6 +29,7 @@ bar_widgets = [
     my_widgets.chord,
     widget.Spacer(length=10),
     my_widgets.EMPTY_LEFT,
+    my_widgets.status_notifier,
     my_widgets.wifi,
     my_widgets.battery,
     my_widgets.volume,

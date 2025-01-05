@@ -63,7 +63,7 @@ class NerdFontBattery(widget.Battery):
     ]
 
     def __init__(self, **config: object) -> None:
-        super().__init__(**config)
+        widget.Battery.__init__(self, **config)
         self.add_defaults(self._defaults)
 
     def __update_colour(self, status: BatteryStatus) -> None:
@@ -81,7 +81,8 @@ class NerdFontBattery(widget.Battery):
         self.layout.colour = self.foreground
         self.background = self.normal_background
 
-    def __percent_to_icon(self, percent: float, icons: Sequence[str]) -> str:
+    @staticmethod
+    def __percent_to_icon(percent: float, icons: Sequence[str]) -> str:
         length = len(icons)
         index = int(clamp(0, percent, 1) * length)
         index = index if index < length else -1
@@ -117,6 +118,7 @@ class TitleClock(widget.Clock):
         return super().poll().title()
 
 
+# Investigate more about decorations
 group_decoration = RectDecoration(
     colour=Color.darker,
     line_colour=Color.grayscale6,
@@ -209,6 +211,14 @@ battery = NerdFontBattery(
     decorations=[group_decoration],
 )
 
+# Other widgets to check:
+# - Tasklist
+# - WindowCount
+# - WindowName
+# - WindowTabs
+# - CurrentLayoutIcon
+status_notifier = widget.StatusNotifier(decorations=[group_decoration], padding=10)
+
 # Check for interfaces with `nmcli device`
 wifi = (
     widget.WiFiIcon(
@@ -222,7 +232,7 @@ wifi = (
     )
     if (interface := get_wifi_interface()) is not None
     else widget.TextBox(
-        fmt='No wireless interface found',
+        fmt='No wireless interface found',  # Maybe use an icon like '[icon] N/A'?
         padding_y=7,
         foreground=Color.green,
         decorations=[group_decoration],

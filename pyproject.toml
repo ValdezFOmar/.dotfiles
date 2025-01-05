@@ -35,7 +35,9 @@ exclude = [
     '**/.git',
     '**/.ruff_cache',
 ]
-extraPaths = ['/usr/lib/python3.12/site-packages/']  # Use system python
+# Include system python since the basedpyright executable installed
+# from pre-commit doesn't have access to system libraries
+extraPaths = ['/usr/lib/python3.13/site-packages/']
 typeCheckingMode = 'standard'
 pythonVersion = '3.12'
 pythonPlatform = 'Linux'
