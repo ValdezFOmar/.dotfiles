@@ -1,3 +1,4 @@
+---@type LazyPluginSpec
 local PLUGIN = { 'williamboman/mason.nvim' }
 
 PLUGIN.lazy = false
@@ -23,13 +24,20 @@ if vim.uv.os_uname().machine ~= 'aarch64' then
     table.insert(servers, 'rust_analyzer')
 end
 
+---Setup a server with cmp default capabilities
+---@param config_name string
 ---@param config table?
----@return function
-local function server_config(config)
+local function setup(config_name, config)
     config = config or {}
-    return function(server)
-        config.capabilities = require('cmp_nvim_lsp').default_capabilities()
-        require('lspconfig')[server].setup(config)
+    config.capabilities = require('cmp_nvim_lsp').default_capabilities()
+    require('lspconfig')[config_name].setup(config)
+end
+
+---@param config table?
+---@return fun(config_name: string)
+local function handler(config)
+    return function(config_name)
+        setup(config_name, config)
     end
 end
 
@@ -48,10 +56,10 @@ function PLUGIN.config()
     require('mason-lspconfig').setup {
         ensure_installed = servers,
         handlers = {
-            -- default setup
-            server_config(),
-            html = server_config { filetypes = { 'html', 'templ', 'htmldjango' } },
-            basedpyright = server_config {
+            -- default handler
+            handler(),
+            html = handler { filetypes = { 'html', 'templ', 'htmldjango' } },
+            basedpyright = handler {
                 settings = {
                     basedpyright = {
                         analysis = {
@@ -65,6 +73,19 @@ function PLUGIN.config()
             },
         },
     }
+
+    if vim.fn.executable 'ts_query_ls' == 1 then
+        local data_path = vim.fn.stdpath 'data' --[[@as string]]
+
+        setup('ts_query_ls', {
+            settings = {
+                parser_install_directories = {
+                    vim.fs.joinpath(vim.fn.getcwd(), 'parser'),
+                    vim.fs.joinpath(data_path, 'lazy', 'nvim-treesitter', 'parser'),
+                },
+            },
+        })
+    end
 end
 
 return PLUGIN

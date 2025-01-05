@@ -2,6 +2,7 @@ local uri = require 'bones.uri'
 
 local api = vim.api
 local lsp = vim.lsp
+local ms = lsp.protocol.Methods
 local map = vim.keymap.set
 local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
@@ -39,6 +40,7 @@ vim.opt.title = true
 vim.opt.titlestring = '%F - NVIM'
 vim.opt.shortmess:append 'I'
 vim.opt.incsearch = true
+vim.opt.inccommand = 'split'
 vim.opt.foldenable = false
 vim.opt.wrap = false
 vim.opt.number = true
@@ -109,6 +111,7 @@ vim.filetype.add {
     pattern = {
         ['.*/templates/.*%.html'] = 'htmldjango',
         ['%.?[Jj]ustfile'] = 'just',
+        ['.*ignore'] = 'ignore',
     },
 }
 
@@ -116,6 +119,7 @@ vim.filetype.add {
 vim.treesitter.language.register('ini', { 'systemd' })
 vim.treesitter.language.register('vimdoc', { 'checkhealth' })
 vim.treesitter.language.register('editorconfig', { 'paru' })
+vim.treesitter.language.register('gitignore', { 'ignore' })
 
 --- Keymaps ---
 map('n', '<leader>xx', '<Cmd>silent !chmod u+x %<Enter>')
@@ -126,10 +130,12 @@ map('n', '<C-a>', 'mzggVG', { desc = 'Select all text' })
 map('x', '<leader>p', [["_dP]], { desc = 'Keep yanked text after pasting' })
 map('n', '<leader>Y', [["+Y]], { desc = 'Copy line to clipboard' })
 map('x', '<leader>Y', [["+y]], { desc = 'Copy selected text to clipboard' })
+map('n', 'yc', '<Cmd>let @+=@@<CR>', { desc = 'Copy unnamed register to clipboard' })
 map({ 'n', 'x' }, '<leader>P', [["+p]], { desc = 'Paste from clipboard' })
 
 -- editor
 map('n', 'L', vim.diagnostic.open_float)
+-- map('n', 'gs', vim.show_pos) map it to something more useful
 map('n', '<leader>w', '<Cmd>silent write<Enter>')
 map('n', '<leader>q', '<Cmd>quit<Enter>')
 map('n', '<C-d>', '<C-d>zz')
@@ -157,10 +163,14 @@ map('n', '<M-H>', '<Cmd>tabmove-<Enter>')
 map('n', '<M-L>', '<Cmd>tabmove+<Enter>')
 
 --- LSP ---
-local lsp_opts = { border = 'rounded' }
+local lsp_opts = {
+    border = 'rounded',
+    max_width = 80,
+    max_height = 15,
+}
 
-lsp.handlers['textDocument/hover'] = lsp.with(lsp.handlers.hover, lsp_opts)
-lsp.handlers['textDocument/signatureHelp'] = lsp.with(lsp.handlers.signature_help, lsp_opts)
+lsp.handlers[ms.textDocument_hover] = lsp.with(lsp.handlers.hover, lsp_opts)
+lsp.handlers[ms.textDocument_signatureHelp] = lsp.with(lsp.handlers.signature_help, lsp_opts)
 api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
 
 autocmd('LspAttach', {
@@ -170,30 +180,33 @@ autocmd('LspAttach', {
         local client = assert(lsp.get_client_by_id(event.data.client_id))
         local opts = { buffer = event.buf }
 
-        if client.supports_method 'textDocument/rename' then
+        if client.supports_method(ms.textDocument_signatureHelp) then
+            map({ 'n', 'i' }, '<C-H>', lsp.buf.signature_help, opts)
+        end
+        if client.supports_method(ms.textDocument_rename) then
             map({ 'n', 'i' }, '<F2>', lsp.buf.rename, opts)
         end
-        if client.supports_method 'textDocument/formatting' then
+        if client.supports_method(ms.textDocument_formatting) then
             map({ 'n', 'v' }, '<F3>', lsp.buf.format, opts)
         end
-        if client.supports_method 'textDocument/codeAction' then
+        if client.supports_method(ms.textDocument_codeAction) then
             map({ 'n', 'i' }, '<F4>', lsp.buf.code_action, opts)
         end
 
         -- Use Telescope if available, else use neovim native implementations
         local ok, builtin = pcall(require, 'telescope.builtin')
-        local goto_definition = ok and builtin.lsp_definitions or lsp.buf.definition
-        local goto_type_def = ok and builtin.lsp_type_definitions or lsp.buf.type_definition
-        local show_references = ok and builtin.lsp_references or lsp.buf.references
+        local definition = ok and builtin.lsp_definitions or lsp.buf.definition
+        local type_definition = ok and builtin.lsp_type_definitions or lsp.buf.type_definition
+        local references = ok and builtin.lsp_references or lsp.buf.references
 
-        if client.supports_method 'textDocument/definition' then
-            map('n', 'gd', goto_definition, opts)
+        if client.supports_method(ms.textDocument_definition) then
+            map('n', 'gd', definition, opts)
         end
-        if client.supports_method 'textDocument/typeDefinition' then
-            map('n', 'gt', goto_type_def, opts)
+        if client.supports_method(ms.textDocument_typeDefinition) then
+            map('n', 'gt', type_definition, opts)
         end
-        if client.supports_method 'textDocument/references' then
-            map('n', '<leader>lr', show_references, opts)
+        if client.supports_method(ms.textDocument_references) then
+            map('n', 'gr', references, opts)
         end
     end,
 })
