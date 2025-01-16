@@ -1,0 +1,20 @@
+#define COLOR_0 #1b3441
+#define COLOR_1 #2a5065
+#define COLOR_2 #396d89
+#define COLOR_3 #4889ad
+#define COLOR_4 #68a1c0
+#define COLOR_5 #8cb7cf
+#define COLOR_6 #b0cede
+#define COLOR_7 #d4e4ed
+
+#define BG #07111B
+#define FG COLOR_6
+
+Nsxiv.bar.font: sans 15
+Nsxiv.bar.background: BG
+Nsxiv.bar.foreground: FG  // Font color
+Nsxiv.mark.foreground: FG  // Small square marking an image
+Nsxiv.window.background: BG
+Nsxiv.window.foreground: COLOR_4  // Image selection outline
+
+// vim: ft=xdefaults
