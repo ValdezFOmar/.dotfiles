@@ -1,33 +1,37 @@
 #!/usr/bin/bash
 
-set -e
-
 if [[ $EUID -ne 0 ]]; then
     echo 'This script is intended to only be run as root'
     exit 1
 fi
 
-etc_dir=$(dirname "$(realpath "$0")")
+# Exit on errors
+set -o errexit
+set -o nounset
+set -o pipefail
 
-# slick-greeter
-badges_dir=/usr/share/slick-greeter/badges
+# Print commands as they are executed
+set -o xtrace
 
-command cp --verbose --backup=numbered "$etc_dir/slick-greeter.conf" /etc/lightdm
-command cp --verbose "$etc_dir/qtile.png" "$badges_dir"
-ln --verbose --symbolic --force qtile.png "$badges_dir/qtile-wayland.png"
-unset badges_dir
+backup-install() {
+    install --backup=numbered -D --mode=644 "$1" "$2"
+}
+
+dir=$(dirname "$(realpath "$0")")
+
+# greetd and nwg-hello
+backup-install "$dir/greeter/greetd.conf" /etc/greetd/greetd.conf
+backup-install "$dir/greeter/nwg-hello.css" /etc/nwg-hello/nwg-hello.css
+backup-install "$dir/greeter/wallpaper.png" /usr/share/nwg-hello/wallpaper.png
 
 # reflector
-command cp --verbose --backup=numbered "$etc_dir/reflector.conf" /etc/xdg/reflector
-
-mirrorlist=/etc/pacman.d/mirrorlist
-[[ -f $mirrorlist.bak ]] || cp "$mirrorlist" "$mirrorlist.bak"
-unset mirrorlist
+backup-install /etc/pacman.d/mirrorlist /etc/pacman.d/backup/mirrorlist
+backup-install "$dir/reflector.conf" /etc/xdg/reflector/reflector.conf
 
 # Enable services
 systemctl enable \
     NetworkManager.service \
     cpupower.service \
-    lightdm.service \
+    greetd.service \
     paccache.timer \
     reflector.timer

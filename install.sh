@@ -39,6 +39,7 @@ if ! command -v paru > /dev/null; then
     git clone https://aur.archlinux.org/paru-bin.git ~/repos/paru-bin
     cd ~/repos/paru-bin
     makepkg --syncdeps --install
+    cd -
 fi
 
 paru -S --needed - < "$dotfiles/etc/packages.txt"
@@ -46,7 +47,6 @@ paru -S --needed - < "$dotfiles/etc/aur-packages.txt"
 
 systemctl --user enable \
     tldrcache.timer \
-    org.gnome.GPaste.service
-
-# set keyboard layout
-localectl set-x11-keymap latam
+    hyprpaper.service \
+    hypridle.service \
+    waybar.service
