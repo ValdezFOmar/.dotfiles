@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# This script needs to be compatible with POSIX sh,
-# so the display manager can sourced it using /bin/sh
+# This script needs to be compatible with POSIX sh so it can be sources by uwsm
+# https://github.com/Vladimir-csp/uwsm#4-environments-and-shell-profile
 
 #
 #   default programs
@@ -28,14 +28,16 @@ export XDG_PICTURES_DIR="$HOME/Pictures"
 export XDG_SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
 export XDG_VIDEOS_DIR="$HOME/Videos"
 
-# Dates/Time formatting
-export LC_TIME=es_MX.UTF-8
-
-# GTK
+# Toolkit Backend Variables
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+export GDK_BACKEND='wayland,x11,*'
+export QT_QPA_PLATFORM='wayland;xcb'
+export QT_QPA_PLATFORMTHEME=qt5ct
+export SDL_VIDEODRIVER=wayland
+export CLUTTER_BACKEND=wayland
 
-# Qt theme customization, but only if installed
-command -v qt5ct > /dev/null && export QT_QPA_PLATFORMTHEME=qt5ct
+# XWayland
+export XCURSOR_SIZE=24
 
 # Rust
 export RUSTUP_HOME="$XDG_STATE_HOME/rustup"
@@ -52,21 +54,9 @@ mkdir --parents "$WINEPREFIX"
 #   Path
 #
 # Sorted from lowest to highest priority
-PATH="$CARGO_HOME/bin:$PATH"
-PATH="$XDG_BIN_HOME:$PATH"
-PATH="$HOME/bin:$PATH"
+export PATH="$CARGO_HOME/bin:$PATH"
+export PATH="$XDG_BIN_HOME:$PATH"
+export PATH="$HOME/bin:$PATH"
 
-#
-#   Default monitor configuration from arandr
-#
-[ -x ~/.screenlayout/default.sh ] && ~/.screenlayout/default.sh
-
-#
-#   Programs to run at startup
-#
-picom --daemon
-udiskie &
-light-locker --lock-after-screensaver=60 --lock-on-suspend --lock-on-lid &
-gnome-keyring-daemon --start --daemonize --components=pkcs11,secrets,ssh
-gpaste-client start
-dunst &
+# Dates/Time formatting
+export LC_TIME=es_MX.UTF-8
