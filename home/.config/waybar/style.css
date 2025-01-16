@@ -1,0 +1,186 @@
+@define-color color0 #1b3441;
+@define-color color1 #2a5065;
+@define-color color2 #396d89;
+@define-color color3 #4889ad;
+@define-color color4 #68a1c0;
+@define-color color5 #8cb7cf;
+@define-color color6 #b0cede;
+@define-color color7 #d4e4ed;
+
+@define-color base @color3;
+@define-color deactivated @color4;
+@define-color foreground @color6;
+
+@define-color green #5cc842;
+@define-color yellow #c8c642;
+@define-color red #c84442;
+
+/* General */
+
+* {
+    font-family: "CaskaydiaCove Nerd Font", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+}
+
+window#waybar {
+    all: unset;
+}
+
+.modules-left {
+    padding: 0 4px;
+    margin: 4px;
+    margin-left: 10px;
+    border: 1px solid @base;
+    border-radius: 10px;
+}
+
+.modules-center {
+    padding: 0 4px;
+    margin: 4px;
+    border: 1px solid @base;
+    border-radius: 10px;
+}
+
+.modules-right {
+    padding: 0 4px;
+    margin: 4px;
+    margin-right: 10px;
+    border: 1px solid @base;
+    border-radius: 10px;
+}
+
+tooltip {
+    border: 1px solid @base;
+    border-radius: 10px;
+    background: alpha(@color0, .9);
+}
+
+tooltip label {
+    color: @foreground;
+}
+
+#backlight,
+#battery,
+#clock,
+#clock.date,
+#cpu,
+#disk,
+#idle_inhibitor,
+#keyboard-state,
+#network,
+#memory,
+#mode,
+#mpd,
+#pulseaudio,
+#scratchpad,
+#temperature,
+#tray,
+#window,
+#wireplumber {
+    padding: 4px 8px;
+    color: @foreground;
+}
+
+/* Battery */
+#battery {
+    transition: all .3s ease;
+    background: none;
+}
+
+#battery.full-charge {
+    color: @green;
+    background: none;
+}
+
+#battery.charging {
+    color: @yellow;
+    background: none;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+    background: none;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+
+/* Clock */
+#clock {
+    transition: all .3s ease;
+}
+
+
+/* Idle inhibitor */
+#idle_inhibitor {
+    color: @deactivated;
+}
+
+#idle_inhibitor.activated {
+    color: @foreground;
+}
+
+/* Keyboard state */
+#keyboard-state>label {
+    color: @deactivated;
+}
+
+#keyboard-state>label.locked {
+    color: @foreground;
+}
+
+
+#network {
+    transition: all .3s ease;
+}
+
+
+/*
+ * Icon Tray
+ */
+
+#tray {
+    transition: all .3s ease;
+    padding-right: 15px;
+    border-right: 1px solid @base;
+}
+
+#tray menu * {
+    padding: 0px 5px;
+    transition: all .3s ease;
+}
+
+#tray menu separator {
+    padding: 0px 5px;
+    transition: all .3s ease;
+}
+
+/* hyprland/window module - window title */
+#window {
+    border-left: 1px solid @base;
+    color: @foreground;
+}
+
+/* Wireplumber - Volume */
+#wireplumber.muted {
+    color: @deactivated;
+}
+
+
+/* Workspaces */
+#workspaces button {
+    all: unset;
+    padding: 0px 10px;
+    color: @color4;
+}
+
+#workspaces button.empty {
+    color: @color1;
+}
+
+#workspaces button.active {
+    color: @color6;
+}

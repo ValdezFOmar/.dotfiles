@@ -1,0 +1,144 @@
+{
+  "layer": "top",
+  "spacing": 2,
+  "reload_style_on_change": true,
+  "modules-left": [
+    "idle_inhibitor",
+    "keyboard-state",
+    "hyprland/submap",
+    "hyprland/window"
+  ],
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
+  "modules-right": [
+    "tray",
+    "network",
+    "wireplumber",
+    "battery",
+    "backlight",
+    "clock",
+    "clock#date"
+  ],
+  // --- Hyprland specific modules ---
+  "hyprland/submap": {
+    "format": "<span style=\"italic\">{}</span>"
+  },
+  "hyprland/window": {
+    "format": "{title}",
+    "separate-outputs": true,
+    "max-length": 40,
+    "rewrite": {
+      "(.+) — Mozilla Firefox": "$1",
+      "": "Hyprland"
+    }
+  },
+  "hyprland/workspaces": {
+    "disable-scroll": true,
+    "show-special": true,
+    "all-outputs": true,
+    "move-to-monitor": true,
+    "format": "{icon}",
+    "format-icons": {
+      "urgent": "",
+      "default": "",
+      "empty": "",
+      "special": ""
+    },
+    "persistent-workspaces": {
+      "*": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  // --- General purpose modules ---
+  "backlight": {
+    "tooltip": false,
+    "format": "{percent}% {icon}",
+    "format-icons": [
+      "󰃞",
+      "󰃟",
+      "󰃠"
+    ]
+  },
+  "battery": {
+    "interval": 5,
+    "states": {
+      "full-charge": 100,
+      "good": 80,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    "format-full": "{capacity}% {icon}",
+    "format-charging": "{capacity}% 󱊦",
+    "format-icons": {
+      "full-charge": "󱊣",
+      "good": "󱊢",
+      "warning": "󱊡",
+      "critical": "󱃍"
+    }
+  },
+  "clock": {
+    "format": "{:%I:%M}  ",
+    "tooltip-format": "{:%c}"
+  },
+  "clock#date": {
+    "format": "{:%d %b} 󰃭",
+    "tooltip-format": "<tt>{calendar}</tt>",
+    "calendar": {
+      "mode": "month",
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#b0cede'><b>{}</b></span>",
+        "days": "<span color='#4889ad'><b>{}</b></span>",
+        "weeks": "<span color='#8cb7cf'>{}</span>",
+        "weekdays": "<span color='#8cb7cf'>{}</span>",
+        "today": "<span color='#b0cede'><b><b>{}</b></b></span>"
+      }
+    }
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "keyboard-state": {
+    "capslock": true,
+    "format": "{name} {icon}",
+    "format-icons": {
+      "locked": "󰌾",
+      "unlocked": ""
+    }
+  },
+  "network": {
+    "format-wifi": "{signalStrength}% {icon}",
+    "format-ethernet": "{ipaddr}/{cidr}",
+    "format-linked": "{ifname} (No IP)",
+    "format-disconnected": "󰤮",
+    "format-alt": "{essid} ({signalStrength}%)",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ]
+  },
+  "tray": {
+    "spacing": 10,
+    "reverse-direction": true
+  },
+  "wireplumber": {
+    "format": "{volume}% 󰕾",
+    "format-muted": "{volume}% 󰝟"
+  }
+}
