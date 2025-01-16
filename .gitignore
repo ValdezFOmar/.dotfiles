@@ -1,6 +1,9 @@
 # Symlinks created by systemd
 *.wants/
 
+# walker default theme
+**/themes/default*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

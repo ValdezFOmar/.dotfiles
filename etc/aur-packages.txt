@@ -1,6 +1,6 @@
 grub-hook
 jmtpfs
-python-pulsectl
-python-pulsectl-asyncio
 qogir-cursor-theme-git
-qtile-extras
+uwsm
+walker-bin
+wlogout
