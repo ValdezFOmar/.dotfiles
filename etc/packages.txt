@@ -19,6 +19,7 @@ fzf
 git
 gnome-keyring
 greetd
+grim
 grub
 gvfs
 gvfs-mtp
@@ -66,6 +67,7 @@ qt6ct
 reflector
 ripgrep
 rustup
+slurp
 stow
 terminus-font
 tldr

@@ -27,6 +27,7 @@ export XDG_MUSIC_DIR="$HOME/Music"
 export XDG_PICTURES_DIR="$HOME/Pictures"
 export XDG_SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
 export XDG_VIDEOS_DIR="$HOME/Videos"
+export GRIM_DEFAULT_DIR="$XDG_SCREENSHOTS_DIR"
 
 # Toolkit Backend Variables
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
