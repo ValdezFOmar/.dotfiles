@@ -1,7 +1,7 @@
 # shellcheck disable=SC2155
 
 # Environmental variables for CLI only programs.
-# UI and other environmental variables are defined in ~/.xprofile
+# UI and other environmental variables are defined in ~/uwsm/env
 # so they are available during the session and not only in the shell
 
 function history-path() {

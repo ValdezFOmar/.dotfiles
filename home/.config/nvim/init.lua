@@ -37,7 +37,7 @@ vim.opt.guicursor = {
 }
 
 vim.opt.title = true
-vim.opt.titlestring = '%F - NVIM'
+vim.opt.titlestring = '%t - NVIM'
 vim.opt.shortmess:append 'I'
 vim.opt.incsearch = true
 vim.opt.inccommand = 'split'
@@ -95,6 +95,7 @@ vim.diagnostic.config {
 vim.filetype.add {
     extension = {
         h = 'c',
+        hl = 'hyprlang',
         hook = 'ini',
         rasi = 'rasi',
         theme = 'ini',
@@ -104,6 +105,7 @@ vim.filetype.add {
         ['.megarc'] = 'ini',
         ['dunstrc'] = 'ini',
         ['paru.conf'] = 'paru',
+        ['hyprland.conf'] = 'hyprlang',
         ['requirements.txt'] = 'requirements',
         ['requirements-dev.txt'] = 'requirements',
         ['dev-requirements.txt'] = 'requirements',
@@ -112,6 +114,7 @@ vim.filetype.add {
         ['.*/templates/.*%.html'] = 'htmldjango',
         ['%.?[Jj]ustfile'] = 'just',
         ['.*ignore'] = 'ignore',
+        ['.*/hypr/.*%.conf'] = 'hyprlang',
     },
 }
 
