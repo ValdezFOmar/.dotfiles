@@ -1,26 +1,37 @@
-#!/usr/bin/env bash
+#!/usr/bin/env lua
 
-# Notify volume change using dunst, pulseaudio and pamixer
+local file = assert(io.popen('wpctl get-volume @DEFAULT_SINK@', 'r'))
 
-# Use for matching rule in `dunstrc`
-stack_tag=volume_indicator
+local output = file:read '*l' ---@type string
+local match = output:match '%d+%.%d+' ---@type string|nil
 
-volume=$(pamixer --get-volume)
-summary="${volume}%"
+local volume = math.floor((tonumber(match) or 0) * 100)
+local is_muted = output:sub(-7, -1) == '[MUTED]'
 
-if [[ $(pamixer --get-mute) == true ]]; then
-    icon=audio-volume-muted
-elif ((volume < 30)); then
-    icon=audio-volume-low
-elif ((volume < 70)); then
-    icon=audio-volume-medium
+local icon
+if is_muted then
+    icon = 'audio-volume-muted'
+elseif volume < 30 then
+    icon = 'audio-volume-low'
+elseif volume < 70 then
+    icon = 'audio-volume-medium'
 else
-    icon=audio-volume-high
-fi
+    icon = 'audio-volume-high'
+end
 
-dunstify --appname volume-notify \
-    --urgency low \
-    --icon "$icon" \
-    --hints "string:x-dunst-stack-tag:$stack_tag" \
-    --hints "int:value:$volume" \
-    "$summary"
+local stack_tag = 'volume_indicator'
+local summary = volume .. '%'
+
+-- stylua: ignore start
+local command = {
+    'notify-send',
+    '--app-name', 'volume',
+    '--urgency', 'low',
+    '--icon', icon,
+    '--hint', 'string:x-dunst-stack-tag:' .. stack_tag,
+    '--hint', 'int:value:' .. volume,
+    summary,
+}
+-- stylua: ignore end
+
+os.execute(table.concat(command, ' '))
