@@ -36,6 +36,7 @@ libreoffice-fresh
 linux
 linux-firmware
 man-db
+mpv
 mtpfs
 neovim
 networkmanager
