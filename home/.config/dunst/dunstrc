@@ -12,9 +12,9 @@
 
   # Geometry
   width = (50, 400)
-  height = 300
+  height = (50, 300)
   origin = top-right
-  offset = 10x40
+  offset = (10, 10)
   scale = 0
   corner_radius = 12
 
@@ -28,16 +28,16 @@
 
   # Spacing / Frame (Border)
   gap_size = 5
-  frame_width = 2
-  frame_color = "#2c2f40"
+  frame_width = 1
+  frame_color = "#4889AD"
   separator_height = 3
   separator_color = frame
 
   # Text
-  font = Caskaydia Cove NF 10
+  font = Source Sans Pro
   line_height = 0
   markup = full
-  format = "<span size='110%'><b>%s</b></span> <span size='90%' color='#848cad'>(%a)</span>\n%b"
+  format = "<span size='110%'><b>%s</b></span> <span size='90%' color='#4889AD'>(%a)</span>\n%b"
   alignment = left
   vertical_alignment = center
   show_age_threshold = -1
@@ -62,10 +62,6 @@
 
   # Misc/Advanced
   dmenu = /usr/bin/rofi -dmenu -no-custom -p Dunst:
-  browser = /usr/bin/xdg-open
-  always_run_script = true
-  title = Dunst
-  ignore_dbusclose = true
 
   # mouse
   mouse_left_click = close_current
@@ -80,24 +76,24 @@
   per_monitor_dpi = false
 
 [urgency_low]
-  background = "#161618"
-  foreground = "#959ec2"
-  highlight = "#959ec2"
+  background = "#19242AD0"
+  foreground = "#B0CEDE"
+  highlight = "#B0CEDE"
   timeout = 10
 
 [urgency_normal]
-  background = "#161618"
-  foreground = "#b5c1f1"
-  frame_color = "#739df2"
-  highlight = "#739df2"
+  background = "#19242AD0"
+  foreground = "#B0CEDE"
+  frame_color = "#4889AD"
+  highlight = "#B0CEDE"
   timeout = 10
 
 [urgency_critical]
-  background = "#161618"
-  foreground = "#b5c1f1"
-  frame_color = "#ea7183"
-  highlight = "#ea7183"
-  timeout = 0
+  background = "#19242AD0"
+  foreground = "#B0CEDE"
+  frame_color = "#C84442"
+  highlight = "#C84442"
+  timeout = 20
 
 
 # Rules
@@ -110,7 +106,7 @@
   stack_tag = volume_indicator
   set_stack_tag = volume_indicator
   history_ignore = true
-  max_icon_size = 24
-  frame_color = "#2c2f40"
-  highlight = "#9e6ffe"
+  icon_position = top
+  alignment = center
+  format = "<span size='120%'><b>%s</b></span>"
   timeout = 3s
