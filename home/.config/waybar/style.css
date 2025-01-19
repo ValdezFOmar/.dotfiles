@@ -97,12 +97,19 @@ tooltip label {
     background: none;
 }
 
+@keyframes blink {
+    to {
+        color: @color7;
+    }
+}
+
+/* Using steps() instead of linear as a timing function to limit cpu usage */
 #battery.critical:not(.charging) {
     color: @red;
     background: none;
     animation-name: blink;
     animation-duration: 0.5s;
-    animation-timing-function: linear;
+    animation-timing-function: steps(12);
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
