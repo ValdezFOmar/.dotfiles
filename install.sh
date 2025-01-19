@@ -43,7 +43,7 @@ if ! command -v paru > /dev/null; then
 fi
 
 paru -S --needed - < "$dotfiles/etc/packages.txt"
-paru -S --needed - < "$dotfiles/etc/aur-packages.txt"
+paru -S --needed - < "$dotfiles/etc/packages-aur.txt"
 
 systemctl --user enable \
     tldrcache.timer \

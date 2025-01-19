@@ -3,10 +3,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-if [[ -d ~/.dotfiles ]]; then
-    export DOTFILES=~/.dotfiles
-fi
-
 source ~/.config/bash/env.bash
 source ~/.config/bash/aliases.bash
 source ~/.config/bash/completions.bash

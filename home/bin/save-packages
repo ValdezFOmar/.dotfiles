@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Exit on errors
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly program=${0##*/}
+
+function error() {
+    >&2 echo "$program: error: $*"
+    exit 1
+}
+
+function main() {
+    local file
+    local destination=${1:-$HOME/.dotfiles/etc}
+
+    if ! command -v pacman > /dev/null; then
+        error 'pacman is not available in this system'
+    fi
+
+    [[ -d $destination ]] || mkdir --parents "$destination"
+
+    file=$destination/packages.txt
+    echo "$program: saving to '$file'"
+    pacman --query --quiet --explicit --native | sed -E '/amd|intel|ucode|xf86-video/d' > "$file"
+
+    file=$destination/packages-aur.txt
+    echo "$program: saving to '$file'"
+    pacman --query --quiet --explicit --foreign | sed -E '/paru/d' > "$file"
+}
+
+main "$@"
