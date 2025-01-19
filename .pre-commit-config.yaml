@@ -28,18 +28,6 @@ repos:
       - id: stylua-github
         alias: stylua
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.6
-    hooks:
-      - id: ruff
-        args: [--fix]
-      - id: ruff-format
-
-  - repo: https://github.com/DetachHead/basedpyright-pre-commit-mirror
-    rev: 1.23.1
-    hooks:
-      - id: basedpyright
-
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.10.0-2
     hooks:
