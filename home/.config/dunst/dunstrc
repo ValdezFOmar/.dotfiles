@@ -110,3 +110,5 @@
   alignment = center
   format = "<span size='120%'><b>%s</b></span>"
   timeout = 3s
+
+# vim: ft=ini

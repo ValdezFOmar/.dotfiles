@@ -96,15 +96,10 @@ vim.filetype.add {
     extension = {
         h = 'c',
         hl = 'hyprlang',
-        hook = 'ini',
-        rasi = 'rasi',
-        theme = 'ini',
+        hook = 'confini',
+        theme = 'confini',
     },
     filename = {
-        ['.dmrc'] = 'ini',
-        ['.megarc'] = 'ini',
-        ['dunstrc'] = 'ini',
-        ['paru.conf'] = 'paru',
         ['hyprland.conf'] = 'hyprlang',
         ['requirements.txt'] = 'requirements',
         ['requirements-dev.txt'] = 'requirements',
@@ -119,10 +114,14 @@ vim.filetype.add {
 }
 
 --- Tree-sitter ---
-vim.treesitter.language.register('ini', { 'systemd' })
-vim.treesitter.language.register('vimdoc', { 'checkhealth' })
-vim.treesitter.language.register('editorconfig', { 'paru' })
-vim.treesitter.language.register('gitignore', { 'ignore' })
+for lang, ft in pairs {
+    editorconfig = 'unixini', -- made up filetype to allow keys outside sections
+    gitignore = 'ignore',
+    ini = 'systemd',
+    vimdoc = 'checkhealth',
+} do
+    vim.treesitter.language.register(lang, ft)
+end
 
 --- Keymaps ---
 map('n', '<leader>xx', '<Cmd>silent !chmod u+x %<Enter>')
@@ -265,6 +264,7 @@ local lazy_setup = require 'bones.lazy'
 local ok, installed = pcall(lazy_setup.install)
 
 if ok and installed then
+    ---@diagnostic disable-next-line:missing-fields
     require('lazy').setup('bones.plugins', {
         rocks = { enabled = false },
         git = { cooldown = 60 * 5 }, -- 5 minutes cooldown
