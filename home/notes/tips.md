@@ -1,42 +1,33 @@
-# General tips
+# TIPS
 
 ## Links
 
 - [LaTeX Short Guide](https://github.com/oetiker/lshort)
 
-## MISC
+## Git
 
-- After every kernel update (`linux` package) reboot the system so the
-  new kernel modules for hardware are loaded (e.g. USB drives)
+### Branches
 
-## Neovim
+Delete local branch
 
-### `LuaLS` break
-
-When there's an update to `lua_ls`, mason might brake with a message
-saying that the entries in `ensured_installed` are not valid. To solve
-this, comment out all the options in `ensure installed`, restart neovim,
-update with `:MasonUpdate` then you can uncomment the servers and
-restart neovim.
-
-### Test a local language server
-
-```lua
-require('lspconfig').some_server.setup {
-    cmd = { '/path/to/some_server', 'some-arg' }
-}
+```sh
+git branch -d <branch-name>
 ```
 
-## Thunderbird
+Delete remote branch
 
-To prevent Thunderbird from downloading all your e-mails, change the
-settings at *Edit > Account Settings > Synchronisation and Storage* to
-**Synchronise the most recent**.
+```sh
+git push -d origin <remote-branch-name>
+```
 
-> [!TIP]
-> You might need to press `Alt` to see the *Edit* option in top of the window.
+## General
 
-## BASH Escape Sequences
+### Pacman/Paru colors
+
+To enable colored output, edit `/etc/pacman.conf` and uncomment
+the `Color` option.
+
+### BASH Escape Sequences
 
 Replace color codes with the following syntax. `setaf` stands for
 '**set** **A**NSI **f**oreground'. This syntax can only be embedded in
@@ -59,107 +50,3 @@ the ANSI escape code in `PS1` when:
 - use inside literal strings (single quotes `''`)
 - it's escaped (`\$`) inside a double quoted string
 - it's escaped inside a literal string (it will just print the literal variable name)
-
-## Firefox
-
-To make windows from external links open in tabs instead, apply the
-changes listed in this [article][firefox-tabs].
-
-## Pacman
-
-To enable colored output, edit `/etc/pacman.conf` and uncomment
-the `Color` option.
-
-## Git
-
-### Branches
-
-Delete local branch
-
-```sh
-git branch -d <branch-name>
-```
-
-Delete remote branch
-
-```sh
-git push -d origin <remote-branch-name>
-```
-
-
-## Keyboard Configuration
-
-### Temporal
-
-To see a full list of keyboard models, layouts, variants and options
-for X11, along with a short description, do the following:
-
-```sh
-less /usr/share/X11/xkb/rules/base.lst
-```
-
-To set up the configuration, use the following commands:
-
-> [!NOTE]
-> [X11 Keyboard config][x11-keyboard-config] ArchWiki article.
-
-```sh
-setxkbmap -model xkb_model
-setxkbmap -layout xkb_layout
-setxkbmap -variant xkb_variant
-setxkbmap -option xkb_options
-```
-
-> [!TIP]
-> For a Latin American keyboard layout use: `setxkbmap -layout latam`.
-
-### Persistent
-
-For a persistent keyboard layout configuration use this command
-instead (reboot to see changes):
-
-```sh
-localectl set-x11-keymap skb_layout
-```
-
-> [!NOTE]
-> The same layouts from `setxkbmap` apply.
-
-
-## Reload Xresources Configuration
-
-To reload the `~/.Xresources` configuration file, do:
-
-```sh
-xrdb ~/.Xresources
-```
-
-
-## Clipboard
-
-Use `gpaste` to manage the clipboard contents. CLI client:
-
-```sh
-gpaste-client -h
-```
-
-Paste output of command `foo` to `gpaste`:
-
-```sh
-foo | gpaste-client
-```
-
-> [!TIP]
-> Use the key bind `mod4 + T + H` from the Qtile custom config to see
-> the clipboard history.
-
-## Image Viewer
-
-See images in a directory by moving into it and typing:
-
-```sh
-nsxiv .
-```
-
-[x11-keyboard-config]: https://wiki.archlinux.org/title/Xorg/Keyboard_configuration
-[firefox-tabs]: https://support.mozilla.org/en-US/questions/1193456

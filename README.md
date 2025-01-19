@@ -2,7 +2,19 @@
 
 Dotfiles and installation scripts for my Arch Linux setup.
 
-![Desktop](./desktop_screenshot.png)
+<details open>
+  <summary>Desktop (Hyprland + waybar)</summary>
+
+![Desktop](./assets/desktop.png)
+
+</details>
+
+<details>
+  <summary>Screen lock (Hyprlock)</summary>
+
+![Screen lock](./assets/screenlock.png)
+
+</details>
 
 ## Setup
 
@@ -31,16 +43,16 @@ sudo ./etc/install.sh
 > on `~/`, symlink user configuration files, replace some system
 > configuration files and enable some services.
 >
-> For only installing user configurationfiles run:
+> For only installing user configuration files run:
 >
 > ```bash
-> cd ~/.dotfiles && stow home
+> cd ~/.dotfiles && stow -v home
 > ```
 
 ## Extra
 
-For Additional installation info:
+For additional installation info:
 
 1. [Arch Linux installation guide](home/notes/installation-guide.md).
 2. [Wi-Fi Connection](home/notes/connect-wifi.md)
-3. [GUI setup](home/notes/gui-config.md)
+3. [Hardware configuration](/home/notes/hardware-config.md)

@@ -1,5 +1,10 @@
 # Hardware Configuration
 
+> [!TIP]
+> After every kernel update (`linux` package) reboot the system so the
+> new kernel modules for hardware are loaded (e.g. USB drives)
+
+
 ## CPU Frequency Scaling
 
 See the archlinux wiki for controlling the CPU [Frequency][cpu-frequency].

@@ -7,40 +7,14 @@
   might not run (like Termux) (Maybe export a variable like
   `_BONES_LOADED_ENVS`, if it's set the don't load them again, if it's
   not then load'em).
-- [ ] Home directory cleaning
-  - [ ] Move `.wine` prefix to `$XDG_STATE_HOME/wine`
-  - [x] Move `.cargo` to `$XDG_STATE_HOME/cargo` and add `cargo/bin`
-    to `$HOME`
-  - [x] Move `.rustup` to `$XDG_STATE_HOME/rustup`
-  - [ ] Move `.screenlayout` to `$XDG_STATE_HOME/layout` and fix
-    reference in `.xprofile`
-- [ ] Look into configuring Firefox with a plain text file
-- [ ] Configure Bluetooth
 
 ## .dotfiles
 
 - [ ] Create widgets with <https://github.com/elkowar/eww>
 - [ ] Add some options to the `install.sh` script for easier
    installation in other platforms (`termux`).
-- [ ] Don't create `~/bin` directory and instead make it a symbolic link
-  to `~/.dotfiles/home/bin` since some language servers seem to break
-  when the parent directory is a symlink.
-- [ ] Add configuration files
-  - [x] Add paru configuration
-  - [x] Add `readline` configuration `inputrc` and set `INPUTRC` env var
-  - [ ] Add yazi configuration
-  - [ ] Add `mpv` config
-  - [ ] Add `.ssh/config` config
-  - [ ] Add mime apps configuration
-
-### pre-commit
-
-- [x] Add `pre-commit` hooks for linting and formatting shell scripts:
-  - [x] Format all shell scripts
-  - [x] Include the changes specified in `.editorconfig`
-  - [x] <https://github.com/scop/pre-commit-shfmt>
-  - [x] <https://github.com/shellcheck-py/shellcheck-py>
-
+- [ ] Add yazi configuration
+- [ ] Add `.ssh/config` config
 - [ ] Add `pre-commit` hook for formatting markdown files: <https://mdformat.readthedocs.io/en/stable/>
   - [ ] Format all markdown files
 
@@ -53,8 +27,7 @@
 - [ ] Replace `CaskaydiaCove NF` for plain `CascadiaCode` and use kitty's
   Unicode points options for displaying all kinds of special symbols.
   This will solve the issue with some ligatures (like `<<=` and `|-`). Keep
-  the Nerd Font variant since is use in other programs (mainly `rofi`
-  and `qtile`).
+  the Nerd Font variant since is use in other programs (`waybar`).
 
 ## Neovim
 
@@ -69,14 +42,6 @@
   groups should be linked to a tag highlight groups (like `@tag.*`).
   A complete list of all the semantic tokens can be found at [the roslyn repository][roslyn-semantic-tokens]
 
-## Rofi
-- [ ] Create a `simple_dmenu.rasi` shared between multiple menu that don't use icons
-  - [x] Import the base theme (`config.rasi`) from it and then only include the file name with the option
-  - [x] `-theme` instead of using `-theme-str`
-  - [x] Disable icons in the file
-  - [x] Make `config.rasi` the fallback in scripts
-
-
 
 # Completed
 
@@ -86,6 +51,18 @@
 - [x] fixed the implicit relative imports, so is possible to run the scripts like
   `python -m install.user_config`. Maybe even consider adding a `__main__`
   to run it like this: `python -m install`
+- [x] Don't create `~/bin` directory and instead make it a symbolic link
+  to `~/.dotfiles/home/bin` since some language servers seem to break
+  when the parent directory is a symlink.
+- [x] Add paru configuration
+- [x] Add `readline` configuration `inputrc` and set `INPUTRC` env var
+- [x] Add `mpv` config
+- [x] Add `pre-commit` hooks for linting and formatting shell scripts:
+  - [x] Format all shell scripts
+  - [x] Include the changes specified in `.editorconfig`
+  - [x] <https://github.com/scop/pre-commit-shfmt>
+  - [x] <https://github.com/shellcheck-py/shellcheck-py>
+
 
 ## General
 
@@ -124,6 +101,12 @@
   - [x] Change XDG_BIN_HOME to point to ~/.local/bin and move scripts to ~/bin
     - [x] Delete `PIPX_BIN_HOME` variable, it points to ~/.local/bin by
        default
+- [x] Home directory cleaning
+  - [x] Move `.wine` prefix to `$XDG_STATE_HOME/wine`
+  - [x] Move `.cargo` to `$XDG_STATE_HOME/cargo` and add `cargo/bin`
+    to `$HOME`
+  - [x] Move `.rustup` to `$XDG_STATE_HOME/rustup`
+- [x] Configure Bluetooth
 
 ## Qtile
 - [x] Add group for Thunderbird
