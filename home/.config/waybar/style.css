@@ -7,7 +7,8 @@
 @define-color color6 #b0cede;
 @define-color color7 #d4e4ed;
 
-@define-color base @color3;
+@define-color background #19242A;
+@define-color base @color1;
 @define-color deactivated @color4;
 @define-color foreground @color6;
 
@@ -28,29 +29,32 @@ window#waybar {
 
 .modules-left {
     padding: 0 4px;
-    margin: 4px;
+    margin-top: 10px;
     margin-left: 10px;
-    border: 1px solid @base;
+    border: 2px solid @base;
     border-radius: 10px;
+    background: alpha(@background, 0.8);
 }
 
 .modules-center {
     padding: 0 4px;
-    margin: 4px;
-    border: 1px solid @base;
+    margin-top: 10px;
+    border: 2px solid @base;
     border-radius: 10px;
+    background: alpha(@background, 0.8);
 }
 
 .modules-right {
     padding: 0 4px;
-    margin: 4px;
+    margin-top: 10px;
     margin-right: 10px;
-    border: 1px solid @base;
+    border: 2px solid @base;
     border-radius: 10px;
+    background: alpha(@background, 0.8);
 }
 
 tooltip {
-    border: 1px solid @base;
+    border: 2px solid @base;
     border-radius: 10px;
     background: alpha(@color0, .9);
 }
@@ -77,7 +81,7 @@ tooltip label {
 #tray,
 #window,
 #wireplumber {
-    padding: 4px 8px;
+    padding: 6px 12px;
     color: @foreground;
 }
 
@@ -152,7 +156,7 @@ tooltip label {
 #tray {
     transition: all .3s ease;
     padding-right: 15px;
-    border-right: 1px solid @base;
+    border-right: 2px solid @base;
 }
 
 #tray menu * {
@@ -167,7 +171,7 @@ tooltip label {
 
 /* hyprland/window module - window title */
 #window {
-    border-left: 1px solid @base;
+    border-left: 2px solid @base;
     color: @foreground;
 }
 
@@ -185,7 +189,7 @@ tooltip label {
 }
 
 #workspaces button.empty {
-    color: @color1;
+    color: @base;
 }
 
 #workspaces button.active {
