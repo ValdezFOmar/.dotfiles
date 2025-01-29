@@ -14,8 +14,8 @@
   "modules-right": [
     "tray",
     "network",
-    "wireplumber",
     "battery",
+    "wireplumber",
     "backlight",
     "clock",
     "clock#date"
@@ -25,6 +25,8 @@
     "format": "<span style=\"italic\">{}</span>"
   },
   "hyprland/window": {
+    "icon": true,
+    "icon-size": 14,  // Should be the same as the font size in style.css
     "format": "{title}",
     "separate-outputs": true,
     "max-length": 40,
