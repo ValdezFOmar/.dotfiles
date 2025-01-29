@@ -1,4 +1,10 @@
-prefix=${XDG_DATA_HOME}/npm
+# npm will put binaries in $HOME/.local/bin (which is already in path)
+# and put libraries in $HOME/.local/lib
+# https://wiki.archlinux.org/title/Node.js#Allow_user-wide_installations
+
+prefix=${HOME}/.local
 cache=${XDG_CACHE_HOME}/npm
 init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
 logs-dir=${XDG_STATE_HOME}/npm/logs
+
+# vim: ft=unixini
