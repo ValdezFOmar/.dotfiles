@@ -78,6 +78,7 @@ ttf-cascadia-code-nerd
 udiskie
 udisks2
 unzip
+uwsm
 vlc
 waybar
 wget

@@ -1,6 +1,5 @@
 grub-hook
 jmtpfs
 qogir-cursor-theme-git
-uwsm
 walker-bin
 wlogout
