@@ -61,7 +61,7 @@
   history_length = 20
 
   # Misc/Advanced
-  dmenu = /usr/bin/rofi -dmenu -no-custom -p Dunst:
+  dmenu = /usr/bin/walker --dmenu --placeholder Notification
 
   # mouse
   mouse_left_click = close_current
@@ -98,7 +98,7 @@
 
 # Rules
 [testing]
-  summary = Test[ ](Title)|(Error!!!)
+  summary = ^[Tt]est
   history_ignore = yes
   timeout = 5
 

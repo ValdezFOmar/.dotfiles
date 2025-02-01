@@ -1,0 +1,17 @@
+default: test
+
+watch:
+    printf dunstrc | entr just test
+
+test:
+    dunstctl close-all
+    dunstctl reload
+    @notify-send --hint int:value:12 --urgency=low 'Test title' 'This is the body.'
+    @notify-send --hint int:value:52 --urgency=normal 'Test title' 'This is the body.'
+    @notify-send --hint int:value:100 --urgency=critical 'Test title' 'This is the body.'
+    @notify-send --app-name 'Notification' --urgency=normal 'Test title' 'Without bar'
+    @notify-send \
+        --action=Second='Dolor sit amet' \
+        --action=Third='Consectetur' \
+        --action=First='Lorem impsum' \
+        'Test title' 'Without bar'

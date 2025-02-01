@@ -30,6 +30,7 @@ hyprlock
 hyprpaper
 hyprpicker
 jdk-openjdk
+just
 kitty
 less
 libreoffice-fresh
