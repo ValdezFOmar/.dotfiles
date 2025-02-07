@@ -18,6 +18,9 @@
     idiff = "!common-git-utils.sh --intersection-diff"
     restage = "!common-git-utils.sh --restage-files"
 
+[fetch]
+    prune = true
+
 [push]
     autoSetupRemote = true
 
