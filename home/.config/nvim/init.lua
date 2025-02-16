@@ -8,6 +8,12 @@ local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
 local user_command = api.nvim_create_user_command
 
+local ui = {
+    border = 'rounded',
+    max_width = 80,
+    max_height = 15,
+}
+
 -- Old language providers are slow, disable them:
 -- https://github.com/neovim/neovim/issues/7063#issuecomment-2382641641
 vim.g.loaded_node_provider = 0
@@ -45,7 +51,8 @@ vim.opt.foldenable = false
 vim.opt.wrap = false
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.signcolumn = 'yes'
+vim.opt.numberwidth = 3
+vim.opt.signcolumn = 'yes:1'
 vim.opt.fillchars = 'eob:·'
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 10
@@ -67,6 +74,7 @@ vim.opt.formatoptions:append 'o'
 
 vim.opt.linebreak = true
 vim.opt.breakindent = true
+vim.opt.breakindentopt = 'list:3'
 
 --- Diagnostics ---
 local diagnostic_icons = {
@@ -78,8 +86,25 @@ local diagnostic_icons = {
 
 vim.diagnostic.config {
     severity_sort = true,
-    float = { border = 'rounded' },
-    signs = { text = diagnostic_icons },
+    float = {
+        source = 'if_many',
+        border = ui.border,
+        max_width = ui.max_width,
+    },
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = '',
+            [vim.diagnostic.severity.WARN] = '',
+            [vim.diagnostic.severity.INFO] = '',
+            [vim.diagnostic.severity.HINT] = '',
+        },
+        numhl = {
+            [vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
+            [vim.diagnostic.severity.ERROR] = 'DiagnosticError',
+            [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
+            [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
+        },
+    },
     virtual_text = {
         prefix = function(diagnostic)
             local bufnr = diagnostic.bufnr
@@ -166,9 +191,9 @@ map('n', '<M-L>', '<Cmd>tabmove+<Enter>')
 
 --- LSP ---
 local lsp_opts = {
-    border = 'rounded',
-    max_width = 80,
-    max_height = 15,
+    border = ui.border,
+    max_width = ui.max_width,
+    max_height = ui.max_height,
 }
 
 lsp.handlers[ms.textDocument_hover] = lsp.with(lsp.handlers.hover, lsp_opts)
@@ -273,7 +298,7 @@ if ok and installed then
         },
         ui = {
             title = 'lazy.nvim 󰒲 ',
-            border = 'rounded',
+            border = ui.border,
         },
         checker = {
             enabled = true,
