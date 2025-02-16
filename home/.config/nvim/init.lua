@@ -47,7 +47,6 @@ vim.opt.titlestring = '%t - NVIM'
 vim.opt.shortmess:append 'I'
 vim.opt.incsearch = true
 vim.opt.inccommand = 'split'
-vim.opt.foldenable = false
 vim.opt.wrap = false
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -58,6 +57,10 @@ vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 10
 vim.opt.virtualedit = { 'block' }
 
+vim.opt.foldtext = ''
+vim.opt.foldlevel = 99
+vim.opt.foldenable = true
+
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
@@ -65,12 +68,6 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.formatoptions:append 'r'
 vim.opt.formatoptions:append 'o'
-
--- TODO: Wait until nvim-treesitter 1.0 release and enable spellchecking
--- after successfully calling `vim.treesitter.start()`.
--- TODO: Remove spellchech autocmd
---vim.opt.spell = true
---vim.opt.spelllang = 'en'
 
 vim.opt.linebreak = true
 vim.opt.breakindent = true
@@ -240,12 +237,16 @@ autocmd('LspAttach', {
 
 --- Autocommands & User commands ---
 
---- TODO: remove when nvim-treesitter 1.0 is release
 autocmd('FileType', {
-    group = augroup('SpellCheckText', {}),
-    pattern = { 'gitcommit', 'markdown', 'html' },
+    group = augroup('EnableTreesitterFeatures', {}),
     callback = function()
+        if not pcall(vim.treesitter.start) then
+            return
+        end
         vim.opt_local.spell = true
+        vim.opt_local.spelllang = 'en'
+        vim.opt_local.foldmethod = 'expr'
+        vim.opt_local.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
     end,
 })
 
