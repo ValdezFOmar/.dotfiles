@@ -24,16 +24,12 @@ PLUGIN.opts = {
         keywords = italic,
     },
     custom_highlights = function(colors)
-        local builtin = '#7d7ddb' -- Original builtin #8888C6
         local documentation = '#71a162'
         return {
             -- Tree-sitter --
-            ['@attribute.diff'] = { fg = colors.sapphire },
-            ['@attribute'] = { fg = colors.green },
+            ['@attribute'] = { fg = colors.sapphire },
             ['@attribute.builtin'] = { link = '@attribute' },
             ['@constant.builtin'] = { fg = colors.pink, style = {} },
-            ['@function.builtin'] = { fg = builtin },
-            ['@function.builtin.bash'] = { link = '@function.builtin' },
             ['@keyword.conditional.ternary'] = { link = '@operator' },
             ['@keyword.operator'] = { link = '@keyword' },
             ['@module.builtin'] = { fg = colors.red, style = italic },
