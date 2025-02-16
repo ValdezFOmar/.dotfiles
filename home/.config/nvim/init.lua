@@ -25,7 +25,7 @@ vim.g.loaded_ruby_provider = 0
 -- Disabled because is very slow and blocks the editor,
 -- use https://github.com/ribru17/ts_query_ls instead
 vim.g.query_lint_on = {} -- { 'InsertLeave', 'TextChanged' }
-vim.g.tex_flavor = 'latex' -- Recongize .tex files as LaTeX
+vim.g.tex_flavor = 'latex' -- Recognize .tex files as LaTeX
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -151,9 +151,9 @@ map('n', 'gx', uri.open, { desc = 'Open a URI like `gx`, but better' })
 
 -- copy/paste
 map('n', '<C-a>', 'mzggVG', { desc = 'Select all text' })
-map('x', '<leader>p', [["_dP]], { desc = 'Keep yanked text after pasting' })
-map('n', '<leader>Y', [["+Y]], { desc = 'Copy line to clipboard' })
-map('x', '<leader>Y', [["+y]], { desc = 'Copy selected text to clipboard' })
+map('x', '<leader>p', '"_dP', { desc = 'Keep yanked text after pasting' })
+map('n', '<leader>Y', '"+Y', { desc = 'Copy line to clipboard' })
+map('x', '<leader>Y', '"+y', { desc = 'Copy selected text to clipboard' })
 map('n', 'yc', '<Cmd>let @+=@@<CR>', { desc = 'Copy unnamed register to clipboard' })
 map({ 'n', 'x' }, '<leader>P', [["+p]], { desc = 'Paste from clipboard' })
 
@@ -269,7 +269,6 @@ autocmd({ 'BufNewFile', 'BufRead' }, {
 
 autocmd('TextYankPost', {
     group = augroup('HighlightYank', {}),
-    pattern = '*',
     callback = function()
         vim.highlight.on_yank { timeout = 800 }
     end,
