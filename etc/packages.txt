@@ -4,6 +4,7 @@ alsa-utils
 base
 base-devel
 bash-completion
+bash-language-server
 bat
 blueman
 copyq
@@ -36,7 +37,9 @@ less
 libreoffice-fresh
 linux
 linux-firmware
+lua-language-server
 man-db
+marksman
 mpv
 mtpfs
 neovim
@@ -58,6 +61,7 @@ pipewire-alsa
 pipewire-audio
 pipewire-pulse
 polkit-kde-agent
+pre-commit
 pyenv
 python
 python-pipx
@@ -69,6 +73,8 @@ qt6ct
 reflector
 ripgrep
 rustup
+shellcheck
+shfmt
 slurp
 stow
 terminus-font
@@ -76,6 +82,7 @@ tldr
 tree
 ttf-cascadia-code
 ttf-cascadia-code-nerd
+typescript-language-server
 udiskie
 udisks2
 unzip

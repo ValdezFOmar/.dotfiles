@@ -44,6 +44,7 @@ fi
 
 paru -S --needed - < "$dotfiles/etc/packages.txt"
 paru -S --needed - < "$dotfiles/etc/packages-aur.txt"
+xargs pipx install < "$dotfiles/etc/packages-pypi.txt"
 
 systemctl --user enable \
     tldrcache.timer \
