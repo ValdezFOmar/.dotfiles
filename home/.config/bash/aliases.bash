@@ -59,11 +59,7 @@ function mcd() {
 
 # pretty print paths in $PATH
 function paths() {
-    local bin_paths bin_path
-    IFS=':' read -ra bin_paths <<< "$PATH"
-    for bin_path in "${bin_paths[@]}"; do
-        echo "$bin_path"
-    done
+    tr ':' '\n' <<< "$PATH"
 }
 
 # activate virtual env
