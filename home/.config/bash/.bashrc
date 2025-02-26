@@ -61,16 +61,6 @@ PS2="$_green❯$normal "
 unset -v normal italic orange blue purple dir
 
 #
-#   ssh-agent
-#
-if ! pgrep --euid "$EUID" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
-fi
-if [[ ! -f $SSH_AUTH_SOCK ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" > /dev/null
-fi
-
-#
 #   pyenv
 #
 export PYENV_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/pyenv"

@@ -59,7 +59,7 @@ pcmanfm-gtk3
 pipewire-alsa
 pipewire-audio
 pipewire-pulse
-polkit-kde-agent
+polkit-gnome
 pre-commit
 pyenv
 python

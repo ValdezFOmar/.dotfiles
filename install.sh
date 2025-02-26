@@ -50,4 +50,5 @@ systemctl --user enable \
     tldrcache.timer \
     hyprpaper.service \
     hypridle.service \
-    waybar.service
+    waybar.service \
+    gcr-ssh-agent.socket
