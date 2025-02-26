@@ -34,7 +34,6 @@ jdk-openjdk
 just
 kitty
 less
-libreoffice-fresh
 linux
 linux-firmware
 lua-language-server
