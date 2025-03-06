@@ -139,6 +139,7 @@ vim.filetype.add {
 for lang, ft in pairs {
     editorconfig = 'unixini', -- made up filetype to allow keys outside sections
     gitignore = 'ignore',
+    diff = 'git',
     ini = 'systemd',
     vimdoc = 'checkhealth',
 } do
