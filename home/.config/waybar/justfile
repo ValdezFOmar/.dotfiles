@@ -1,0 +1,5 @@
+watch:
+    printf 'style.css\nconfig.jsonc' | entr just reload
+
+reload:
+    systemctl --user reload waybar.service

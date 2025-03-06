@@ -5,6 +5,7 @@
   "modules-left": [
     "idle_inhibitor",
     "keyboard-state",
+    "hyprland/language",
     "hyprland/submap",
     "hyprland/window"
   ],
@@ -24,9 +25,15 @@
   "hyprland/submap": {
     "format": "<span style=\"italic\">{}</span>"
   },
+  "hyprland/language": {
+    "format": "  {}",
+    "format-en": "English",
+    "format-es": "Español",
+    "keyboard-name": "at-translated-set-2-keyboard"
+  },
   "hyprland/window": {
     "icon": true,
-    "icon-size": 14,  // Should be the same as the font size in style.css
+    "icon-size": 14, // Should be the same as the font size in style.css
     "format": "{title}",
     "separate-outputs": true,
     "max-length": 40,
