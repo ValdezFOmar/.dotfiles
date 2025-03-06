@@ -22,6 +22,8 @@ function PLUGIN.config()
         '!**/.git/*',
         '--glob',
         '!**/.venv/*',
+        '--glob',
+        '!**/node_modules/*',
     })
 
     local telescope = require 'telescope'
@@ -48,16 +50,14 @@ function PLUGIN.config()
             mappings = {
                 i = {
                     ['<M-q>'] = actions.close,
-                    ['<M-h>'] = actions.which_key,
                     ['<M-t>'] = actions.select_tab,
                     ['<M-k>'] = actions.move_selection_previous,
                     ['<M-j>'] = actions.move_selection_next,
                     ['<M-p>'] = actions_layout.toggle_preview,
                 },
                 n = {
-                    ['q'] = actions.close,
-                    ['h'] = actions.which_key,
-                    ['t'] = actions.select_tab,
+                    q = actions.close,
+                    t = actions.select_tab,
                     ['<M-p>'] = actions_layout.toggle_preview,
                 },
             },
@@ -81,6 +81,11 @@ function PLUGIN.config()
                 jump_type = 'tab',
                 ignore_current_buffer = true,
                 sort_mru = true,
+                mappings = {
+                    n = {
+                        D = actions.delete_buffer,
+                    },
+                },
             },
             git_status = { initial_mode = 'normal' },
             diagnostics = { initial_mode = 'normal' },
