@@ -17,6 +17,11 @@ stty -ixon
 #   Prompt
 #
 
+# TODO:
+# - Put configuration into a 'setup' function to avoid cluttering the
+#   environment with all this variables
+# - Use literal scape sequences instead of calling an external command
+# - Remove unused variables
 normal="\[$(tput sgr0)\]"
 italic="\[$(tput sitm)\]"
 # black="\[$(tput setaf c)\]"
@@ -29,16 +34,21 @@ purple="\[$(tput setaf 5)\]"
 # white="\[$(tput setaf 7)\]"
 _yellow="\[$(tput setaf 11)\]"
 
+# TODO:
+# - Make function read only
+# - Use printf instead of echo
+# - Inline color variables (easier with printf escape sequences)
+# - unprefix and use kebab case
 _color_exit() {
     # Strip the '\[\]' characters and add them in the prompt,
     # they are interpreted literally otherwise
     local exit=$?
     if [[ $exit -eq 0 ]]; then
-        echo "${_green:2:-2}"
+        echo "${_green:2:-2}" # green
     elif [[ $exit -eq 130 ]]; then
-        echo "${_yellow:2:-2}"
+        echo "${_yellow:2:-2}" # yellow
     else
-        echo "${_red:2:-2}"
+        echo "${_red:2:-2}" # red
     fi
 }
 
@@ -50,6 +60,9 @@ for dir in '/usr/share/git/completion' "$PREFIX/etc/bash_completion.d"; do
     fi
 done
 
+# TODO:
+# pull git prompt into a variable and set it to the empty string if __git_ps1 is not defined
+# this way the prompt is only defined once
 if command -v __git_ps1 > /dev/null; then
     PS1="$normal$orange\$(__git_ps1 '(%s) ')$purple$italic\u@\h$normal:$blue\w\n\[\$(_color_exit)\]❯$normal "
 else
