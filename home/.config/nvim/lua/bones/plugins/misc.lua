@@ -18,8 +18,8 @@ return {
     -- :h nvim-surround.usage
     {
         'kylechui/nvim-surround',
-        version = '*',
-        lazy = false,
+        version = '^3.0.0',
+        event = 'VeryLazy',
         config = true,
     },
     -- Lua LS config for neovim configuration
