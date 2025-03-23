@@ -24,8 +24,6 @@ alias kssh='kitten ssh'
 alias ff='fastfetch'
 alias tree='tree --dirsfirst -C'
 alias gitree='tree -a --prune --gitignore -I .git/'
-alias mdcat='mdcat --columns 80'
-alias mdless='mdless --columns 80'
 
 alias py='python'
 alias pip='pip --require-virtualenv'
@@ -40,14 +38,6 @@ alias space='du --summarize --total --human-readable'
 #
 #   Functions
 #
-
-function cl() {
-    if [[ -z $1 ]]; then
-        echo "cl: No directory provided"
-        return 1
-    fi
-    la -- "$1" && cd -- "$1" || return
-}
 
 function mcd() {
     if [[ -z $1 ]]; then

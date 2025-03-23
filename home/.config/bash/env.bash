@@ -5,12 +5,12 @@
 # so they are available during the session and not only in the shell
 
 function history-path() {
-    local fallback="$HOME/.local/state"
-    local directory="${XDG_STATE_HOME:-$fallback}/$1"
+    local directory="$XDG_STATE_HOME/$1"
     [[ -d $directory ]] || mkdir --parents "$directory"
     printf '%s' "$directory/history"
 }
 
+# NOTE: This should be moved to a Termux dedicated file
 # Termux doesn't set XDG_RUNTIME_DIR
 if [[ -z $XDG_RUNTIME_DIR && -w $TMPDIR ]]; then
     XDG_RUNTIME_DIR="$TMPDIR/$UID"
