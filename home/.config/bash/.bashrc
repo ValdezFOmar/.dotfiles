@@ -17,23 +17,6 @@ stty -ixon
 #   Prompt
 #
 
-# TODO:
-# - Put configuration into a 'setup' function to avoid cluttering the
-#   environment with all this variables
-# - Use literal scape sequences instead of calling an external command
-# - Remove unused variables
-normal="\[$(tput sgr0)\]"
-italic="\[$(tput sitm)\]"
-# black="\[$(tput setaf c)\]"
-_red="\[$(tput setaf 1)\]"
-_green="\[$(tput setaf 2)\]"
-orange="\[$(tput setaf 3)\]"
-blue="\[$(tput setaf 4)\]"
-purple="\[$(tput setaf 5)\]"
-# cyan="\[$(tput setaf 6)\]"
-# white="\[$(tput setaf 7)\]"
-_yellow="\[$(tput setaf 11)\]"
-
 function -set-exit-color() {
     local exit=$?
     if ((exit == 0)); then
@@ -46,26 +29,37 @@ function -set-exit-color() {
 }
 readonly -f -- -set-exit-color
 
-# Source git prompt if available and check using PREFIX in Termux
-for dir in '/usr/share/git/completion' "$PREFIX/etc/bash_completion.d"; do
-    if [[ -f $dir/git-prompt.sh ]]; then
-        source "$dir/git-prompt.sh"
-        break
+function setup-prompt() {
+    # Source git prompt if available and check using PREFIX in Termux
+    local dir
+    for dir in '/usr/share/git/completion' "$PREFIX/etc/bash_completion.d"; do
+        if [[ -f $dir/git-prompt.sh ]]; then
+            source "$dir/git-prompt.sh"
+            break
+        fi
+    done
+
+    local n i o b p
+    printf -v n '\[\e[0m\]'  # normal/reset
+    printf -v i '\[\e[3m\]'  # italic
+    printf -v o '\[\e[33m\]' # orange
+    printf -v b '\[\e[34m\]' # blue
+    printf -v p '\[\e[35m\]' # purple
+
+    # TODO:
+    # pull git prompt into a variable and set it to the empty string if __git_ps1 is not defined
+    # this way the prompt is only defined once
+    if command -v __git_ps1 > /dev/null; then
+        PS1="$n$o\$(__git_ps1 '(%s) ')$p$i\u@\h$n:$b\w\n\[\$(-set-exit-color)\]❯$n "
+    else
+        PS1="$n$p$i\u@\h$n:$b\w\n\[\$(-set-exit-color)\]❯$n "
     fi
-done
 
-# TODO:
-# pull git prompt into a variable and set it to the empty string if __git_ps1 is not defined
-# this way the prompt is only defined once
-if command -v __git_ps1 > /dev/null; then
-    PS1="$normal$orange\$(__git_ps1 '(%s) ')$purple$italic\u@\h$normal:$blue\w\n\[\$(-set-exit-color)\]❯$normal "
-else
-    PS1="$normal$purple$italic\u@\h$normal:$blue\w\n\[\$(-set-exit-color)\]❯$normal "
-fi
+    PS2="\[\$(-set-exit-color)\]❯$n "
+}
 
-PS2="$_green❯$normal "
-
-unset -v normal italic orange blue purple dir
+setup-prompt
+unset -f setup-prompt
 
 #
 #   pyenv
