@@ -46,16 +46,11 @@ function setup-prompt() {
     printf -v b '\[\e[34m\]' # blue
     printf -v p '\[\e[35m\]' # purple
 
-    # TODO:
-    # pull git prompt into a variable and set it to the empty string if __git_ps1 is not defined
-    # this way the prompt is only defined once
-    if command -v __git_ps1 > /dev/null; then
-        PS1="$n$o\$(__git_ps1 '(%s) ')$p$i\u@\h$n:$b\w\n\[\$(-set-exit-color)\]❯$n "
-    else
-        PS1="$n$p$i\u@\h$n:$b\w\n\[\$(-set-exit-color)\]❯$n "
-    fi
+    local gitprompt=''
+    command -v __git_ps1 > /dev/null && gitprompt="$o\$(__git_ps1 '(%s) ')$n"
 
-    PS2="\[\$(-set-exit-color)\]❯$n "
+    export PS1="$n$gitprompt$p$i\u@\h$n:$b\w\n\[\$(-set-exit-color)\]❯$n "
+    export PS2="\[\$(-set-exit-color)\]❯$n "
 }
 
 setup-prompt
