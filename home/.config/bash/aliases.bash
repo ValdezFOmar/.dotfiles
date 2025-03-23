@@ -62,6 +62,22 @@ function paths() {
     tr ':' '\n' <<< "$PATH"
 }
 
+# Lazy load pyenv.
+# It takes a considerable amount of time to initialise and it is not always used.
+function pyenv() {
+    unset -f pyenv
+    if command -v pyenv > /dev/null; then
+        eval "$(pyenv init - bash)"
+    elif [[ -n $PYENV_ROOT && -x $PYENV_ROOT/bin/pyenv ]]; then
+        export PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init - bash)"
+    else
+        >&2 echo 'error: command "pyenv" not found'
+        return 1
+    fi
+    pyenv "$@"
+}
+
 # activate virtual env
 function activate() {
     local venv_name="${1:-.venv}" # Assigning with := is not allowed

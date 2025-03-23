@@ -31,6 +31,9 @@ export NODE_REPL_HISTORY=$(history-path node)
 # Build a static library when installing python versions (e.g. pyenv)
 export PYTHON_CONFIGURE_OPTS=--disable-shared
 
+# Destination for resources installed with pyenv
+export PYENV_ROOT="$XDG_STATE_HOME/pyenv"
+
 # Use italics instead of underlines
 export MANROFFOPT=-P-i
 export MANPAGER='nvim +Man!'
