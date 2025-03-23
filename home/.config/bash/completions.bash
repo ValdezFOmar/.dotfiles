@@ -2,9 +2,6 @@
 # Most completions are handled by the package 'bash-completion'
 # and source automatically by /etc/bash.bashrc on Arch Linux.
 
-# pipx
-command -v pipx > /dev/null && eval "$(register-python-argcomplete pipx)"
-
 # dotnet
 if command -v dotnet > /dev/null; then
     _dotnet_bash_complete() {
