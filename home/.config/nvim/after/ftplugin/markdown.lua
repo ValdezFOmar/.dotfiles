@@ -1,7 +1,13 @@
-vim.opt_local.tabstop = 2
-vim.opt_local.softtabstop = 2
-vim.opt_local.shiftwidth = 2
-vim.opt_local.expandtab = true
-vim.opt_local.textwidth = 72
-vim.opt_local.colorcolumn = '+1'
-vim.opt_local.concealcursor = 'nc'
+vim.bo.tabstop = 2
+vim.bo.softtabstop = 2
+vim.bo.shiftwidth = 2
+vim.bo.expandtab = true
+
+if vim.bo.buftype == '' then
+    local winid = vim.api.nvim_get_current_win()
+    local bo, wo = vim.bo, vim.wo[winid][0]
+    bo.textwidth = 72
+    wo.colorcolumn = '+1'
+    wo.conceallevel = 2
+    wo.concealcursor = 'nc'
+end

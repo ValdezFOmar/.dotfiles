@@ -1,8 +1,10 @@
+---@type LazyPluginSpec
 local PLUGIN = { 'MeanderingProgrammer/render-markdown.nvim' }
 
 PLUGIN.dependencies = { 'nvim-treesitter/nvim-treesitter' }
 PLUGIN.ft = { 'markdown' }
 
+---@module 'render-markdown'
 ---@type render.md.UserConfig
 PLUGIN.opts = {
     anti_conceal = { enabled = false },
@@ -11,12 +13,14 @@ PLUGIN.opts = {
         concealcursor = { rendered = 'nc' },
     },
     code = {
-        highlight = 'CursorColumn',
-        border = 'thick',
-        width = 'block',
-        style = 'normal',
         left_pad = 1,
         right_pad = 1,
+        style = 'full',
+        width = 'block',
+        border = 'thick',
+        language_icon = false,
+        language_name = false,
+        highlight = 'CursorColumn',
     },
     overrides = {
         buftype = {
@@ -26,6 +30,8 @@ PLUGIN.opts = {
                     left_pad = 0,
                     right_pad = 0,
                     width = 'full',
+                    border = 'hide',
+                    style = 'normal',
                 },
             },
         },
