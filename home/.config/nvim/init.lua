@@ -30,6 +30,13 @@ vim.g.tex_flavor = 'latex' -- Recognize .tex files as LaTeX
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- use `vim.o` instead of `vim.opt` as it seems to be planned for deprecation
+-- create a helper `list` function for options with comma separated values
+
+-- BUG:
+-- Telescope does not support this option yet.
+-- Once it supports it, uncomment and remove references of ui.border.
+-- vim.o.winborder = 'rounded'
 vim.opt.cursorline = true
 vim.opt.guicursor = {
     -- idle cursor in normal mode and blinking in any other mode
@@ -188,14 +195,23 @@ map('n', '<M-H>', '<Cmd>tabmove-<Enter>')
 map('n', '<M-L>', '<Cmd>tabmove+<Enter>')
 
 --- LSP ---
-local lsp_opts = {
-    border = ui.border,
-    max_width = ui.max_width,
-    max_height = ui.max_height,
-}
 
-lsp.handlers[ms.textDocument_hover] = lsp.with(lsp.handlers.hover, lsp_opts)
-lsp.handlers[ms.textDocument_signatureHelp] = lsp.with(lsp.handlers.signature_help, lsp_opts)
+---Utility for monkey patching default `vim.lsp.buf` functions.
+---@param overriden fun(t: table|nil): any
+---@param custom_opts table
+---@return fun(t: table|nil): any
+local function with(overriden, custom_opts)
+    return function(opts)
+        if not opts then
+            return overriden(custom_opts)
+        end
+        return overriden(vim.tbl_deep_extend('force', custom_opts, opts))
+    end
+end
+
+lsp.buf.hover = with(lsp.buf.hover, ui)
+lsp.buf.signature_help = with(lsp.buf.signature_help, ui)
+
 api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
 
 autocmd('LspAttach', {
@@ -205,16 +221,16 @@ autocmd('LspAttach', {
         local client = assert(lsp.get_client_by_id(event.data.client_id))
         local opts = { buffer = event.buf }
 
-        if client.supports_method(ms.textDocument_signatureHelp) then
+        if client:supports_method(ms.textDocument_signatureHelp) then
             map({ 'n', 'i' }, '<C-H>', lsp.buf.signature_help, opts)
         end
-        if client.supports_method(ms.textDocument_rename) then
+        if client:supports_method(ms.textDocument_rename) then
             map({ 'n', 'i' }, '<F2>', lsp.buf.rename, opts)
         end
-        if client.supports_method(ms.textDocument_formatting) then
+        if client:supports_method(ms.textDocument_formatting) then
             map({ 'n', 'v' }, '<F3>', lsp.buf.format, opts)
         end
-        if client.supports_method(ms.textDocument_codeAction) then
+        if client:supports_method(ms.textDocument_codeAction) then
             map({ 'n', 'i' }, '<F4>', lsp.buf.code_action, opts)
         end
 
@@ -224,13 +240,13 @@ autocmd('LspAttach', {
         local type_definition = ok and builtin.lsp_type_definitions or lsp.buf.type_definition
         local references = ok and builtin.lsp_references or lsp.buf.references
 
-        if client.supports_method(ms.textDocument_definition) then
+        if client:supports_method(ms.textDocument_definition) then
             map('n', 'gd', definition, opts)
         end
-        if client.supports_method(ms.textDocument_typeDefinition) then
+        if client:supports_method(ms.textDocument_typeDefinition) then
             map('n', 'gt', type_definition, opts)
         end
-        if client.supports_method(ms.textDocument_references) then
+        if client:supports_method(ms.textDocument_references) then
             map('n', 'gr', references, opts)
         end
     end,
@@ -271,7 +287,7 @@ autocmd({ 'BufNewFile', 'BufRead' }, {
 autocmd('TextYankPost', {
     group = augroup('HighlightYank', {}),
     callback = function()
-        vim.highlight.on_yank { timeout = 800 }
+        vim.hl.on_yank { timeout = 800 }
     end,
 })
 
