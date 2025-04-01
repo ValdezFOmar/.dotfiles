@@ -96,12 +96,7 @@ vim.diagnostic.config {
         max_width = ui.max_width,
     },
     signs = {
-        text = {
-            [vim.diagnostic.severity.ERROR] = '',
-            [vim.diagnostic.severity.WARN] = '',
-            [vim.diagnostic.severity.INFO] = '',
-            [vim.diagnostic.severity.HINT] = '',
-        },
+        text = diagnostic_icons,
         numhl = {
             [vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
             [vim.diagnostic.severity.ERROR] = 'DiagnosticError',
@@ -109,13 +104,11 @@ vim.diagnostic.config {
             [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
         },
     },
-    virtual_text = {
-        prefix = function(diagnostic)
-            local bufnr = diagnostic.bufnr
-            if bufnr and vim.bo[bufnr].filetype == 'lazy' then
-                return ''
-            end
-            return diagnostic_icons[diagnostic.severity]
+    virtual_lines = {
+        current_line = true,
+        format = function(diagnostic)
+            local icon = diagnostic_icons[diagnostic.severity]
+            return icon .. ' ' .. diagnostic.message
         end,
     },
 }
@@ -334,4 +327,7 @@ if ok and installed then
             notify = false,
         },
     })
+
+    local lazyns = api.nvim_create_namespace 'lazy'
+    vim.diagnostic.config({ virtual_text = { prefix = '' } }, lazyns)
 end
