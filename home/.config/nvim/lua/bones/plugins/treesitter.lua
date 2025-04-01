@@ -55,9 +55,6 @@ return {
                     'htmldjango',
                 },
             },
-            highlight = {
-                enable = true,
-            },
         },
     },
     {

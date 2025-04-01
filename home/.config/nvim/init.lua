@@ -256,14 +256,20 @@ autocmd('LspAttach', {
 
 autocmd('FileType', {
     group = augroup('EnableTreesitterFeatures', {}),
-    callback = function()
-        if not pcall(vim.treesitter.start) then
+    callback = function(ev)
+        local bufnr = ev.buf
+
+        if not pcall(vim.treesitter.start, bufnr) then
             return
         end
-        vim.opt_local.spell = true
-        vim.opt_local.spelllang = 'en'
-        vim.opt_local.foldmethod = 'expr'
-        vim.opt_local.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+        local winid = vim.fn.bufwinid(bufnr)
+        local bo = vim.bo[bufnr]
+        local wo = vim.wo[winid][0]
+
+        wo.spell = bo.modifiable and bo.buftype == ''
+        wo.foldmethod = 'expr'
+        wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
     end,
 })
 
