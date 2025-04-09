@@ -1,4 +1,3 @@
-acpilight
 adobe-source-sans-fonts
 alsa-utils
 base
@@ -7,6 +6,7 @@ bash-completion
 bash-language-server
 bat
 blueman
+brightnessctl
 copyq
 cpupower
 deepin-gtk-theme
