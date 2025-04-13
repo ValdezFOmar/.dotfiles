@@ -46,7 +46,7 @@ sudo ./etc/install.sh
 > For only installing user configuration files run:
 >
 > ```bash
-> cd ~/.dotfiles && stow -v home
+> cd ~/.dotfiles && stow --verbose --dotfiles home
 > ```
 
 ## Extra

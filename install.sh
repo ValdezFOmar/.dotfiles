@@ -25,13 +25,13 @@ mkdir --verbose --parents \
     ~/projects \
     ~/repos
 
-stow --verbose --dir "$dotfiles" --target ~ home
+stow --verbose --dir "$dotfiles" --dotfiles --target ~ home
 
 # quote heredoc label to avoid expanding variables
 cat >> ~/.bashrc << 'BASH'
 
-# shellcheck source=.config/bash/.bashrc
-[[ -f ~/.config/bash/.bashrc ]] && source ~/.config/bash/.bashrc
+# shellcheck source=.config/bash/bashrc.bash
+[[ -r ~/.config/bash/bashrc.bash ]] && source ~/.config/bash/bashrc.bash
 BASH
 
 if ! command -v paru > /dev/null; then
