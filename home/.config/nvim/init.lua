@@ -1,14 +1,15 @@
 local uri = require 'bones.uri'
 
+local fn = vim.fn
 local api = vim.api
 local lsp = vim.lsp
 local ms = lsp.protocol.Methods
 local map = vim.keymap.set
 local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
-local user_command = api.nvim_create_user_command
+local command = api.nvim_create_user_command
 
-local data_path = vim.fn.stdpath 'data' --[[@as string]]
+local data_path = fn.stdpath 'data' --[[@as string]]
 local ui = {
     border = 'rounded',
     max_width = 80,
@@ -203,7 +204,7 @@ lsp.config('basedpyright', {
 lsp.config('ts_query_ls', {
     settings = {
         parser_install_directories = {
-            vim.fs.joinpath(vim.fn.getcwd(), 'parser'),
+            vim.fs.joinpath(fn.getcwd(), 'parser'),
             vim.fs.joinpath(data_path, 'lazy', 'nvim-treesitter', 'parser'),
         },
     },
@@ -246,9 +247,9 @@ api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
 autocmd('LspAttach', {
     group = augroup('BonesLSPKeyMaps', {}),
     desc = 'Lsp Key Mappings',
-    callback = function(event)
-        local client = assert(lsp.get_client_by_id(event.data.client_id))
-        local opts = { buffer = event.buf }
+    callback = function(ev)
+        local client = assert(lsp.get_client_by_id(ev.data.client_id))
+        local opts = { buffer = ev.buf }
 
         if client:supports_method(ms.textDocument_signatureHelp) then
             map({ 'n', 'i' }, '<C-H>', lsp.buf.signature_help, opts)
@@ -292,7 +293,7 @@ autocmd('FileType', {
             return
         end
 
-        local winid = vim.fn.bufwinid(bufnr)
+        local winid = fn.bufwinid(bufnr)
         local bo = vim.bo[bufnr]
         local wo = vim.wo[winid][0]
 
@@ -304,14 +305,12 @@ autocmd('FileType', {
 
 autocmd({ 'BufNewFile', 'BufRead' }, {
     group = augroup('InsertBlankLineMappings', {}),
-    callback = function(event)
-        if vim.fn.getcmdwintype() ~= '' then
+    callback = function(ev)
+        if fn.getcmdwintype() ~= '' then
             return -- Don't override <Enter> mappings when editing commands
         end
-        ---@type integer
-        local bufnr = event.buf
-        local bo = vim.bo[bufnr]
-        if not bo.modifiable or bo.readonly then
+        local bufnr = ev.buf
+        if not vim.bo[bufnr].modifiable then
             return
         end
         map('n', '<S-Enter>', 'mzO<Esc>0"_D`z', { buffer = bufnr })
@@ -326,7 +325,7 @@ autocmd('TextYankPost', {
     end,
 })
 
-user_command('ToggleDiagnostics', function()
+command('ToggleDiagnostics', function()
     local filter = { bufnr = 0 }
     vim.diagnostic.enable(not vim.diagnostic.is_enabled(filter), filter)
 end, { desc = 'Toggle diagnostics in current buffer' })
