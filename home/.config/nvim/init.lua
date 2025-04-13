@@ -189,6 +189,45 @@ map('n', '<M-L>', '<Cmd>tabmove+<Enter>')
 
 --- LSP ---
 
+lsp.config('basedpyright', {
+    settings = {
+        basedpyright = {
+            analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = 'openFilesOnly',
+                typeCheckingMode = 'standard',
+            },
+        },
+    },
+})
+
+local data_path = vim.fn.stdpath 'data' --[[@as string]]
+lsp.config('ts_query_ls', {
+    settings = {
+        parser_install_directories = {
+            vim.fs.joinpath(vim.fn.getcwd(), 'parser'),
+            vim.fs.joinpath(data_path, 'lazy', 'nvim-treesitter', 'parser'),
+        },
+    },
+})
+
+lsp.enable {
+    'basedpyright',
+    'bashls', -- needs 'shellcheck' and 'shfmt'
+    'cssls',
+    'emmet_language_server',
+    -- 'eslint', missing lsp/eslint.lua in lspconfig
+    'html',
+    'jsonls',
+    'lua_ls',
+    'marksman',
+    'rust_analyzer',
+    'texlab',
+    'ts_ls',
+    'ts_query_ls',
+}
+
 ---Utility for monkey patching default `vim.lsp.buf` functions.
 ---@param overriden fun(t: table|nil): any
 ---@param custom_opts table
