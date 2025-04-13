@@ -99,8 +99,6 @@ PLUGIN.opts = {
         },
     },
     integrations = {
-        mason = true,
-        cmp = true,
         treesitter = true,
         render_markdown = true,
         native_lsp = {

@@ -5,9 +5,7 @@ PLUGIN.lazy = false
 
 function PLUGIN.config()
     local lspconfig = require 'lspconfig'
-    local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-    vim.lsp.config('*', { capabilities = capabilities })
+    local capabilities = require('blink.cmp').get_lsp_capabilities()
     lspconfig.eslint.setup { capabilities = capabilities }
 end
 

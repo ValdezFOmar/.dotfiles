@@ -52,12 +52,6 @@ return {
     {
         'windwp/nvim-autopairs',
         event = 'InsertEnter',
-        config = function()
-            require('nvim-autopairs').setup { enable_check_bracket_line = false }
-            local cmp = require 'cmp'
-            local cmp_ap = require 'nvim-autopairs.completion.cmp'
-            -- If you want to insert `(` after the selected function or method item
-            cmp.event:on('confirm_done', cmp_ap.on_confirm_done { filetypes = { sh = false } })
-        end,
+        opts = { enable_check_bracket_line = false },
     },
 }
