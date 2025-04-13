@@ -1,22 +1,18 @@
-# shellcheck disable=SC2155
+# shellcheck disable=SC1090,SC2155
 
 # Environmental variables for CLI only programs.
 # UI and other environmental variables are defined in ~/uwsm/env
 # so they are available during the session and not only in the shell
 
+if [[ -z $_BONES_LOADED_ENV ]]; then
+    source ~/.config/uwsm/env
+fi
+
 function history-path() {
     local directory="$XDG_STATE_HOME/$1"
-    [[ -d $directory ]] || mkdir --parents "$directory"
+    mkdir --parents "$directory"
     printf '%s' "$directory/history"
 }
-
-# NOTE: This should be moved to a Termux dedicated file
-# Termux doesn't set XDG_RUNTIME_DIR
-if [[ -z $XDG_RUNTIME_DIR && -w $TMPDIR ]]; then
-    XDG_RUNTIME_DIR="$TMPDIR/$UID"
-    mkdir --mode=700 "$XDG_RUNTIME_DIR"
-    export XDG_RUNTIME_DIR
-fi
 
 # bash(1) "Shell Variables" section
 export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"

@@ -3,6 +3,10 @@
 # This script needs to be compatible with POSIX sh so it can be sources by uwsm
 # https://github.com/Vladimir-csp/uwsm#4-environments-and-shell-profile
 
+# Use to detect if this file was sourced
+export _BONES_LOADED_ENV=true
+readonly _BONES_LOADED_ENV
+
 #
 #   default programs
 #
