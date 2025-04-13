@@ -8,6 +8,7 @@ local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
 local user_command = api.nvim_create_user_command
 
+local data_path = vim.fn.stdpath 'data' --[[@as string]]
 local ui = {
     border = 'rounded',
     max_width = 80,
@@ -30,15 +31,13 @@ vim.g.tex_flavor = 'latex' -- Recognize .tex files as LaTeX
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- use `vim.o` instead of `vim.opt` as it seems to be planned for deprecation
--- create a helper `list` function for options with comma separated values
-
 -- BUG:
 -- Telescope does not support this option yet.
 -- Once it supports it, uncomment and remove references of ui.border.
 -- vim.o.winborder = 'rounded'
-vim.opt.cursorline = true
-vim.opt.guicursor = {
+vim.o.laststatus = 3
+vim.o.cursorline = true
+vim.o.guicursor = table.concat({
     -- idle cursor in normal mode and blinking in any other mode
     'a:blinkwait700-blinkon400-blinkoff250',
     'n:blinkon0',
@@ -47,38 +46,37 @@ vim.opt.guicursor = {
     'i-ci-ve:ver25-Cursor/lCursor',
     'o:hor50-Cursor/lCursor',
     'sm:block-blinkwait175-blinkoff150-blinkon175',
-}
+}, ',')
 
-vim.opt.title = true
-vim.opt.titlestring = '%t - NVIM'
-vim.opt.shortmess:append 'I'
-vim.opt.incsearch = true
-vim.opt.inccommand = 'split'
-vim.opt.wrap = false
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.numberwidth = 3
-vim.opt.signcolumn = 'yes:1'
-vim.opt.fillchars = 'eob:·'
-vim.opt.scrolloff = 8
-vim.opt.sidescrolloff = 10
-vim.opt.virtualedit = { 'block' }
+vim.o.title = true
+vim.o.titlestring = '%t - NVIM'
+vim.o.shortmess = vim.o.shortmess .. 'I'
+vim.o.incsearch = true
+vim.o.inccommand = 'split'
+vim.o.wrap = false
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.numberwidth = 3
+vim.o.signcolumn = 'yes:1'
+vim.o.fillchars = 'eob:·'
+vim.o.scrolloff = 8
+vim.o.sidescrolloff = 10
+vim.o.virtualedit = 'block'
 
-vim.opt.foldtext = ''
-vim.opt.foldlevel = 99
-vim.opt.foldenable = true
+vim.o.foldtext = ''
+vim.o.foldlevel = 99
+vim.o.foldenable = true
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-vim.opt.smartindent = true
-vim.opt.formatoptions:append 'r'
-vim.opt.formatoptions:append 'o'
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+vim.o.smartindent = true
+vim.o.formatoptions = vim.o.formatoptions .. 'ro'
 
-vim.opt.linebreak = true
-vim.opt.breakindent = true
-vim.opt.breakindentopt = 'list:3'
+vim.o.linebreak = true
+vim.o.breakindent = true
+vim.o.breakindentopt = 'list:3'
 
 --- Diagnostics ---
 local diagnostic_icons = {
@@ -202,7 +200,6 @@ lsp.config('basedpyright', {
     },
 })
 
-local data_path = vim.fn.stdpath 'data' --[[@as string]]
 lsp.config('ts_query_ls', {
     settings = {
         parser_install_directories = {
@@ -340,10 +337,13 @@ if vim.env.NO_PLUGINS then
     return
 end
 
-local lazy_setup = require 'bones.lazy'
-local ok, installed = pcall(lazy_setup.install)
+local lazy = require 'bones.lazy'
+local lazy_path = vim.fs.joinpath(data_path, 'lazy', 'lazy.nvim')
+local ok, installed = pcall(lazy.install, lazy_path)
 
 if ok and installed then
+    vim.o.runtimepath = lazy_path .. ',' .. vim.o.runtimepath
+
     ---@diagnostic disable-next-line:missing-fields
     require('lazy').setup('bones.plugins', {
         rocks = { enabled = false },

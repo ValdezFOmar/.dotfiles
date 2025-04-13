@@ -42,9 +42,9 @@ local function format_current_file()
     vim.cmd.edit { filename }
 end
 
-vim.opt_local.tabstop = 4
-vim.opt_local.softtabstop = 4
-vim.opt_local.shiftwidth = 4
-vim.opt_local.expandtab = true
+vim.bo.tabstop = 4
+vim.bo.softtabstop = 4
+vim.bo.shiftwidth = 4
+vim.bo.expandtab = true
 
 vim.keymap.set('n', '<F3>', format_current_file, { buffer = true })

@@ -55,7 +55,7 @@ function PLUGIN.config()
         },
         extensions = { 'fzf', 'lazy', 'mason' },
     }
-    vim.opt.showmode = false
+    vim.o.showmode = false
 end
 
 return PLUGIN

@@ -1,15 +1,10 @@
 local M = {}
-local data_path = vim.fn.stdpath 'data' --[[@as string]]
-local lazy_path = vim.fs.joinpath(data_path, 'lazy', 'lazy.nvim')
 
 ---Install `lazy.nvim`
----@param path string? Path for installation
+---@param path string Path for installation
 ---@return boolean `true` if `lazy.nvim` is installed
 function M.install(path)
-    path = path or lazy_path
-
     if vim.uv.fs_stat(path) then
-        vim.opt.rtp:prepend(path)
         return true
     end
 
@@ -30,10 +25,8 @@ function M.install(path)
             vim.log.levels.ERROR
         )
         return false
-    else
-        vim.opt.rtp:prepend(path)
-        return true
     end
+    return true
 end
 
 return M
