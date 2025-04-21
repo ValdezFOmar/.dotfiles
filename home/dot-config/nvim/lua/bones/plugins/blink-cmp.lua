@@ -4,8 +4,7 @@ local border = 'rounded'
 return {
     'saghen/blink.cmp',
     version = '1.*',
-
-    lazy = true,
+    event = 'InsertEnter',
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
@@ -15,7 +14,8 @@ return {
             ['<C-n>'] = { 'scroll_documentation_down', 'fallback' },
             ['<M-k>'] = { 'select_prev', 'fallback_to_mappings' },
             ['<M-j>'] = { 'select_next', 'fallback_to_mappings' },
-            ['<M-Tab>'] = { 'select_and_accept' },
+            ['<Tab>'] = { 'select_and_accept', 'fallback_to_mappings' },
+            ['<M-Tab>'] = { 'snippet_forward', 'fallback' },
         },
         snippets = { preset = 'luasnip' },
         completion = {

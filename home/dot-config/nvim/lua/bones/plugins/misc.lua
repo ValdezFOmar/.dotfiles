@@ -4,6 +4,7 @@
 
 ---@type LazyPluginSpec[]
 return {
+    { 'neovim/nvim-lspconfig' },
     -- Git wrapper
     { 'tpope/vim-fugitive', lazy = false },
     -- Kitty syntax highlighting
