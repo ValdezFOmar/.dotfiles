@@ -1,4 +1,4 @@
-exclude: ^home/\.config/nvim/lazy-lock\.json$
+exclude: ^home/dot-config/nvim/lazy-lock\.json$
 
 repos:
   - repo: meta
@@ -23,13 +23,13 @@ repos:
       - id: check-yaml
 
   - repo: https://github.com/JohnnyMorganz/StyLua
-    rev: v2.0.2
+    rev: v2.1.0
     hooks:
       - id: stylua-github
         alias: stylua
 
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.10.0-2
+    rev: v3.11.0-1
     hooks:
       - id: shfmt
 
