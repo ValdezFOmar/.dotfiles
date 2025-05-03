@@ -220,6 +220,7 @@ lsp.enable {
     'jsonls',
     'lua_ls',
     'marksman',
+    'ruff',
     'rust_analyzer',
     'texlab',
     'ts_ls',
