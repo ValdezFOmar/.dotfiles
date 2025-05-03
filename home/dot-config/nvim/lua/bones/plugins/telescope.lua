@@ -1,7 +1,5 @@
 local PLUGIN = { 'nvim-telescope/telescope.nvim' }
 
-PLUGIN.branch = '0.1.x'
-
 PLUGIN.dependencies = {
     'nvim-lua/plenary.nvim',
     -- Extensions
