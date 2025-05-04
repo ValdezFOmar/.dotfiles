@@ -120,17 +120,9 @@ vim.filetype.add {
         hook = 'confini',
         theme = 'confini',
     },
-    filename = {
-        ['hyprland.conf'] = 'hyprlang',
-        ['requirements.txt'] = 'requirements',
-        ['requirements-dev.txt'] = 'requirements',
-        ['dev-requirements.txt'] = 'requirements',
-    },
     pattern = {
         ['.*/templates/.*%.html'] = 'htmldjango',
-        ['%.?[Jj]ustfile'] = 'just',
         ['.*ignore'] = 'ignore',
-        ['.*/hypr/.*%.conf'] = 'hyprlang',
     },
 }
 
