@@ -1,6 +1,5 @@
 local PLUGIN = { 'L3MON4D3/LuaSnip' }
 
-PLUGIN.version = 'v2.*'
 PLUGIN.dependencies = { 'rafamadriz/friendly-snippets' }
 
 function PLUGIN.config()

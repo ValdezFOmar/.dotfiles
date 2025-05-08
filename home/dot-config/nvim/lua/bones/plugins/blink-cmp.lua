@@ -3,7 +3,7 @@ local border = 'rounded'
 ---@type LazyPluginSpec
 return {
     'saghen/blink.cmp',
-    version = '1.*',
+    version = '1.*', -- needed for downloading pre-built binaries
     event = 'InsertEnter',
 
     ---@module 'blink.cmp'
