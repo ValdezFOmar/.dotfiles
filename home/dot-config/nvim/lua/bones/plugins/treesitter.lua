@@ -25,6 +25,8 @@ local parsers = {
     'yaml',
     'ini',
     'bash',
+    'just',
+    'rust',
     'markdown',
     'markdown_inline',
     'editorconfig',
@@ -37,25 +39,16 @@ local parsers = {
     'jsdoc',
 }
 
+---@type LazyPluginSpec[]
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        lazy = false,
         build = ':TSUpdate',
-        main = 'nvim-treesitter.configs',
-        opts = {
-            ensure_installed = parsers,
-            sync_install = false,
-            indent = {
-                enable = true,
-                disable = {
-                    'css', -- it messes up the indentation of comments
-                    -- indenting issues when `head` and `body` tags are at the same level as `html`
-                    'html',
-                    'htmldjango',
-                },
-            },
-        },
+        branch = 'main', -- remove once 'main' becomes the default branch
+        lazy = false,
+        config = function()
+            require('nvim-treesitter').install(parsers)
+        end,
     },
     {
         'tree-sitter-grammars/tree-sitter-test',

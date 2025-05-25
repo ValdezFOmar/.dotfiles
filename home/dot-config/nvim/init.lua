@@ -1,5 +1,6 @@
 local uri = require 'bones.uri'
 
+local fs = vim.fs
 local fn = vim.fn
 local api = vim.api
 local lsp = vim.lsp
@@ -118,7 +119,7 @@ vim.filetype.add {
         h = 'c',
         hl = 'hyprlang',
         hook = 'confini',
-        theme = 'confini',
+        theme = 'desktop',
     },
     pattern = {
         ['.*/templates/.*%.html'] = 'htmldjango',
@@ -196,8 +197,9 @@ lsp.config('basedpyright', {
 lsp.config('ts_query_ls', {
     settings = {
         parser_install_directories = {
-            vim.fs.joinpath(fn.getcwd(), 'parser'),
-            vim.fs.joinpath(data_path, 'lazy', 'nvim-treesitter', 'parser'),
+            fs.joinpath(fn.getcwd(), 'parser'),
+            fs.joinpath(data_path, 'site', 'parser'),
+            fs.joinpath(vim.env.VIMRUNTIME, 'parser'),
         },
     },
 })
@@ -293,6 +295,10 @@ autocmd('FileType', {
         wo.spell = bo.modifiable and bo.buftype == ''
         wo.foldmethod = 'expr'
         wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+        if pcall(require, 'nvim-treesitter') then
+            bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
     end,
 })
 
@@ -330,7 +336,7 @@ if vim.env.NO_PLUGINS then
 end
 
 local lazy = require 'bones.lazy'
-local lazy_path = vim.fs.joinpath(data_path, 'lazy', 'lazy.nvim')
+local lazy_path = fs.joinpath(data_path, 'lazy', 'lazy.nvim')
 local ok, installed = pcall(lazy.install, lazy_path)
 
 if ok and installed then
