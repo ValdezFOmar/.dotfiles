@@ -14,9 +14,9 @@ repos:
       - id: check-added-large-files
         exclude: |
           (?x)^(
-            assets/desktop.png|
-            assets/screenlock.png|
-            home/\.config/hypr/wallpapers/portal-(water|light|menu).png
+            assets/desktop\.png|
+            assets/screenlock\.png|
+            home/\.config/hypr/wallpapers/portal-(water|light|menu)\.png
           )$
       - id: check-executables-have-shebangs
       - id: check-toml
