@@ -10,7 +10,6 @@ local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
 local command = api.nvim_create_user_command
 
-local data_path = fn.stdpath 'data' --[[@as string]]
 local ui = {
     border = 'rounded',
     max_width = 80,
@@ -197,9 +196,9 @@ lsp.config('basedpyright', {
 lsp.config('ts_query_ls', {
     settings = {
         parser_install_directories = {
-            fs.joinpath(fn.getcwd(), 'parser'),
-            fs.joinpath(data_path, 'site', 'parser'),
-            fs.joinpath(vim.env.VIMRUNTIME, 'parser'),
+            fs.joinpath(fn.getcwd(), 'parser'), -- useful for developing parsers
+            fs.joinpath(fn.stdpath 'data', 'site', 'parser'), -- nvim-treesitter
+            fs.joinpath(vim.env.VIMRUNTIME, 'parser'), -- bundled parsers
         },
     },
 })
@@ -336,7 +335,7 @@ if vim.env.NO_PLUGINS then
 end
 
 local lazy = require 'bones.lazy'
-local lazy_path = fs.joinpath(data_path, 'lazy', 'lazy.nvim')
+local lazy_path = fs.joinpath(fn.stdpath 'data', 'lazy', 'lazy.nvim')
 local ok, installed = pcall(lazy.install, lazy_path)
 
 if ok and installed then
