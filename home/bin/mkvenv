@@ -11,10 +11,10 @@ set -o nounset
 set -o pipefail
 
 # foreground colors
-red=$(tput setaf 1)
-green=$(tput setaf 2)
-yellow=$(tput setaf 3)
-normal=$(tput sgr0)
+printf -v red '\e[31m'
+printf -v green '\e[32m'
+printf -v yellow '\e[33m'
+printf -v normal '\e[0m'
 readonly red green yellow normal
 
 readonly default_venv=.venv
