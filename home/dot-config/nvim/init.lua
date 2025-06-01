@@ -152,12 +152,11 @@ map({ 'n', 'x' }, '<leader>P', [["+p]], { desc = 'Paste from clipboard' })
 -- editor
 map('n', 'L', vim.diagnostic.open_float)
 -- map('n', 'gs', vim.show_pos) map it to something more useful
-map('n', '<leader>w', '<Cmd>silent write<Enter>')
-map('n', '<leader>q', '<Cmd>quit<Enter>')
 map('n', '<C-d>', '<C-d>zz')
 map('n', '<C-u>', '<C-u>zz')
 map('n', '<M-n>', '<Cmd>cnext<Enter>', { desc = 'Next error in quickfix' })
 map('n', '<M-p>', '<Cmd>cNext<Enter>', { desc = 'Previous error in quickfix' })
+map('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Go to Normal mode in Terminal' })
 map({ 'n', 'v', 'i' }, '<C-z>', '<Nop>', { desc = "Dont't send neovim to the background" })
 
 -- text editing
@@ -165,12 +164,9 @@ map('n', 'U', '<C-r>', { desc = 'Redo changes with `U`' })
 map('n', 'J', 'mzJ`z', { desc = 'Same as `J`, but does not move the cursor' })
 
 -- indentation
-map('n', '<Tab>', '>>', { desc = 'Add 1 level of indentation' })
-map('x', '<Tab>', '>gv', { desc = 'Add 1 level of indentation' })
-map('n', '<S-Tab>', '<<', { desc = 'Remove 1 level of indentation' })
 map('n', '<BS>', '<<', { desc = 'Remove 1 level of indentation' })
-map('x', '<S-Tab>', '<gv', { desc = 'Remove 1 level of indentation' })
 map('x', '<BS>', '<gv', { desc = 'Remove 1 level of indentation' })
+map('x', '<Tab>', '>gv', { desc = 'Add 1 level of indentation' })
 
 -- tabs
 map('n', '<M-h>', '<Cmd>tabprevious<Enter>')
@@ -311,8 +307,8 @@ autocmd({ 'BufNewFile', 'BufRead' }, {
         if not vim.bo[bufnr].modifiable then
             return
         end
-        map('n', '<S-Enter>', 'mzO<Esc>0"_D`z', { buffer = bufnr })
-        map('n', '<Enter>', 'mzo<Esc>0"_D`z', { buffer = bufnr })
+        map('n', '<S-Enter>', 'O<Esc>0"_D', { buffer = bufnr })
+        map('n', '<Enter>', 'o<Esc>0"_D', { buffer = bufnr })
     end,
 })
 

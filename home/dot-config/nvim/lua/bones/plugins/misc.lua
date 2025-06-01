@@ -43,7 +43,7 @@ return {
         keys = {
             {
                 mode = 'i',
-                '<C-s>',
+                '<C-m>',
                 '<cmd>lua require("caps-word").toggle()<CR>',
             },
         },
