@@ -5,7 +5,6 @@ PLUGIN.dependencies = {
     -- Extensions
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, -- faster fuzzy finder
     'nvim-telescope/telescope-file-browser.nvim',
-    'nvim-telescope/telescope-ui-select.nvim',
 }
 
 function PLUGIN.config()
@@ -125,15 +124,10 @@ function PLUGIN.config()
                     },
                 },
             },
-            ['ui-select'] = {
-                initial_mode = 'normal',
-                layout_config = { width = 0.6, height = 0.7 },
-            },
         },
     }
     telescope.load_extension 'fzf'
     telescope.load_extension 'file_browser'
-    telescope.load_extension 'ui-select'
 
     local builtin = require 'telescope.builtin'
 
@@ -181,7 +175,6 @@ function PLUGIN.config()
     map('n', '<leader>fz', builtin.current_buffer_fuzzy_find)
     map('n', '<leader>gs', builtin.git_status)
     map('n', '<leader>?', builtin.help_tags, { desc = 'Search for vim help' })
-    map('n', 'z=', builtin.spell_suggest)
     map('n', '<M-a>', builtin.man_pages)
 end
 

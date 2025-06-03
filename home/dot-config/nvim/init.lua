@@ -1,3 +1,4 @@
+local ui = require 'bones.ui'
 local uri = require 'bones.uri'
 
 local fs = vim.fs
@@ -10,11 +11,8 @@ local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
 local command = api.nvim_create_user_command
 
-local ui = {
-    border = 'rounded',
-    max_width = 80,
-    max_height = 15,
-}
+-- Replace UI components
+vim.ui.select = ui.select
 
 -- Old language providers are slow, disable them:
 -- https://github.com/neovim/neovim/issues/7063#issuecomment-2382641641
@@ -91,8 +89,8 @@ vim.diagnostic.config {
     severity_sort = true,
     float = {
         source = 'if_many',
-        border = ui.border,
-        max_width = ui.max_width,
+        border = ui.defaults.border,
+        max_width = ui.defaults.max_width,
     },
     signs = {
         text = diagnostic_icons,
@@ -152,6 +150,7 @@ map({ 'n', 'x' }, '<leader>P', [["+p]], { desc = 'Paste from clipboard' })
 -- editor
 map('n', 'L', vim.diagnostic.open_float)
 -- map('n', 'gs', vim.show_pos) map it to something more useful
+map('n', 'z=', ui.spell, { desc = 'Show and select spell suggestions' })
 map('n', '<C-d>', '<C-d>zz')
 map('n', '<C-u>', '<C-u>zz')
 map('n', '<M-n>', '<Cmd>cnext<Enter>', { desc = 'Next error in quickfix' })
@@ -229,8 +228,8 @@ local function with(overriden, custom_opts)
     end
 end
 
-lsp.buf.hover = with(lsp.buf.hover, ui)
-lsp.buf.signature_help = with(lsp.buf.signature_help, ui)
+lsp.buf.hover = with(lsp.buf.hover, ui.defaults)
+lsp.buf.signature_help = with(lsp.buf.signature_help, ui.defaults)
 
 api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
 
@@ -346,7 +345,7 @@ if ok and installed then
         },
         ui = {
             title = 'lazy.nvim 󰒲 ',
-            border = ui.border,
+            border = ui.defaults.border,
         },
         checker = {
             enabled = true,

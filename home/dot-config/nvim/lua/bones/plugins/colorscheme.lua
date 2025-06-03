@@ -57,6 +57,7 @@ PLUGIN.opts = {
             ['@lsp.typemod.method.defaultLibrary.rust'] = {}, -- I don't like these highlights
             ['@lsp.typemod.function.defaultLibrary.rust'] = {},
             -- GUI --
+            CursorLine = { bg = '#323547' },
             FloatTitle = { link = '@markup.heading' },
             TabLineSel = { fg = colors.subtext1, bg = colors.surface0 },
             -- Telescope
