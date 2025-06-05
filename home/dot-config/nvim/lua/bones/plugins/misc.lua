@@ -56,10 +56,17 @@ return {
     -- A better way of writing SNAKE_CASE_CONSTANTS
     {
         'dmtrKovalenko/caps-word.nvim',
-        lazy = true,
-        opts = {},
+        lazy = false,
         keys = {
             { mode = 'i', '<C-m>', '<cmd>lua require("caps-word").toggle()<CR>' },
+        },
+        opts = {
+            enter_callback = function()
+                vim.api.nvim_echo({ { 'CAPS-ON', 'WarningMsg' } }, false, {})
+            end,
+            exit_callback = function()
+                vim.api.nvim_echo({ { 'CAPS-OFF', 'WarningMsg' } }, false, {})
+            end,
         },
     },
     -- Autocomplete pairs parenthesis, brackets, quotes, etc.

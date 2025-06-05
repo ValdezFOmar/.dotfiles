@@ -6,6 +6,7 @@ M.defaults = {
     border = 'rounded',
     max_width = 80,
     max_height = 15,
+    anchor_bias = 'below',
 }
 
 --- @param int integer

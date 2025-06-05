@@ -12,6 +12,14 @@ PLUGIN.opts = {
         conceallevel = { rendered = 2 },
         concealcursor = { rendered = 'nc' },
     },
+    completions = {
+        blink = { enabled = true },
+        filter = {
+            callout = function(callout)
+                return callout.category ~= 'obsidian'
+            end,
+        },
+    },
     code = {
         left_pad = 1,
         right_pad = 1,

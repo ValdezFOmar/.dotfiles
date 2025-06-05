@@ -1,14 +1,14 @@
 ---@type LazyPluginSpec
-local PLUGIN = { 'catppuccin/nvim' }
-
-PLUGIN.name = 'catppuccin'
-PLUGIN.lazy = false
-PLUGIN.priority = 1000
-
-function PLUGIN:config(opts)
-    require('catppuccin').setup(opts)
-    vim.cmd.colorscheme 'catppuccin'
-end
+local PLUGIN = {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    lazy = false,
+    priority = 1000,
+    config = function(_, opts)
+        require('catppuccin').setup(opts)
+        vim.cmd.colorscheme 'catppuccin'
+    end,
+}
 
 -- Italics don't look good on termux, disable them
 local italic = vim.env.TERMUX_VERSION ~= nil and {} or { 'italic' }
