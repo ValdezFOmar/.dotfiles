@@ -59,11 +59,7 @@ return {
         lazy = true,
         opts = {},
         keys = {
-            {
-                mode = 'i',
-                '<C-m>',
-                '<cmd>lua require("caps-word").toggle()<CR>',
-            },
+            { mode = 'i', '<C-m>', '<cmd>lua require("caps-word").toggle()<CR>' },
         },
     },
     -- Autocomplete pairs parenthesis, brackets, quotes, etc.

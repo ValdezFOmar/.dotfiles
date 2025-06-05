@@ -140,16 +140,15 @@ map('n', '<leader>xx', '<Cmd>silent !chmod u+x %<Enter>')
 map('n', 'gx', uri.open, { desc = 'Open a URI like `gx`, but better' })
 
 -- copy/paste
-map('n', '<C-a>', 'mzggVG', { desc = 'Select all text' })
-map('x', '<leader>p', '"_dP', { desc = 'Keep yanked text after pasting' })
-map('n', '<leader>Y', '"+Y', { desc = 'Copy line to clipboard' })
-map('x', '<leader>Y', '"+y', { desc = 'Copy selected text to clipboard' })
+map('x', '<leader>y', '"+y', { desc = 'Copy selection to clipboard' })
+map('n', '<leader>y', '"+yy', { desc = 'Copy line to clipboard' })
+map('n', '<leader>Y', '"+y$', { desc = 'Copy until the EOL to clipboard' })
 map('n', 'yc', '<Cmd>let @+=@@<CR>', { desc = 'Copy unnamed register to clipboard' })
-map({ 'n', 'x' }, '<leader>P', [["+p]], { desc = 'Paste from clipboard' })
+map({ 'n', 'x' }, '<leader>P', '"+p', { desc = 'Paste from clipboard' })
 
 -- editor
 map('n', 'L', vim.diagnostic.open_float)
--- map('n', 'gs', vim.show_pos) map it to something more useful
+map('n', 'gs', '<Nop>') -- map it to something more useful
 map('n', 'z=', ui.spell, { desc = 'Show and select spell suggestions' })
 map('n', '<C-d>', '<C-d>zz')
 map('n', '<C-u>', '<C-u>zz')
@@ -240,17 +239,8 @@ autocmd('LspAttach', {
         local client = assert(lsp.get_client_by_id(ev.data.client_id))
         local opts = { buffer = ev.buf }
 
-        if client:supports_method(ms.textDocument_signatureHelp) then
-            map({ 'n', 'i' }, '<C-H>', lsp.buf.signature_help, opts)
-        end
-        if client:supports_method(ms.textDocument_rename) then
-            map({ 'n', 'i' }, '<F2>', lsp.buf.rename, opts)
-        end
         if client:supports_method(ms.textDocument_formatting) then
-            map({ 'n', 'v' }, '<F3>', lsp.buf.format, opts)
-        end
-        if client:supports_method(ms.textDocument_codeAction) then
-            map({ 'n', 'i' }, '<F4>', lsp.buf.code_action, opts)
+            map('n', 'grq', lsp.buf.format, opts) -- use `gq` in Visual mode
         end
 
         -- Use Telescope if available, else use neovim native implementations
@@ -266,7 +256,7 @@ autocmd('LspAttach', {
             map('n', 'gt', type_definition, opts)
         end
         if client:supports_method(ms.textDocument_references) then
-            map('n', 'gr', references, opts)
+            map('n', 'grr', references, opts)
         end
     end,
 })

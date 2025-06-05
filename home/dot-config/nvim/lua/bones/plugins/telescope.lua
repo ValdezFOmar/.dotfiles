@@ -2,7 +2,6 @@ local PLUGIN = { 'nvim-telescope/telescope.nvim' }
 
 PLUGIN.dependencies = {
     'nvim-lua/plenary.nvim',
-    -- Extensions
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, -- faster fuzzy finder
 }
 
@@ -82,8 +81,6 @@ function PLUGIN.config()
                     },
                 },
             },
-            git_status = { initial_mode = 'normal' },
-            diagnostics = { initial_mode = 'normal' },
             lsp_references = { initial_mode = 'normal' },
             lsp_definitions = { initial_mode = 'normal' },
             lsp_type_definitions = { initial_mode = 'normal' },
@@ -96,10 +93,6 @@ function PLUGIN.config()
                 previewer = false,
                 layout_config = { width = 0.6, height = 0.6 },
             },
-            spell_suggest = {
-                initial_mode = 'normal',
-                layout_config = { width = 0.4, height = 0.6 },
-            },
         },
     }
     telescope.load_extension 'fzf'
@@ -107,8 +100,8 @@ function PLUGIN.config()
     local builtin = require 'telescope.builtin'
 
     local function search_in_repo()
-        local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
-        local in_git_repo = pcall(builtin.git_files, { prompt_prefix = cwd .. '❯ ' })
+        local prompt = vim.fs.basename(vim.fn.getcwd()) .. '❯ '
+        local in_git_repo = pcall(builtin.git_files, { prompt_prefix = prompt })
         if not in_git_repo then
             vim.notify('You are not in a git repository.', vim.log.levels.ERROR)
         end
@@ -116,27 +109,18 @@ function PLUGIN.config()
 
     local function search_pattern()
         vim.ui.input({ prompt = 'Grep❯ ' }, function(pattern)
-            if not pattern or #pattern == 0 then
+            if not pattern or pattern == '' then
                 return
             end
             builtin.grep_string { search = pattern }
         end)
     end
 
-    local function current_diagnostics()
-        builtin.diagnostics { bufnr = 0 }
-    end
-
     local map = vim.keymap.set
     map('n', '<leader>pf', builtin.find_files, { desc = 'Find files in the root directory' })
     map('n', '<leader>pg', search_in_repo, { desc = 'Find files tracked by git' })
     map('n', '<leader>ps', search_pattern, { desc = 'Search for pattern in files' })
-    map('n', '<leader>pd', builtin.diagnostics, { desc = 'Diagnostics for all open buffers' })
-    map('n', '<leader>ld', current_diagnostics, { desc = 'Diagnostics for current buffer' })
-    map('n', '<leader>lb', builtin.buffers, { desc = 'Lists open buffers in current instance' })
-    map('n', '<leader>ts', builtin.treesitter, { desc = 'Lists functions and variables in buffer' })
-    map('n', '<leader>fz', builtin.current_buffer_fuzzy_find)
-    map('n', '<leader>gs', builtin.git_status)
+    map('n', '<leader>pb', builtin.buffers, { desc = 'Lists open buffers in current instance' })
     map('n', '<leader>?', builtin.help_tags, { desc = 'Search for vim help' })
     map('n', '<M-a>', builtin.man_pages)
 end
