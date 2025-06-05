@@ -5,6 +5,24 @@
 ---@type LazyPluginSpec[]
 return {
     { 'neovim/nvim-lspconfig' },
+    {
+        'stevearc/oil.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        lazy = false,
+        keys = {
+            { mode = 'n', '-', '<Cmd>lua require("oil").open()<CR>' },
+        },
+        ---@module 'oil'
+        ---@type oil.SetupOpts
+        opts = {
+            columns = { 'icon', 'permissions' },
+            watch_for_changes = true,
+            skip_confirm_for_simple_edits = true,
+            keymaps = {
+                q = { mode = 'n', 'actions.close' },
+            },
+        },
+    },
     -- Git wrapper
     { 'tpope/vim-fugitive', lazy = false },
     -- Kitty syntax highlighting

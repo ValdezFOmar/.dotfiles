@@ -4,7 +4,6 @@ PLUGIN.dependencies = {
     'nvim-lua/plenary.nvim',
     -- Extensions
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, -- faster fuzzy finder
-    'nvim-telescope/telescope-file-browser.nvim',
 }
 
 function PLUGIN.config()
@@ -24,7 +23,6 @@ function PLUGIN.config()
     })
 
     local telescope = require 'telescope'
-    local fb_actions = telescope.extensions.file_browser.actions
     telescope.setup {
         defaults = {
             -- winblend = 20, -- Transparency messes up icons sizes
@@ -103,31 +101,8 @@ function PLUGIN.config()
                 layout_config = { width = 0.4, height = 0.6 },
             },
         },
-        extensions = {
-            file_browser = {
-                initial_mode = 'normal',
-                hijack_netrw = true,
-                hidden = true,
-                previewer = false,
-                results_title = false,
-                prompt_path = true,
-                grouped = true,
-                display_stat = { mode = true, date = true },
-                layout_config = { width = 0.6, height = 0.7 },
-                mappings = {
-                    n = {
-                        D = fb_actions.remove,
-                        r = fb_actions.rename,
-                        p = fb_actions.goto_parent_dir,
-                        cd = fb_actions.goto_cwd,
-                        n = fb_actions.create,
-                    },
-                },
-            },
-        },
     }
     telescope.load_extension 'fzf'
-    telescope.load_extension 'file_browser'
 
     local builtin = require 'telescope.builtin'
 
@@ -152,20 +127,8 @@ function PLUGIN.config()
         builtin.diagnostics { bufnr = 0 }
     end
 
-    local file_browser = telescope.extensions.file_browser.file_browser
-
-    local function file_siblings()
-        file_browser {
-            prompt_title = 'File Sibligs',
-            select_buffer = true,
-            path = '%:p:h',
-        }
-    end
-
     local map = vim.keymap.set
-    map('n', '<leader>e', file_browser)
     map('n', '<leader>pf', builtin.find_files, { desc = 'Find files in the root directory' })
-    map('n', '<leader>fs', file_siblings, { desc = 'Lists siblings of current file' })
     map('n', '<leader>pg', search_in_repo, { desc = 'Find files tracked by git' })
     map('n', '<leader>ps', search_pattern, { desc = 'Search for pattern in files' })
     map('n', '<leader>pd', builtin.diagnostics, { desc = 'Diagnostics for all open buffers' })
