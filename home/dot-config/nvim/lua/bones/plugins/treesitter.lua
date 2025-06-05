@@ -1,35 +1,35 @@
 local parsers = {
-    -- This 5 should always be installed
+    -- Prefer up to date parsers instead of builtin ones
     'c',
     'lua',
     'vim',
     'vimdoc',
     'query',
-    -- python
+    'markdown',
+    'markdown_inline',
+    -- languages
+    'bash',
+    'just',
+    'rust',
     'python',
-    'toml',
-    'htmldjango',
     -- web
-    'html',
     'css',
+    'html',
     'json',
     'javascript',
     'typescript',
+    -- config
+    'ini',
+    'toml',
+    'yaml',
+    'hyprlang',
+    'editorconfig',
     -- git
+    'diff',
     'gitignore',
     'gitcommit',
     'git_rebase',
     'git_config',
-    'diff',
-    -- misc
-    'yaml',
-    'ini',
-    'bash',
-    'just',
-    'rust',
-    'markdown',
-    'markdown_inline',
-    'editorconfig',
     -- injections
     'regex',
     'printf',
@@ -47,7 +47,17 @@ return {
         branch = 'main', -- remove once 'main' becomes the default branch
         lazy = false,
         config = function()
-            require('nvim-treesitter').install(parsers)
+            local nvimts = require 'nvim-treesitter'
+            local installed = {} ---@type table<string, boolean>
+            for _, parser in ipairs(nvimts.get_installed 'parsers') do
+                installed[parser] = true
+            end
+            for _, parser in ipairs(parsers) do
+                if not installed[parser] then
+                    nvimts.install(parsers, { summary = true })
+                    break
+                end
+            end
         end,
     },
     {
