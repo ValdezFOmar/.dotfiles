@@ -9,16 +9,6 @@ M.defaults = {
     anchor_bias = 'below',
 }
 
---- @param int integer
---- @return integer
-local function intlen(int)
-    assert(int >= 0, 'int must be a positive integer')
-    if int < 1 then
-        return 1
-    end
-    return math.floor(math.log10(int)) + 1
-end
-
 --- @class bones.ui.Dimensions
 --- @field w integer width
 --- @field h integer height
@@ -40,16 +30,15 @@ local function calc_dimensions(dim, max_dim)
     return { width = width, height = height, row = row, col = col }
 end
 
+local select_ns = api.nvim_create_namespace 'bones.ui.select'
 local select_max_dimensions = {
     w = M.defaults.max_width,
     h = M.defaults.max_height,
 }
 
--- TODO:
--- Support kine options for `codeaction` (use by `vim.lsp.buf.code_actions`).
--- Possible things to implement:
---  - Add the server name for a given action as trailing italic text (e.g. *lua_ls*)
--- Only allow navigating to other select floats
+--- @class bones.ui.CodeAction
+--- @field action lsp.Command|lsp.CodeAction
+--- @field ctx lsp.HandlerContext
 
 --- @class bones.ui.select.Opts
 --- @field kind? string
@@ -72,12 +61,12 @@ function M.select(items, opts, on_choice)
     local prompt = (opts.prompt or 'Select one of'):gsub('\n', ' '):gsub(':%s*$', '')
     local format_item = opts.format_item or tostring
 
-    local pad_width = intlen(#items)
+    local pad_width = string.len(#items)
     local lines = {} --- @type string[]
     local max_line_len = #prompt
 
     for index, item in ipairs(items) do
-        local pad = (' '):rep(pad_width - intlen(index))
+        local pad = (' '):rep(pad_width - string.len(index))
         local line = ('%s%d. %s'):format(pad, index, format_item(item)):gsub('\n', ' | ')
         lines[index] = line
         max_line_len = math.max(max_line_len, #line)
@@ -86,7 +75,27 @@ function M.select(items, opts, on_choice)
     local bufnr = api.nvim_create_buf(false, true)
     api.nvim_buf_set_lines(bufnr, 0, -1, true, lines)
     vim.bo[bufnr].modifiable = false
+    vim.bo[bufnr].readonly = true
     vim.treesitter.start(bufnr, 'markdown')
+
+    if opts.kind == 'codeaction' then
+        local space = 2 -- Spaces between the text and the client name
+        for i, item in ipairs(items) do
+            --- @cast item bones.ui.CodeAction
+            local client = vim.lsp.get_client_by_id(item.ctx.client_id)
+            if client then
+                local name = client.config.name or client.name
+                api.nvim_buf_set_extmark(bufnr, select_ns, i - 1, 0, {
+                    virt_text = { { name, '@comment' } },
+                    virt_text_pos = 'eol_right_align',
+                    virt_lines_overflow = 'scroll',
+                })
+                -- Ideal length to fit both the text and client name
+                local len = #lines[i] + space + #name
+                max_line_len = math.max(max_line_len, len)
+            end
+        end
+    end
 
     local target_dimensions = { w = max_line_len, h = #items }
     local winid = api.nvim_open_win(bufnr, false, {
@@ -161,7 +170,7 @@ function M.select(items, opts, on_choice)
         end,
     })
 
-    vim.keymap.set('n', 'q', close, { buffer = bufnr, silent = true, nowait = true })
+    vim.keymap.set('n', 'q', close, { buffer = bufnr, nowait = true })
     vim.keymap.set('n', '<Enter>', function()
         local row_index = api.nvim_win_get_cursor(winid)[1]
         if row_index <= #items then
@@ -171,6 +180,7 @@ function M.select(items, opts, on_choice)
     end, { buffer = bufnr, nowait = true })
 
     api.nvim_set_current_win(winid)
+    vim.cmd.stopinsert()
 end
 
 local spell_on_choice = vim.schedule_wrap(function(_, i)
