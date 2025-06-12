@@ -214,31 +214,25 @@ lsp.enable {
     'ts_query_ls',
 }
 
----Utility for monkey patching default `vim.lsp.buf` functions.
----@param overriden fun(t: table|nil): any
----@param custom_opts table
----@return fun(t: table|nil): any
-local function with(overriden, custom_opts)
-    return function(opts)
-        if not opts then
-            return overriden(custom_opts)
-        end
-        return overriden(vim.tbl_deep_extend('force', custom_opts, opts))
-    end
-end
-
-lsp.buf.hover = with(lsp.buf.hover, ui.defaults)
-lsp.buf.signature_help = with(lsp.buf.signature_help, ui.defaults)
-
 api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
 
 autocmd('LspAttach', {
-    group = augroup('BonesLSPKeyMaps', {}),
-    desc = 'Lsp Key Mappings',
+    group = augroup('BonesLspMappings', {}),
+    desc = 'Set LSP Mappings',
     callback = function(ev)
         local client = assert(lsp.get_client_by_id(ev.data.client_id))
         local opts = { buffer = ev.buf }
 
+        if client:supports_method(ms.textDocument_hover) then
+            map('n', 'K', function()
+                lsp.buf.hover(ui.defaults)
+            end, opts)
+        end
+        if client:supports_method(ms.textDocument_signatureHelp) then
+            map({ 'i', 's' }, '<C-S>', function()
+                lsp.buf.signature_help(ui.defaults)
+            end, opts)
+        end
         if client:supports_method(ms.textDocument_formatting) then
             map('n', 'grq', lsp.buf.format, opts) -- use `gq` in Visual mode
         end
