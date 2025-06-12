@@ -4,7 +4,7 @@ local border = 'rounded'
 return {
     'saghen/blink.cmp',
     version = '1.*', -- needed for downloading pre-built binaries
-    event = 'InsertEnter',
+    event = { 'InsertEnter', 'CmdlineEnter' },
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
@@ -39,7 +39,7 @@ return {
         },
         --- experimental
         signature = {
-            enabled = true,
+            enabled = false,
             window = { border = border },
         },
     },
