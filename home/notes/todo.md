@@ -2,17 +2,34 @@
 
 ## General
 
-- [ ] Load `~/.config/uwsm/env` from Termux  (Maybe export a variable like
+- [ ] Consider using [starship](https://starship.rs/) (with a fallback).
+- [x] Load `~/.config/uwsm/env` from Termux  (Maybe export a variable like
   `_BONES_LOADED_ENVS`, if it's set the don't load them again, if it's
   not then load'em).
 - [ ] Add `termux.bash` for Termux specific shell configuration
    (ssh-agent, env vars, and other settings).
    Termux can be checked with `$OSTYPE = linux-android` and existence of
    `$TERMUX_VERSION`
+- [x] Don't change `$LC_TIME` under Termux, or maybe look for a better
+   way to set this instead of using an environmental variable directly?
+   ([Locale](https://wiki.archlinux.org/title/Locale))
+
+
+## Hyprland
+
+- [ ] Write script for taking screenshots
+  - [ ] Add options for saving/copying screenshot
+  - [ ] Show screenshot in a image viewer
+- [ ] Rewrite `bin/volume-notify` to abstract setting the volume:
+  - [ ] Move script to `hypr/scripts/volume.lua`
+  - [ ] Increase/decrease volume operations
+  - [ ] Toggle mute operation
+  - [ ] Maybe control microphone too?
+- [ ] Test fancy animations
 
 ## .dotfiles
-- [ ] Refactor `.bashrc` prompt functions and variables
-- [ ] Rename `.bashrc` to `bashrc.bash`
+- [x] Refactor `.bashrc` prompt functions and variables
+- [x] Rename `.bashrc` to `bashrc.bash`
 - [ ] Create widgets with <https://github.com/elkowar/eww>
 - [ ] Add some options to the `install.sh` script for easier
    installation in other platforms (`termux`).

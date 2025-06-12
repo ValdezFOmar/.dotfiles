@@ -30,7 +30,7 @@ function -set-exit-color() {
 readonly -f -- -set-exit-color
 
 function setup-prompt() {
-    # Source git prompt if available and check using PREFIX in Termux
+    # Source git prompt if available and check with PREFIX in Termux
     local dir
     for dir in '/usr/share/git/completion' "$PREFIX/etc/bash_completion.d"; do
         if [[ -f $dir/git-prompt.sh ]]; then
