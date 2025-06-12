@@ -62,6 +62,3 @@ mkdir --parents "$WINEPREFIX"
 export PATH="$CARGO_HOME/bin:$PATH"
 export PATH="$XDG_BIN_HOME:$PATH"
 export PATH="$HOME/bin:$PATH"
-
-# Dates/Time formatting
-export LC_TIME=es_MX.UTF-8
