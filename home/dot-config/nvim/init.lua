@@ -255,30 +255,50 @@ autocmd('LspAttach', {
     end,
 })
 
---- Autocommands & User commands ---
+--- Auto commands & User commands ---
 
-autocmd('FileType', {
-    group = augroup('EnableTreesitterFeatures', {}),
-    callback = function(ev)
-        local bufnr = ev.buf
+do
+    local cache = {} ---@type table<string, boolean?>
 
-        if not pcall(vim.treesitter.start, bufnr) then
-            return
+    ---@param lang string
+    ---@param query string
+    ---@return boolean
+    local function has_query(lang, query)
+        local path = fs.joinpath('queries', lang, query)
+        if cache[path] == nil then
+            cache[path] = #api.nvim_get_runtime_file(path, true) > 0
         end
+        return cache[path]
+    end
 
-        local winid = fn.bufwinid(bufnr)
-        local bo = vim.bo[bufnr]
-        local wo = vim.wo[winid][0]
+    autocmd('FileType', {
+        desc = 'Enable Tree-sitter features conditionally',
+        group = augroup('BonesTreesitter', {}),
+        callback = function(ev)
+            if not pcall(vim.treesitter.start, ev.buf) then
+                return
+            end
 
-        wo.spell = bo.modifiable and bo.buftype == ''
-        wo.foldmethod = 'expr'
-        wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+            local lang = vim.treesitter.get_parser(ev.buf):lang()
+            local bo = vim.bo[ev.buf]
+            local wo = vim.wo[0][0]
 
-        if pcall(require, 'nvim-treesitter') then
-            bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        end
-    end,
-})
+            -- Only enable spellchecking if not already enabled
+            if not wo.spell then
+                wo.spell = bo.modifiable and bo.buftype == ''
+            end
+
+            if has_query(lang, 'folds.scm') then
+                wo.foldmethod = 'expr'
+                wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+            end
+
+            if pcall(require, 'nvim-treesitter') and has_query(lang, 'indents.scm') then
+                bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            end
+        end,
+    })
+end
 
 autocmd({ 'BufNewFile', 'BufRead' }, {
     group = augroup('InsertBlankLineMappings', {}),
