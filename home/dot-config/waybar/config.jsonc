@@ -132,8 +132,8 @@
     "format-ethernet": "{ipaddr}/{cidr}",
     "format-linked": "{ifname} (No IP)",
     "format-disconnected": "󰤮",
-    "format-alt": "{essid} ({signalStrength}%)",
-    "tooltip-format": "{ifname}: {ipaddr}/{cidr}",
+    "format-alt": "{essid} ({ifname})",
+    "tooltip-format": "{essid} ({signalStrength}%)",
     "format-icons": [
       "󰤯",
       "󰤟",
