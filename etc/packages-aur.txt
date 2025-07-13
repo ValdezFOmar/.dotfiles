@@ -2,7 +2,7 @@ emmet-language-server
 grub-hook
 jmtpfs
 qogir-cursor-theme-git
-ts-query-ls-bin
+ts_query_ls-bin
 vscode-langservers-extracted
 walker-bin
 wlogout
