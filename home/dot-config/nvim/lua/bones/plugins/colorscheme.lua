@@ -1,6 +1,9 @@
 ---@type LazyPluginSpec
 local PLUGIN = {
     'catppuccin/nvim',
+    -- Versions after this have made changes that I don't agree with.
+    -- See: https://github.com/catppuccin/nvim/pull/804
+    version = '1.11.x',
     name = 'catppuccin',
     lazy = false,
     priority = 1000,
