@@ -1,5 +1,11 @@
+[private]
+default:
+    just --list
+
+[doc("Reload config after each write")]
 watch:
     printf 'style.css\nconfig.jsonc' | entr just reload
 
+[doc("Reload current config")]
 reload:
     systemctl --user reload waybar.service

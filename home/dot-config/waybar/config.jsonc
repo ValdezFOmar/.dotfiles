@@ -90,6 +90,10 @@
       "good": "󱊢",
       "warning": "󱊡",
       "critical": "󱃍"
+    },
+    "events": {
+      "on-charging-100": "notify-send --urgency=normal --icon=battery-full --hint string:x-dunst-stack-tag:battery_state 'Full battery'",
+      "on-discharging-critical": "notify-send --urgency=critical --icon=battery-empty --hint string:x-dunst-stack-tag:battery_state 'Low battery'"
     }
   },
   "clock": {

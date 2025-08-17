@@ -28,7 +28,7 @@
 
   # Spacing / Frame (Border)
   gap_size = 5
-  frame_width = 1
+  frame_width = 2
   frame_color = "#4889AD"
   separator_height = 3
   separator_color = frame
@@ -53,7 +53,7 @@
   enable_recursive_icon_lookup = true
   icon_theme = Papirus-Dark, Papirus, Adwaita
   icon_position = left
-  min_icon_size = 32
+  min_icon_size = 48
   max_icon_size = 128
 
   # History
@@ -108,6 +108,13 @@
   history_ignore = true
   icon_position = top
   alignment = center
+  format = "<span size='120%'><b>%s</b></span>"
+  timeout = 3s
+
+[battery]
+  stack_tag = battery_state
+  set_stack_tag = battery_state
+  history_ignore = true
   format = "<span size='120%'><b>%s</b></span>"
   timeout = 3s
 
