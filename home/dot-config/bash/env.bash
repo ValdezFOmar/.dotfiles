@@ -60,6 +60,8 @@ export FZF_DEFAULT_OPTS="
 --color=hl:cyan,current-hl:cyan,query:white:regular
 --color=prompt:blue:regular,label:blue,header:blue
 --color=pointer:green,info:green,spinner:cyan,marker:magenta
+
+--bind=alt-j:down,alt-k:up,alt-p:toggle-preview
 "
 
 unset -f history-path

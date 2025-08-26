@@ -237,11 +237,11 @@ autocmd('LspAttach', {
             map('n', 'grq', lsp.buf.format, opts) -- use `gq` in Visual mode
         end
 
-        -- Use Telescope if available, else use neovim native implementations
-        local ok, builtin = pcall(require, 'telescope.builtin')
-        local definition = ok and builtin.lsp_definitions or lsp.buf.definition
-        local type_definition = ok and builtin.lsp_type_definitions or lsp.buf.type_definition
-        local references = ok and builtin.lsp_references or lsp.buf.references
+        -- Use fzf-lua if available, else use neovim native implementations
+        local ok, fzf = pcall(require, 'fzf-lua')
+        local definition = ok and fzf.lsp_definitions or lsp.buf.definition
+        local type_definition = ok and fzf.lsp_typedefs or lsp.buf.type_definition
+        local references = ok and fzf.lsp_references or lsp.buf.references
 
         if client:supports_method(ms.textDocument_definition) then
             map('n', 'gd', definition, opts)

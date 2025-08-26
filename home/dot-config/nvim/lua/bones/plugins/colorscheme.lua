@@ -63,18 +63,6 @@ PLUGIN.opts = {
             CursorLine = { bg = '#323547' },
             FloatTitle = { link = '@markup.heading' },
             TabLineSel = { fg = colors.subtext1, bg = colors.surface0 },
-            -- Telescope
-            TelescopeBorder = { fg = colors.surface2 },
-            TelescopeNormal = { fg = colors.overlay0 },
-            TelescopeSelection = { fg = colors.text },
-            TelescopeSelectionCaret = { fg = colors.green },
-            TelescopeMatching = { fg = colors.teal, style = { 'bold' } },
-            TelescopePromptTitle = { fg = colors.mauve },
-            TelescopePromptNormal = { fg = colors.text },
-            TelescopePromptPrefix = { fg = colors.blue },
-            TelescopeResultsTitle = { fg = colors.text },
-            TelescopePreviewTitle = { fg = colors.green },
-            TelescopePreviewNormal = { fg = colors.text },
         }
     end,
     color_overrides = {

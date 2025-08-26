@@ -75,4 +75,14 @@ return {
         event = 'InsertEnter',
         opts = { enable_check_bracket_line = false },
     },
+    -- Fuzzy finder
+    {
+        'ibhagwan/fzf-lua',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        keys = {
+            { mode = 'n', '<leader>ps', '<Cmd>FzfLua grep<CR>', desc = 'Pick search' },
+            { mode = 'n', '<leader>pf', '<Cmd>FzfLua files<CR>', desc = 'Pick files' },
+            { mode = 'n', '<leader>pb', '<Cmd>FzfLua buffers<CR>', desc = 'Pick buffers' },
+        },
+    },
 }
