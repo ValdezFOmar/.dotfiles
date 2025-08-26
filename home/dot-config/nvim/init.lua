@@ -30,10 +30,7 @@ vim.g.tex_flavor = 'latex' -- Recognize .tex files as LaTeX
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- BUG:
--- Telescope does not support this option yet.
--- Once it supports it, uncomment and remove references of ui.border.
--- vim.o.winborder = 'rounded'
+vim.o.winborder = 'rounded'
 vim.o.laststatus = 3
 vim.o.cursorline = true
 vim.o.guicursor = table.concat({
@@ -89,7 +86,6 @@ vim.diagnostic.config {
     severity_sort = true,
     float = {
         source = 'if_many',
-        border = ui.defaults.border,
         max_width = ui.defaults.max_width,
     },
     signs = {
@@ -349,7 +345,7 @@ if ok and installed then
         },
         ui = {
             title = 'lazy.nvim 󰒲 ',
-            border = ui.defaults.border,
+            border = vim.o.winborder,
         },
         checker = {
             enabled = true,

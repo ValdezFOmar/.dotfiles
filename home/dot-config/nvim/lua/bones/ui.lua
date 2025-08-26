@@ -3,7 +3,6 @@ local api = vim.api
 local M = {}
 
 M.defaults = {
-    border = 'rounded',
     max_width = 80,
     max_height = 15,
     anchor_bias = 'below',
@@ -108,7 +107,6 @@ function M.select(items, opts, on_choice)
         height = 1,
         anchor = 'NW',
         style = 'minimal',
-        border = M.defaults.border,
         mouse = true,
         focusable = true,
     })

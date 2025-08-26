@@ -84,5 +84,17 @@ return {
             { mode = 'n', '<leader>pf', '<Cmd>FzfLua files<CR>', desc = 'Pick files' },
             { mode = 'n', '<leader>pb', '<Cmd>FzfLua buffers<CR>', desc = 'Pick buffers' },
         },
+        opts = {
+            winopts = {
+                border = function()
+                    return vim.o.winborder
+                end,
+                preview = {
+                    border = function()
+                        return vim.o.winborder
+                    end,
+                },
+            },
+        },
     },
 }

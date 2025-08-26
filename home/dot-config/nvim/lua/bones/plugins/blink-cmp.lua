@@ -1,5 +1,3 @@
-local border = 'rounded'
-
 ---@type LazyPluginSpec
 return {
     'saghen/blink.cmp',
@@ -20,7 +18,6 @@ return {
         snippets = { preset = 'luasnip' },
         completion = {
             menu = {
-                border = border,
                 draw = {
                     columns = { { 'kind_icon' }, { 'label', 'source_name', gap = 1 } },
                     components = {
@@ -34,13 +31,11 @@ return {
             documentation = {
                 auto_show = true,
                 auto_show_delay_ms = 500,
-                window = { border = border },
             },
         },
         --- experimental
         signature = {
             enabled = false,
-            window = { border = border },
         },
     },
 }
