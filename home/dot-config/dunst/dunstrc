@@ -98,7 +98,7 @@
 
 # Rules
 [testing]
-  summary = ^[Tt]est
+  appname = notification-test-script
   history_ignore = yes
   timeout = 5
 
@@ -116,6 +116,11 @@
   set_stack_tag = battery_state
   history_ignore = true
   format = "<span size='120%'><b>%s</b></span>"
-  timeout = 3s
+
+[battery-critical]
+  msg_urgency = critical
+  stack_tag = battery_state
+  # The notification never timeouts
+  timeout = 0
 
 # vim: ft=ini

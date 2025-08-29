@@ -1,3 +1,5 @@
+appname := 'notification-test-script'
+
 default: reload test
 
 watch:
@@ -8,12 +10,12 @@ reload:
     dunstctl reload
 
 test:
-    @notify-send --hint int:value:12 --urgency=low 'Test title' 'This is the body.'
-    @notify-send --hint int:value:52 --urgency=normal 'Test title' 'This is the body.'
-    @notify-send --hint int:value:100 --urgency=critical 'Test title' 'This is the body.'
-    @notify-send --app-name 'Notification' --urgency=normal 'Test title' 'Without bar'
-    @notify-send \
+    @notify-send --app-name={{appname}} --hint int:value:12 --urgency=low 'Low Urgency' 'This is the body.'
+    @notify-send --app-name={{appname}} --hint int:value:52 --urgency=normal 'Normal Urgency' 'This is the body.'
+    @notify-send --app-name={{appname}} --hint int:value:100 --urgency=critical 'Critical Urgency' 'This is the body.'
+    @notify-send --app-name={{appname}} --urgency=normal 'Test title' 'Without bar'
+    @notify-send --app-name={{appname}} \
         --action=First='Lorem impsum' \
         --action=Second='Dolor sit amet' \
         --action=Third='Consectetur' \
-        'Test title' 'Without bar'
+        'Actions' 'Notification with actions and no bar.'
