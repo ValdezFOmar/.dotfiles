@@ -7,6 +7,7 @@ return {
             '!lazy',
             '!mason',
             '!man',
+            '!markdown',
             '!gitcommit',
             '!diff',
             css = {

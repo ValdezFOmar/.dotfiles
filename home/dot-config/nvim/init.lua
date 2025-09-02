@@ -54,6 +54,8 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.numberwidth = 3
 vim.o.signcolumn = 'yes:1'
+vim.o.list = true
+vim.o.listchars = 'trail:⌷,tab:⟩ '
 vim.o.fillchars = 'eob:·'
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 10
@@ -314,7 +316,7 @@ autocmd({ 'BufNewFile', 'BufRead' }, {
 autocmd('TextYankPost', {
     group = augroup('HighlightYank', {}),
     callback = function()
-        vim.hl.on_yank { timeout = 800 }
+        vim.hl.on_yank { timeout = 400 }
     end,
 })
 
