@@ -2,14 +2,9 @@
 
 ## General
 
-- [ ] Consider using [starship](https://starship.rs/) (with a fallback).
 - [x] Load `~/.config/uwsm/env` from Termux  (Maybe export a variable like
   `_BONES_LOADED_ENVS`, if it's set the don't load them again, if it's
   not then load'em).
-- [ ] Add `termux.bash` for Termux specific shell configuration
-   (ssh-agent, env vars, and other settings).
-   Termux can be checked with `$OSTYPE = linux-android` and existence of
-   `$TERMUX_VERSION`
 - [x] Don't change `$LC_TIME` under Termux, or maybe look for a better
    way to set this instead of using an environmental variable directly?
    ([Locale](https://wiki.archlinux.org/title/Locale))

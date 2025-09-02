@@ -56,11 +56,11 @@ function trim() {
 }
 
 function mkvenv() {
-    local venv=$1 prompt version
+    local venv=$1 version
 
     [[ -e $venv ]] && die "venv '$venv' already exists"
 
-    prompt="\[$green\]$venv\[$normal\]"
+    local prompt="\[$green\]$venv\[$normal\]"
 
     if ! command -v virtualenv > /dev/null; then
         # shellcheck disable=SC2016

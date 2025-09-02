@@ -36,7 +36,6 @@ export MANPAGER='nvim +Man!'
 export MDCAT_PAGER='less --raw-control-chars --quit-if-one-screen'
 
 export GIT_PS1_SHOWDIRTYSTATE=1
-# export GIT_PS1_SHOWUNTRACKEDFILES=true
 export PIPX_BIN_DIR=$XDG_BIN_HOME
 export POETRY_VIRTUALENVS_IN_PROJECT=1
 export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=1
