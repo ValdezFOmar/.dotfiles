@@ -3,24 +3,21 @@
 local file = assert(io.popen('wpctl get-volume @DEFAULT_SINK@', 'r'))
 
 local output = file:read '*l' ---@type string
-local match = output:match '%d+%.%d+' ---@type string|nil
+local match = output:match '%d+%.%d+' ---@type string?
 
 local volume = math.floor((tonumber(match) or 0) * 100)
 local is_muted = output:sub(-7, -1) == '[MUTED]'
 
 local icon
 if is_muted then
-    icon = 'audio-volume-muted'
+    icon = 'notification-audio-volume-muted'
 elseif volume < 30 then
-    icon = 'audio-volume-low'
+    icon = 'notification-audio-volume-low'
 elseif volume < 70 then
-    icon = 'audio-volume-medium'
+    icon = 'notification-audio-volume-medium'
 else
-    icon = 'audio-volume-high'
+    icon = 'notification-audio-volume-high'
 end
-
-local stack_tag = 'volume_indicator'
-local summary = volume .. '%'
 
 -- stylua: ignore start
 local command = {
@@ -28,9 +25,9 @@ local command = {
     '--app-name', 'volume',
     '--urgency', 'low',
     '--icon', icon,
-    '--hint', 'string:x-dunst-stack-tag:' .. stack_tag,
+    '--hint', 'string:x-dunst-stack-tag:volume_indicator',
     '--hint', 'int:value:' .. volume,
-    summary,
+    volume .. '%', -- summary
 }
 -- stylua: ignore end
 
