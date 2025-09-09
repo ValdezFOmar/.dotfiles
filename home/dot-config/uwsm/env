@@ -53,7 +53,6 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 
 # wine
 export WINEPREFIX="$XDG_STATE_HOME/wine/default"
-mkdir --parents "$WINEPREFIX"
 
 #
 #   Path
