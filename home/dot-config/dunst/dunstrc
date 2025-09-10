@@ -104,7 +104,6 @@
 
 [volume]
   stack_tag = volume_indicator
-  set_stack_tag = volume_indicator
   history_ignore = true
   icon_position = top
   alignment = center

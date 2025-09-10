@@ -15,11 +15,6 @@
 - [ ] Write script for taking screenshots
   - [ ] Add options for saving/copying screenshot
   - [ ] Show screenshot in a image viewer
-- [ ] Rewrite `bin/volume-notify` to abstract setting the volume:
-  - [ ] Move script to `hypr/scripts/volume.lua`
-  - [ ] Increase/decrease volume operations
-  - [ ] Toggle mute operation
-  - [ ] Maybe control microphone too?
 - [ ] Test fancy animations
 
 ## .dotfiles
