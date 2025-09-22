@@ -269,10 +269,17 @@ do
         return cache[path]
     end
 
+    local MAX_FILE_SIZE = 500 * 1024 -- 500 KB
+
     autocmd('FileType', {
         desc = 'Enable Tree-sitter features conditionally',
         group = augroup('BonesTreesitter', {}),
         callback = function(ev)
+            local stats = vim.uv.fs_stat(api.nvim_buf_get_name(ev.buf))
+            if stats and stats.size > MAX_FILE_SIZE then
+                return
+            end
+
             if not pcall(vim.treesitter.start, ev.buf) then
                 return
             end
