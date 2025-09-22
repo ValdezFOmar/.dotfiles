@@ -71,6 +71,7 @@ vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.smartindent = true
 vim.o.formatoptions = vim.o.formatoptions .. 'ro'
+vim.o.backspace = 'indent,eol,start,nostop'
 
 vim.o.linebreak = true
 vim.o.breakindent = true
@@ -142,6 +143,7 @@ map('x', '<leader>y', '"+y', { desc = 'Copy selection to clipboard' })
 map('n', '<leader>y', '"+yy', { desc = 'Copy line to clipboard' })
 map('n', '<leader>Y', '"+y$', { desc = 'Copy until the EOL to clipboard' })
 map('n', 'yc', '<Cmd>let @+=@@<CR>', { desc = 'Copy unnamed register to clipboard' })
+map('n', 'yp', '<Cmd>let @@=expand("%:p")<CR>', { desc = "Copy current file's path" })
 map({ 'n', 'x' }, '<leader>P', '"+p', { desc = 'Paste from clipboard' })
 
 -- editor
