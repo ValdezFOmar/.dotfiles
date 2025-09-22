@@ -61,7 +61,7 @@
   history_length = 20
 
   # Misc/Advanced
-  dmenu = /usr/bin/walker --dmenu --placeholder Notification
+  dmenu = /usr/bin/fuzzel --dmenu
 
   # mouse
   mouse_left_click = close_current

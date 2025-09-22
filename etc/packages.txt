@@ -16,6 +16,7 @@ entr
 fastfetch
 fd
 firefox
+fuzzel
 fzf
 git
 gnome-keyring
