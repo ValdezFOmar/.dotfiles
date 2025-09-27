@@ -13,7 +13,7 @@ PLUGIN.opts = {
         concealcursor = { rendered = 'nc' },
     },
     completions = {
-        blink = { enabled = true },
+        lsp = { enabled = true },
         filter = {
             callout = function(callout)
                 return callout.category ~= 'obsidian'
