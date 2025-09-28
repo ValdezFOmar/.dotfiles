@@ -77,63 +77,6 @@ vim.o.linebreak = true
 vim.o.breakindent = true
 vim.o.breakindentopt = 'list:3'
 
---- Diagnostics ---
-local diagnostic_icons = {
-    [vim.diagnostic.severity.ERROR] = ' ',
-    [vim.diagnostic.severity.WARN] = ' ',
-    [vim.diagnostic.severity.INFO] = ' ',
-    [vim.diagnostic.severity.HINT] = ' ',
-}
-
-vim.diagnostic.config {
-    severity_sort = true,
-    float = {
-        source = 'if_many',
-        max_width = ui.defaults.max_width,
-    },
-    signs = {
-        text = diagnostic_icons,
-        numhl = {
-            [vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
-            [vim.diagnostic.severity.ERROR] = 'DiagnosticError',
-            [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
-            [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
-        },
-    },
-    virtual_lines = {
-        current_line = true,
-        format = function(diagnostic)
-            local icon = diagnostic_icons[diagnostic.severity]
-            return icon .. ' ' .. diagnostic.message
-        end,
-    },
-}
-
---- File types ---
-vim.filetype.add {
-    extension = {
-        h = 'c',
-        hl = 'hyprlang',
-        hook = 'confini',
-        theme = 'desktop',
-    },
-    pattern = {
-        ['.*/templates/.*%.html'] = 'htmldjango',
-        ['.*ignore'] = 'ignore',
-    },
-}
-
---- Tree-sitter ---
-for lang, ft in pairs {
-    editorconfig = 'unixini', -- made up filetype to allow keys outside sections
-    gitignore = 'ignore',
-    diff = 'git',
-    ini = 'systemd',
-    vimdoc = 'checkhealth',
-} do
-    vim.treesitter.language.register(lang, ft)
-end
-
 --- Keymaps ---
 map('n', '<leader>xx', '<Cmd>silent !chmod u+x %<Enter>')
 map('n', 'gx', uri.open, { desc = 'Open a URI like `gx`, but better' })
@@ -171,6 +114,115 @@ map('n', '<M-h>', '<Cmd>tabprevious<Enter>')
 map('n', '<M-l>', '<Cmd>tabnext<Enter>')
 map('n', '<M-H>', '<Cmd>tabmove-<Enter>')
 map('n', '<M-L>', '<Cmd>tabmove+<Enter>')
+
+--- Diagnostics ---
+local diagnostic_icons = {
+    [vim.diagnostic.severity.INFO] = ' ',
+    [vim.diagnostic.severity.HINT] = ' ',
+    [vim.diagnostic.severity.WARN] = ' ',
+    [vim.diagnostic.severity.ERROR] = ' ',
+}
+
+vim.diagnostic.config {
+    severity_sort = true,
+    float = {
+        source = 'if_many',
+        max_width = ui.defaults.max_width,
+    },
+    signs = {
+        text = diagnostic_icons,
+        numhl = {
+            [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
+            [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
+            [vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
+            [vim.diagnostic.severity.ERROR] = 'DiagnosticError',
+        },
+    },
+    virtual_lines = {
+        current_line = true,
+        format = function(diagnostic)
+            local icon = diagnostic_icons[diagnostic.severity]
+            return icon .. ' ' .. diagnostic.message
+        end,
+    },
+}
+
+--- File types ---
+vim.filetype.add {
+    extension = {
+        h = 'c',
+        hl = 'hyprlang',
+        hook = 'confini',
+        theme = 'desktop',
+    },
+    pattern = {
+        ['.*/templates/.*%.html'] = 'htmldjango',
+        ['.*ignore'] = 'ignore',
+    },
+}
+
+--- Tree-sitter ---
+do
+    for lang, ft in pairs {
+        editorconfig = 'unixini', -- made up filetype to allow keys outside sections
+        gitignore = 'ignore',
+        diff = 'git',
+        ini = 'systemd',
+        vimdoc = 'checkhealth',
+    } do
+        vim.treesitter.language.register(lang, ft)
+    end
+
+    local cache = {} ---@type table<string, boolean?>
+
+    ---@param lang string
+    ---@param query string
+    ---@return boolean
+    local function has_query(lang, query)
+        local path = fs.joinpath('queries', lang, query)
+        if cache[path] == nil then
+            cache[path] = #api.nvim_get_runtime_file(path, true) > 0
+        end
+        return cache[path]
+    end
+
+    local MAX_FILE_SIZE = 500 * 1024 -- 500 KB
+
+    -- Created before enabling any LSP config,
+    -- allowing `LspAttach` event to override some features set here.
+    autocmd('FileType', {
+        desc = 'Enable Tree-sitter features conditionally',
+        group = augroup('BonesTreesitter', {}),
+        callback = function(ev)
+            local stats = vim.uv.fs_stat(api.nvim_buf_get_name(ev.buf))
+            if stats and stats.size > MAX_FILE_SIZE then
+                return
+            end
+
+            if not pcall(vim.treesitter.start, ev.buf) then
+                return
+            end
+
+            local lang = vim.treesitter.get_parser(ev.buf):lang()
+            local bo = vim.bo[ev.buf]
+            local wo = vim.wo[0][0]
+
+            -- Only enable spellchecking if not already enabled
+            if not wo.spell then
+                wo.spell = bo.modifiable and bo.buftype == ''
+            end
+
+            if has_query(lang, 'folds.scm') then
+                wo.foldmethod = 'expr'
+                wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+            end
+
+            if pcall(require, 'nvim-treesitter') and has_query(lang, 'indents.scm') then
+                bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            end
+        end,
+    })
+end
 
 --- LSP ---
 
@@ -256,56 +308,6 @@ autocmd('LspAttach', {
 })
 
 --- Auto commands & User commands ---
-
-do
-    local cache = {} ---@type table<string, boolean?>
-
-    ---@param lang string
-    ---@param query string
-    ---@return boolean
-    local function has_query(lang, query)
-        local path = fs.joinpath('queries', lang, query)
-        if cache[path] == nil then
-            cache[path] = #api.nvim_get_runtime_file(path, true) > 0
-        end
-        return cache[path]
-    end
-
-    local MAX_FILE_SIZE = 500 * 1024 -- 500 KB
-
-    autocmd('FileType', {
-        desc = 'Enable Tree-sitter features conditionally',
-        group = augroup('BonesTreesitter', {}),
-        callback = function(ev)
-            local stats = vim.uv.fs_stat(api.nvim_buf_get_name(ev.buf))
-            if stats and stats.size > MAX_FILE_SIZE then
-                return
-            end
-
-            if not pcall(vim.treesitter.start, ev.buf) then
-                return
-            end
-
-            local lang = vim.treesitter.get_parser(ev.buf):lang()
-            local bo = vim.bo[ev.buf]
-            local wo = vim.wo[0][0]
-
-            -- Only enable spellchecking if not already enabled
-            if not wo.spell then
-                wo.spell = bo.modifiable and bo.buftype == ''
-            end
-
-            if has_query(lang, 'folds.scm') then
-                wo.foldmethod = 'expr'
-                wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-            end
-
-            if pcall(require, 'nvim-treesitter') and has_query(lang, 'indents.scm') then
-                bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-            end
-        end,
-    })
-end
 
 autocmd({ 'BufNewFile', 'BufRead' }, {
     group = augroup('InsertBlankLineMappings', {}),
