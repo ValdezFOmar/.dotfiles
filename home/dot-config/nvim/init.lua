@@ -275,6 +275,12 @@ autocmd('LspAttach', {
         local client = assert(lsp.get_client_by_id(ev.data.client_id))
         local opts = { buffer = ev.buf }
 
+        if client:supports_method(ms.textDocument_foldingRange) then
+            local win = vim.api.nvim_get_current_win()
+            vim.wo[win][0].foldmethod = 'expr'
+            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+        end
+
         if client:supports_method(ms.textDocument_hover) then
             map('n', 'K', function()
                 lsp.buf.hover(ui.defaults)
