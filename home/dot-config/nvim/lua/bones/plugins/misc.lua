@@ -25,8 +25,6 @@ return {
     },
     -- Git wrapper
     { 'tpope/vim-fugitive', lazy = false },
-    -- Kitty syntax highlighting
-    { 'fladson/vim-kitty', ft = 'kitty' },
     -- Nice look for neovim native tabs (icons, short filename, etc.)
     {
         'alvarosevilla95/luatab.nvim',

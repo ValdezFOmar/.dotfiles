@@ -149,6 +149,9 @@ vim.diagnostic.config {
 
 --- File types ---
 vim.filetype.add {
+    filename = {
+        ['kitty.conf'] = 'kitty',
+    },
     extension = {
         h = 'c',
         hl = 'hyprlang',
@@ -157,7 +160,8 @@ vim.filetype.add {
     },
     pattern = {
         ['.*/templates/.*%.html'] = 'htmldjango',
-        ['.*ignore'] = 'ignore',
+        ['.*/kitty/.*%.conf'] = 'kitty',
+        ['%.*ignore'] = 'ignore',
     },
 }
 

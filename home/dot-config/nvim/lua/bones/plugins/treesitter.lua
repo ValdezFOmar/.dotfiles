@@ -22,6 +22,7 @@ local parsers = {
     'ini',
     'toml',
     'yaml',
+    'kitty',
     'hyprlang',
     'editorconfig',
     -- git
