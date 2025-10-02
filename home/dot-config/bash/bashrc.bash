@@ -9,6 +9,8 @@ source ~/.config/bash/completions.bash
 
 # Shell options
 shopt -s autocd
+shopt -s failglob
+shopt -s histappend
 
 # Disable CTRL+S (stop sending output to the terminal)
 stty -ixon
@@ -29,11 +31,11 @@ function -set-exit-color() {
 }
 readonly -f -- -set-exit-color
 
-function setup-prompt() {
+function set-prompt() {
     # Source git prompt if available and check with PREFIX in Termux
     local dir
     for dir in '/usr/share/git/completion' "$PREFIX/etc/bash_completion.d"; do
-        if [[ -f $dir/git-prompt.sh ]]; then
+        if [[ -r $dir/git-prompt.sh ]]; then
             source "$dir/git-prompt.sh"
             break
         fi
@@ -53,5 +55,5 @@ function setup-prompt() {
     export PS2="\[\$(-set-exit-color)\]❯$n "
 }
 
-setup-prompt
-unset -f setup-prompt
+set-prompt
+unset -f set-prompt
