@@ -80,6 +80,7 @@ return {
         keys = {
             { mode = 'n', '<leader>ps', '<Cmd>FzfLua grep<CR>', desc = 'Pick search' },
             { mode = 'n', '<leader>pf', '<Cmd>FzfLua files<CR>', desc = 'Pick files' },
+            { mode = 'n', '<leader>pg', '<Cmd>FzfLua git_files<CR>', desc = 'Pick git files' },
             { mode = 'n', '<leader>pb', '<Cmd>FzfLua buffers<CR>', desc = 'Pick buffers' },
         },
         opts = {

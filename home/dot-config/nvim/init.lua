@@ -1,5 +1,4 @@
 local ui = require 'bones.ui'
-local uri = require 'bones.uri'
 
 local fs = vim.fs
 local fn = vim.fn
@@ -79,7 +78,6 @@ vim.o.breakindentopt = 'list:3'
 
 --- Keymaps ---
 map('n', '<leader>xx', '<Cmd>silent !chmod u+x %<Enter>')
-map('n', 'gx', uri.open, { desc = 'Open a URI like `gx`, but better' })
 
 -- copy/paste
 map('x', '<leader>y', '"+y', { desc = 'Copy selection to clipboard' })
