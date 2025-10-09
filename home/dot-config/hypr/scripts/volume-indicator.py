@@ -1,12 +1,19 @@
 #!/usr/bin/python
 
 
-import os.path
+import json
+import os
 import re
 import subprocess
-from typing import NamedTuple, Self
+from typing import NamedTuple, Self, TypedDict
 
 SCRIPT_NAME = os.path.basename(__file__)
+
+
+class Event(TypedDict):
+    index: int
+    event: str
+    on: str
 
 
 class SinkState(NamedTuple):
@@ -31,15 +38,18 @@ class SinkState(NamedTuple):
 
 
 def send_notification(summary: str, body: str):
-    subprocess.run(
-        [
-            '/usr/bin/notify-send',
-            f'--app-name={SCRIPT_NAME}',
-            '--hint=string:x-dunst-stack-tag:volume_indicator_notification',
-            summary,
-            body,
-        ]
-    )
+    try:
+        subprocess.run(
+            [
+                '/usr/bin/notify-send',
+                f'--app-name={SCRIPT_NAME}',
+                '--hint=string:x-dunst-stack-tag:volume_indicator_notification',
+                summary,
+                body,
+            ]
+        )
+    except Exception:
+        pass
 
 
 def display_indicator(state: SinkState):
@@ -70,30 +80,31 @@ def main() -> int:
     prev_state = SinkState.get()
 
     with subprocess.Popen(
-        ['/usr/bin/pactl', 'subscribe'],
+        ['/usr/bin/pactl', '--format=json', 'subscribe'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        encoding='utf-8',
     ) as process:
         assert process.stdout and process.stderr
 
-        for line in iter(process.stdout.readline, ''):
-            if 'change' in line and 'sink' in line and 'sink-input' not in line:
-                try:
-                    state = SinkState.get()
-                    # Some 'change' events don't actually represent a change in volume or mute state.
-                    # This is really notorious with Firefox.
-                    if state == prev_state:
-                        continue
-                    display_indicator(state)
-                    prev_state = state
-                except Exception as e:  # prevent exceptions from terminating the process
-                    send_notification('Error while trying to display volume', str(e))
+        while line := process.stdout.readline():
+            try:
+                event: Event = json.loads(line)
+                if event['event'] != 'change' or event['on'] != 'sink':
+                    continue
+                state = SinkState.get()
+                # Some 'change' events don't actually represent a change in volume or mute state.
+                # This is really notorious with Firefox.
+                if state == prev_state:
+                    continue
+                display_indicator(state)
+                prev_state = state
+            except Exception as e:  # prevent exceptions from terminating the process
+                send_notification('Error while trying to display volume', f'<tt>{e}</tt>')
 
     if process.returncode not in (0, 130):
         send_notification(
             f'"{process.args}" terminated with code {process.returncode}',
-            f'{process.stderr.read()}',
+            process.stderr.read().decode('utf-8', errors='replace'),
         )
     return process.returncode
 
