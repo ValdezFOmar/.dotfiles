@@ -242,9 +242,7 @@ LANG=en_US.UTF-8
 Create the file `/etc/vconsole.conf` and write:
 
 ```
-KEYMAP=la-latin1
 FONT=ter-128n
-XKBLAYOUT=latam
 ```
 
 > [!NOTE]
@@ -340,6 +338,10 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 Refer to [README](README.md) to see the instructions for adding all
 the additional software after successfully installing the system.
-For internet connection, use [`nmcli`](./connect-wifi.md#using-networkmanager).
+
+Additional steps:
+
+- Setup an internet connection using [`nmcli`](./connect-wifi.md#using-networkmanager).
+- Configure [power button behavior](/home/notes/hardware-config.md#shutdown-button-suspends-the-computer).
 
 [arch-install-guide]: https://wiki.archlinux.org/title/Installation_guide
