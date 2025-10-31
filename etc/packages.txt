@@ -56,7 +56,7 @@ openssh
 os-prober
 pacman-contrib
 papirus-icon-theme
-pcmanfm-gtk3
+pcmanfm
 pipewire-alsa
 pipewire-audio
 pipewire-pulse
