@@ -1,4 +1,3 @@
-emmet-language-server
 grub-hook
 jmtpfs
 qogir-cursor-theme-git

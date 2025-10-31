@@ -1,3 +1,2 @@
 basedpyright
 pdfly
-ruff

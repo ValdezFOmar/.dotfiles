@@ -72,6 +72,7 @@ qt6-wayland
 qt6ct
 reflector
 ripgrep
+ruff
 rustup
 shellcheck
 shfmt

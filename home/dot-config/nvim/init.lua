@@ -255,7 +255,6 @@ lsp.enable {
     'basedpyright',
     'bashls', -- needs 'shellcheck' and 'shfmt'
     'cssls',
-    'emmet_language_server',
     'eslint',
     'html',
     'jsonls',
@@ -263,7 +262,6 @@ lsp.enable {
     'marksman',
     'ruff',
     'rust_analyzer',
-    'texlab',
     'ts_ls',
     'ts_query_ls',
 }
@@ -357,7 +355,6 @@ local ok, installed = pcall(lazy.install, lazy_path)
 if ok and installed then
     vim.o.runtimepath = lazy_path .. ',' .. vim.o.runtimepath
 
-    ---@diagnostic disable-next-line:missing-fields
     require('lazy').setup('bones.plugins', {
         rocks = { enabled = false },
         git = { cooldown = 60 * 5 }, -- 5 minutes cooldown
