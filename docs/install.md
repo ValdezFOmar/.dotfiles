@@ -1,7 +1,7 @@
 # Installation notes
 
 > [!NOTE]
-> Full documentation at [Arch Wiki: Installation guide](https://wiki.archlinux.org/title/Installation_guide).
+> Full documentation at [ArchWiki: Installation guide](https://wiki.archlinux.org/title/Installation_guide).
 
 This document only contains notes about special cases / configuration
 for my usage and is not a replacement for the archlinux documentation.
