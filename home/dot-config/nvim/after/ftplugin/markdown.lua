@@ -8,6 +8,4 @@ if vim.bo.buftype == '' then
     local bo, wo = vim.bo, vim.wo[winid][0]
     bo.textwidth = 72
     wo.colorcolumn = '+1'
-    wo.conceallevel = 2
-    wo.concealcursor = 'nc'
 end

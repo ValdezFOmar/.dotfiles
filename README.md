@@ -48,11 +48,3 @@ sudo ./etc/install.sh
 > ```bash
 > cd ~/.dotfiles && stow --verbose --dotfiles home
 > ```
-
-## Extra
-
-For additional installation info:
-
-1. [Arch Linux installation guide](home/notes/installation-guide.md).
-2. [Wi-Fi Connection](home/notes/connect-wifi.md)
-3. [Hardware configuration](/home/notes/hardware-config.md)
