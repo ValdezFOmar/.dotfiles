@@ -14,9 +14,6 @@
     co = commit --edit --verbose
     amend = commit --amend --edit
     just-amend = commit --amend --no-edit
-    # ~/bin/common-git-utils.sh
-    idiff = "!common-git-utils.sh --intersection-diff"
-    restage = "!common-git-utils.sh --restage-files"
 
 [fetch]
     prune = true
@@ -29,3 +26,5 @@
 
 [gpg]
     format = ssh
+
+# vim: ft=gitconfig
