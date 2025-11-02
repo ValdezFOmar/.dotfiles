@@ -115,12 +115,12 @@ Choose a GPT label for UEFI and create the following 4 partitions:
 > If a EFI partition already exists, use it instead of creating a new one.
 
 
-| Usage     | Partition               | Size       | Mount point     |
-|-----------|-------------------------|------------|-----------------|
-| EFI       | `/dev/{efi-partition}`  | 1 GB       | `/mnt/boot` |
-| swap      | `/dev/{swap-partition}` | +512 M     | N/A             |
-| root      | `/dev/{root-partition}` | ~50-100 GB | `/mnt`          |
-| home      | `/dev/{home-partition}` | Left space | `/mnt/home`     |
+| Usage     | Partition               | Size       | Mount point  |
+|-----------|-------------------------|------------|--------------|
+| EFI       | `/dev/{efi-partition}`  | 1 GB       | `/mnt/boot`  |
+| swap      | `/dev/{swap-partition}` | +512 M     | N/A          |
+| root      | `/dev/{root-partition}` | ~50-100 GB | `/mnt`       |
+| home      | `/dev/{home-partition}` | Left space | `/mnt/home`  |
 
 
 ### Format partitions
@@ -165,7 +165,7 @@ pacstrap -K /mnt {packages...}
 ```
 
 > [!NOTE]
-> More packages can be installed after [changing root to the new system](#chroot)
+> More packages can be installed after [changing root](#chroot) to the new system.
 
 Packages required to bootstrap the system:
 
@@ -199,7 +199,21 @@ pacman -Ss xf86-video
 
 ## Configure the system
 
-Follow all the steps in [Configure the system*](https://wiki.archlinux.org/title/Installation_guide#Configure_the_system).
+### Fstab
+
+For auto-mounting the file system on startup:
+
+```sh
+genfstab -U /mnt >> /mnt/etc/fstab
+```
+
+### Chroot
+
+Change root to the new system to directly interact with it:
+
+```sh
+arch-chroot /mnt
+```
 
 ### Time zone
 
@@ -324,7 +338,7 @@ package (e.g. the one set in [Keyboard layout and font](#keyboard-layout-and-fon
 
 ## Post-installation
 
-Refer to [README](README.md) to see the instructions for adding all
+Refer to [README](/README.md) to see the instructions for adding all
 the additional software after successfully installing the system.
 
 ### Pacman configuration
@@ -334,9 +348,6 @@ Edit `/etc/pacman.conf` and uncomment:
 - `Color` option for colored output
 - `VerbosePkgLists` option to show each package on a separate line and
   with more details.
-
-To enable colored output, edit and uncomment
-the `Color` option.
 
 ### Connect to the internet with `nmcli`
 
