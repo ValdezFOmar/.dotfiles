@@ -5,7 +5,6 @@
 - [ ] Add some options to the `install.sh` script for easier
    installation in other platforms (`termux`).
 - [ ] Add yazi configuration
-- [ ] Add to install section, recommending a default `.ssh/config` config
 - [ ] Add `pre-commit` hook for formatting markdown files: <https://mdformat.readthedocs.io/en/stable/>
   - [ ] Format all markdown files
 

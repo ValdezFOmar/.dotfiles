@@ -349,6 +349,17 @@ Edit `/etc/pacman.conf` and uncomment:
 - `VerbosePkgLists` option to show each package on a separate line and
   with more details.
 
+### SSH configuration
+
+Create and edit `~/.ssh/config`. The following configuration helps to
+avoid repeatedly inputting the passphrase for the current session
+(specially useful for `git` operations):
+
+```sshconfig
+Host *
+    AddKeysToAgent yes
+```
+
 ### Connect to the internet with `nmcli`
 
 List nearby WiFi networks:
