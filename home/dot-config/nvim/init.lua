@@ -46,8 +46,6 @@ vim.o.guicursor = table.concat({
 vim.o.title = true
 vim.o.titlestring = '%t - NVIM'
 vim.o.shortmess = vim.o.shortmess .. 'I'
-vim.o.incsearch = true
-vim.o.inccommand = 'split'
 vim.o.wrap = false
 vim.o.number = true
 vim.o.relativenumber = true
@@ -59,6 +57,10 @@ vim.o.fillchars = 'eob:·'
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 10
 vim.o.virtualedit = 'block'
+
+vim.o.smartcase = true
+vim.o.ignorecase = true
+vim.o.inccommand = 'split'
 
 vim.o.foldtext = ''
 vim.o.foldlevel = 99
