@@ -63,3 +63,20 @@ To configure a theme, follow these instructions:
 
 To make windows from external links open in tabs instead, apply the
 changes listed in this [article](https://support.mozilla.org/en-US/questions/1193456).
+
+## CPU Frequency
+
+The Linux utility `cpupower` allows changing the current governor for
+the CPU. Usage:
+
+Get available governors:
+
+```sh
+cpupower frequency-info --governors
+```
+
+Set governor:
+
+```sh
+sudo cpupower --cpu all frequency-set --governor {governor}
+```
