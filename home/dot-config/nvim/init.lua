@@ -103,6 +103,7 @@ map({ 'n', 'v', 'i' }, '<C-z>', '<Nop>', { desc = "Dont't send neovim to the bac
 -- text editing
 map('n', 'U', '<C-r>', { desc = 'Redo changes with `U`' })
 map('n', 'J', 'mzJ`z', { desc = 'Same as `J`, but does not move the cursor' })
+map('i', '<C-m>', require('bones.caps').toggle, { desc = 'Uppercase characters as you type' })
 
 -- indentation
 map('n', '<BS>', '<<', { desc = 'Remove 1 level of indentation' })
