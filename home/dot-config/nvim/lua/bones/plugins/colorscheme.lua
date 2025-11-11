@@ -59,6 +59,7 @@ PLUGIN.opts = {
             ['@lsp.typemod.macro.defaultLibrary'] = { link = '@function.macro' },
             ['@lsp.typemod.method.defaultLibrary.rust'] = {}, -- I don't like these highlights
             ['@lsp.typemod.function.defaultLibrary.rust'] = {},
+            ['@lsp.typemod.variable.global.lua'] = { link = '@variable.builtin.lua' },
             -- GUI --
             CursorLine = { bg = '#323547' },
             FloatTitle = { link = '@markup.heading' },
