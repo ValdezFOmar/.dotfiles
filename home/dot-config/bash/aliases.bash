@@ -40,11 +40,7 @@ alias space='du --summarize --total --human-readable'
 #
 
 function mcd() {
-    if [[ -z $1 ]]; then
-        echo "mcd: No name provided"
-        return 1
-    fi
-    mkdir --parents -- "$1" && cd -P -- "$1" || return
+    mkdir --parents -- "$1" && cd -- "$1" || return
 }
 
 # pretty print paths in $PATH
@@ -88,4 +84,14 @@ function venv() {
             pip install --requirement "$file"
         fi
     done
+}
+
+function y() {
+    local tmp cwd
+    tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(< "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        builtin cd -- "$cwd" || true
+    fi
+    rm --force -- "$tmp"
 }

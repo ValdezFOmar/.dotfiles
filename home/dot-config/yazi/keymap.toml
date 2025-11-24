@@ -1,0 +1,26 @@
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+
+[mgr]
+prepend_keymap = [
+    { on = 'e', run = 'create', desc = 'Create an empty file' },
+    { on = 'a', run = 'create --dir', desc = 'Create an empty directory' },
+    { on = 'q', run = 'close', desc = 'Close the current tab, or exit if it is the last one' },
+    { on = '<C-c>', run = 'close', desc = 'Exit Yazi, closing all tabs' },
+    # Plugins
+    { on = 'i', run = 'plugin view-images', desc = 'View images' },
+]
+append_keymap = [
+    { on = ['g', 'p'], run = 'cd ~/projects', desc = 'Goto projects directory' },
+    { on = ['g', 'n'], run = 'cd ~/.config/nvim', desc = 'Goto Neovim config' },
+    { on = ['g', 'y'], run = 'cd ~/.config/yazi', desc = 'Goto Yazi config' },
+]
+
+[[input.prepend_keymap]]
+on = '<Esc>'
+run = 'close'
+desc = 'Cancel input'
+
+[[tasks.append_keymap]]
+on = 'q'
+run = 'close'
+desc = 'Close task manager'

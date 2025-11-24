@@ -1,0 +1,27 @@
+#:schema https://yazi-rs.github.io/schemas/yazi.json
+
+[mgr]
+ratio = [1, 3, 4]
+sort_by = 'natural'
+sort_sensitive = true
+sort_dir_first = true
+linemode = 'size'
+show_hidden = true
+show_symlink = false
+scrolloff = 8
+
+[preview]
+max_width = 1200
+max_height = 900
+
+[input]
+cursor_blink = true
+
+[[opener.nsxiv]]
+run = 'nsxiv --animate "$@"'
+desc = 'View Images with Nsxiv'
+for = 'linux'
+
+[[open.prepend_rules]]
+mime = 'image/*'
+use = ['nsxiv', 'open']

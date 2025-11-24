@@ -12,3 +12,6 @@ venv/
 
 # ruff linter & formatter
 .ruff_cache
+
+# yazi plugins
+**/yazi/flavors/
