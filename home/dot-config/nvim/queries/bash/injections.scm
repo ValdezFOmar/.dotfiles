@@ -2,7 +2,7 @@
 
 ; bash -c 'ls -Alv'
 ; /bin/bash -c 'ls -Alv'
-((command
+(command
   name: (command_name) @_command
   argument: (word) @_arg
   .
@@ -10,7 +10,7 @@
     (raw_string) @injection.content
     (concatenation
       (raw_string) @injection.content)
-  ])
+  ]
   (#any-of? @_command "bash" "sh" "/bin/sh" "/bin/bash" "/usr/bin/bash")
   (#eq? @_arg "-c")
   (#offset! @injection.content 0 1 0 -1)
@@ -18,14 +18,14 @@
 
 ; vim -c 'set rtp+=.'
 ; nvim -c 'au FileType query lua vim.treesitter.start()'
-((command
+(command
   name: (command_name) @_command
   argument: (word) @_arg
   .
   argument: [
     (string)
     (raw_string)
-  ] @injection.content)
+  ] @injection.content
   (#any-of? @_command "vim" "nvim")
   (#any-of? @_arg "-c" "--cmd")
   (#offset! @injection.content 0 1 0 -1)
