@@ -26,7 +26,7 @@ mkdir --verbose --parents \
     ~/projects \
     ~/repos
 
-stow --verbose --dir "$dotfiles" --dotfiles --target ~ home
+stow --verbose --dotfiles --dir "$dotfiles" --target ~ --stow home
 
 if [ -w ~/.bashrc ] && ! grep --silent --fixed-strings "$generated_msg" ~/.bashrc; then
     echo "
@@ -36,12 +36,12 @@ if [ -w ~/.bashrc ] && ! grep --silent --fixed-strings "$generated_msg" ~/.bashr
 ###" >> ~/.bashrc
 fi
 
-if ! command -v paru > /dev/null; then
+if ! pacman --query --check --quiet paru; then
     # Download the binary version to avoid compilation
     git clone https://aur.archlinux.org/paru-bin.git ~/repos/paru-bin
-    cd ~/repos/paru-bin
+    pushd ~/repos/paru-bin
     makepkg --syncdeps --install
-    cd -
+    popd
 fi
 
 paru -S --needed - < "$dotfiles/etc/packages.txt"
