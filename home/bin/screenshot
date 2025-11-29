@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# Dependencies:
+#  - slurp: select a screen region
+#  - grim: take screenshots
+#  - fuzzel: selection menu
+#  - notify-send: notifications
+
+# Exit on errors
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o errtrace # for trap ERR
+
+function notify() {
+    notify-send --app-name screenshot --icon accessories-screenshot --expire-time=5000 "$@"
+}
+
+trap 'notify "Error" "Command <tt>$BASH_COMMAND</tt> terminated with exit code <tt>$?</tt>"' ERR
+
+function output-name() {
+    printf "$HOME/Pictures/Screenshots/%(%FT%T)T_screenshot.png"
+}
+
+function capture-screen() {
+    local filename
+    filename=$(output-name)
+    grim -t png "$filename"
+    notify 'Screenshot saved' "<tt>$filename</tt>"
+}
+
+function capture-region() {
+    function select-action() {
+        if ! printf 'Copy to clipboard\nCopy and Save\nSave' | fuzzel --dmenu --hide-prompt --index; then
+            printf '%s' -1
+        fi
+    }
+
+    if pidof -q slurp; then
+        notify 'Error' 'Already taking a screenshot'
+        return
+    fi
+
+    local filename selection
+    selection=$(slurp -c '00000000') || return 0
+    filename=$(output-name)
+    grim -t png -g "$selection" "$filename"
+    nsxiv --private --no-bar "$filename" &
+    trap 'kill %1 || true' EXIT
+
+    local action_index
+    action_index=$(select-action)
+
+    if ((action_index < 0)); then
+        rm --force "$filename"
+        return
+    fi
+
+    if ((action_index == 0)); then
+        wl-copy < "$filename"
+        rm --force "$filename"
+        notify 'Screenshot copied to clipboard'
+    elif ((action_index == 1)); then
+        wl-copy < "$filename"
+        notify 'Screenshot copied and saved' "<tt>$filename</tt>"
+    elif ((action_index == 2)); then
+        notify 'Screenshot saved' "<tt>$filename</tt>"
+    else
+        notify 'Error' "Unexpected action: <tt>$action_index</tt>"
+    fi
+}
+
+function main() {
+    local option=${1:-}
+    case $option in
+        screen) capture-screen ;;
+        region) capture-region ;;
+        *)
+            notify 'Error' "Not a valid option: '<tt>$option</tt>'"
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
