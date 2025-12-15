@@ -45,7 +45,6 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         build = ':TSUpdate',
-        branch = 'main', -- remove once 'main' becomes the default branch
         lazy = false,
         config = function()
             local nvimts = require 'nvim-treesitter'
