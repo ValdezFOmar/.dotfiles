@@ -4,7 +4,6 @@ local fs = vim.fs
 local fn = vim.fn
 local api = vim.api
 local lsp = vim.lsp
-local ms = lsp.protocol.Methods
 local map = vim.keymap.set
 local autocmd = api.nvim_create_autocmd
 local augroup = api.nvim_create_augroup
@@ -85,8 +84,8 @@ map('n', '<leader>xx', '<Cmd>silent !chmod u+x %<Enter>')
 map('x', '<leader>y', '"+y', { desc = 'Copy selection to clipboard' })
 map('n', '<leader>y', '"+yy', { desc = 'Copy line to clipboard' })
 map('n', '<leader>Y', '"+y$', { desc = 'Copy until the EOL to clipboard' })
-map('n', 'yc', '<Cmd>let @+=@@<CR>', { desc = 'Copy unnamed register to clipboard' })
-map('n', 'yp', '<Cmd>let @@=expand("%:p")<CR>', { desc = "Copy current file's path" })
+map('n', 'yc', '<CMD>let @+=@@<CR>', { desc = 'Copy unnamed register to clipboard' })
+map('n', 'yp', '<CMD>let @@=expand("%:p")<CR>', { desc = "Copy current file's path" })
 map({ 'n', 'x' }, '<leader>P', '"+p', { desc = 'Paste from clipboard' })
 
 -- editor
@@ -95,8 +94,8 @@ map('n', 'gs', '<Nop>') -- map it to something more useful
 map('n', 'z=', ui.spell, { desc = 'Show and select spell suggestions' })
 map('n', '<C-d>', '<C-d>zz')
 map('n', '<C-u>', '<C-u>zz')
-map('n', '<M-n>', '<Cmd>cnext<Enter>', { desc = 'Next error in quickfix' })
-map('n', '<M-p>', '<Cmd>cNext<Enter>', { desc = 'Previous error in quickfix' })
+map('n', '<M-n>', '<CMD>cnext<CR>', { desc = 'Next error in quickfix' })
+map('n', '<M-p>', '<CMD>cNext<CR>', { desc = 'Previous error in quickfix' })
 map('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Go to Normal mode in Terminal' })
 map({ 'n', 'v', 'i' }, '<C-z>', '<Nop>', { desc = "Dont't send neovim to the background" })
 
@@ -111,10 +110,10 @@ map('x', '<BS>', '<gv', { desc = 'Remove 1 level of indentation' })
 map('x', '<Tab>', '>gv', { desc = 'Add 1 level of indentation' })
 
 -- tabs
-map('n', '<M-h>', '<Cmd>tabprevious<Enter>')
-map('n', '<M-l>', '<Cmd>tabnext<Enter>')
-map('n', '<M-H>', '<Cmd>tabmove-<Enter>')
-map('n', '<M-L>', '<Cmd>tabmove+<Enter>')
+map('n', '<M-h>', '<CMD>tabprevious<CR>', { desc = 'Change focus to the left tab' })
+map('n', '<M-l>', '<CMD>tabnext<CR>', { desc = 'Change to focus to the right tab' })
+map('n', '<M-H>', '<CMD>tabmove -1<CR>', { desc = 'Move tab to the left' })
+map('n', '<M-L>', '<CMD>tabmove +1<CR>', { desc = 'Move tab to the right' })
 
 --- Diagnostics ---
 local diagnostic_icons = {
@@ -196,8 +195,8 @@ do
     -- Created before enabling any LSP config,
     -- allowing `LspAttach` event to override some features set here.
     autocmd('FileType', {
-        desc = 'Enable Tree-sitter features conditionally',
-        group = augroup('BonesTreesitter', {}),
+        desc = 'Enable Tree-sitter features',
+        group = augroup('bones.treesitter', {}),
         callback = function(ev)
             local stats = vim.uv.fs_stat(api.nvim_buf_get_name(ev.buf))
             if stats and stats.size > MAX_FILE_SIZE then
@@ -212,7 +211,6 @@ do
             local bo = vim.bo[ev.buf]
             local wo = vim.wo[0][0]
 
-            -- Only enable spellchecking if not already enabled
             if not wo.spell then
                 wo.spell = bo.modifiable and bo.buftype == ''
             end
@@ -269,32 +267,30 @@ lsp.enable {
     'ts_query_ls',
 }
 
-api.nvim_set_hl(0, '@lsp.type.fieldName', { link = '@variable.member' })
-
 autocmd('LspAttach', {
-    group = augroup('BonesLspMappings', {}),
-    desc = 'Set LSP Mappings',
+    group = augroup('bones.lsp', {}),
+    desc = 'Set LSP mappings and options',
     callback = function(ev)
         local client = assert(lsp.get_client_by_id(ev.data.client_id))
         local opts = { buffer = ev.buf }
 
-        if client:supports_method(ms.textDocument_foldingRange) then
+        if client:supports_method 'textDocument/foldingRange' then
             local win = vim.api.nvim_get_current_win()
             vim.wo[win][0].foldmethod = 'expr'
             vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
         end
 
-        if client:supports_method(ms.textDocument_hover) then
+        if client:supports_method 'textDocument/hover' then
             map('n', 'K', function()
                 lsp.buf.hover(ui.defaults)
             end, opts)
         end
-        if client:supports_method(ms.textDocument_signatureHelp) then
+        if client:supports_method 'textDocument/signatureHelp' then
             map({ 'i', 's' }, '<C-S>', function()
                 lsp.buf.signature_help(ui.defaults)
             end, opts)
         end
-        if client:supports_method(ms.textDocument_formatting) then
+        if client:supports_method 'textDocument/formatting' then
             map('n', 'grq', lsp.buf.format, opts) -- use `gq` in Visual mode
         end
 
@@ -304,13 +300,13 @@ autocmd('LspAttach', {
         local type_definition = ok and fzf.lsp_typedefs or lsp.buf.type_definition
         local references = ok and fzf.lsp_references or lsp.buf.references
 
-        if client:supports_method(ms.textDocument_definition) then
+        if client:supports_method 'textDocument/definition' then
             map('n', 'gd', definition, opts)
         end
-        if client:supports_method(ms.textDocument_typeDefinition) then
+        if client:supports_method 'textDocument/typeDefinition' then
             map('n', 'gt', type_definition, opts)
         end
-        if client:supports_method(ms.textDocument_references) then
+        if client:supports_method 'textDocument/references' then
             map('n', 'grr', references, opts)
         end
     end,
@@ -329,7 +325,8 @@ autocmd('CmdwinEnter', {
 })
 
 autocmd({ 'BufNewFile', 'BufRead' }, {
-    group = augroup('InsertBlankLineMappings', {}),
+    group = augroup('bones.enter-blank', {}),
+    desc = 'Mappings for inserting a blank line',
     callback = function(ev)
         if fn.getcmdwintype() ~= '' then
             return -- Don't override <Enter> mappings when editing commands
@@ -344,7 +341,7 @@ autocmd({ 'BufNewFile', 'BufRead' }, {
 })
 
 autocmd('TextYankPost', {
-    group = augroup('HighlightYank', {}),
+    group = augroup('bones.yank', {}),
     callback = function()
         vim.hl.on_yank { timeout = 400 }
     end,
@@ -391,5 +388,5 @@ if ok and installed then
     })
 
     local lazyns = api.nvim_create_namespace 'lazy'
-    vim.diagnostic.config({ virtual_text = { prefix = '' } }, lazyns)
+    vim.diagnostic.config({ virtual_text = { prefix = '⏺' } }, lazyns)
 end

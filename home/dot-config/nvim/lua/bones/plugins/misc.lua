@@ -10,7 +10,7 @@ return {
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         lazy = false,
         keys = {
-            { mode = 'n', '-', '<Cmd>lua require("oil").open()<CR>' },
+            { mode = 'n', '-', '<CMD>lua require("oil").open()<CR>' },
         },
         ---@module 'oil'
         ---@type oil.SetupOpts
@@ -62,10 +62,10 @@ return {
         'ibhagwan/fzf-lua',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         keys = {
-            { mode = 'n', '<leader>ps', '<Cmd>FzfLua grep<CR>', desc = 'Pick search' },
-            { mode = 'n', '<leader>pf', '<Cmd>FzfLua files<CR>', desc = 'Pick files' },
-            { mode = 'n', '<leader>pg', '<Cmd>FzfLua git_files<CR>', desc = 'Pick git files' },
-            { mode = 'n', '<leader>pb', '<Cmd>FzfLua buffers<CR>', desc = 'Pick buffers' },
+            { mode = 'n', '<leader>ps', '<CMD>FzfLua grep<CR>', desc = 'Pick search' },
+            { mode = 'n', '<leader>pf', '<CMD>FzfLua files<CR>', desc = 'Pick files' },
+            { mode = 'n', '<leader>pg', '<CMD>FzfLua git_files<CR>', desc = 'Pick git files' },
+            { mode = 'n', '<leader>pb', '<CMD>FzfLua buffers<CR>', desc = 'Pick buffers' },
         },
         opts = {
             winopts = {
