@@ -24,9 +24,9 @@ repos:
       - id: check-symlinks
 
   - repo: https://github.com/JohnnyMorganz/StyLua
-    rev: v2.3.0
+    rev: v2.3.1
     hooks:
-      - id: stylua-github
+      - id: stylua-system
         alias: stylua
 
   - repo: https://github.com/scop/pre-commit-shfmt

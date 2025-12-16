@@ -78,6 +78,7 @@ shellcheck
 shfmt
 slurp
 stow
+stylua
 terminus-font
 tldr
 tree

@@ -10,6 +10,7 @@ Command line tools (formatters, linters, etc.):
 | `ruff`       | Formatter/Linter  | pacman |
 | `shellcheck` | Linter            | pacman |
 | `shfmt`      | Formatter         | pacman |
+| `stylua`     | Formatter         | pacman |
 
 Language servers for languages used in this repository and commonly used
 languages in my projects:
