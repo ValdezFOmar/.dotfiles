@@ -318,6 +318,16 @@ autocmd('LspAttach', {
 
 --- Auto commands & User commands ---
 
+autocmd('CmdwinEnter', {
+    group = augroup('bones.cmdwin', {}),
+    desc = 'Disable line numbers and signcolumn',
+    callback = function()
+        vim.wo[0][0].number = false
+        vim.wo[0][0].relativenumber = false
+        vim.wo[0][0].signcolumn = 'auto'
+    end,
+})
+
 autocmd({ 'BufNewFile', 'BufRead' }, {
     group = augroup('InsertBlankLineMappings', {}),
     callback = function(ev)
