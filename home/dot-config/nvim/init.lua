@@ -78,7 +78,6 @@ vim.o.breakindent = true
 vim.o.breakindentopt = 'list:3'
 
 --- Keymaps ---
-map('n', '<leader>xx', '<Cmd>silent !chmod u+x %<Enter>')
 
 -- copy/paste
 map('x', '<leader>y', '"+y', { desc = 'Copy selection to clipboard' })
@@ -97,7 +96,6 @@ map('n', '<C-u>', '<C-u>zz')
 map('n', '<M-n>', '<CMD>cnext<CR>', { desc = 'Next error in quickfix' })
 map('n', '<M-p>', '<CMD>cNext<CR>', { desc = 'Previous error in quickfix' })
 map('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Go to Normal mode in Terminal' })
-map({ 'n', 'v', 'i' }, '<C-z>', '<Nop>', { desc = "Dont't send neovim to the background" })
 
 -- text editing
 map('n', 'U', '<C-r>', { desc = 'Redo changes with `U`' })
@@ -351,6 +349,29 @@ command('ToggleDiagnostics', function()
     local filter = { bufnr = 0 }
     vim.diagnostic.enable(not vim.diagnostic.is_enabled(filter), filter)
 end, { desc = 'Toggle diagnostics in current buffer' })
+
+command('Executable', function()
+    local bit = require 'bit'
+    local path = fn.expand '%:p'
+    local notify = vim.schedule_wrap(vim.notify)
+
+    local stat, err = vim.uv.fs_stat(path)
+    if not stat then
+        notify(err, vim.log.levels.ERROR)
+        return
+    end
+
+    -- Add executable bit for file owner (like 'chmod u+x')
+    local mode = bit.bor(stat.mode, tonumber('100', 8))
+    local _, err = vim.uv.fs_chmod(path, mode)
+    if err then
+        notify(err, vim.log.levels.ERROR)
+        return
+    end
+
+    local permissions = bit.band(mode, tonumber('777', 8))
+    notify(('File "%s" is now executable (%o)'):format(fs.basename(path), permissions))
+end, { desc = 'Make current file executable' })
 
 --- lazy.nvim ---
 if vim.env.NO_PLUGINS then
