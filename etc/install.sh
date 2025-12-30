@@ -25,7 +25,7 @@ backup-install "$dir/greeter/nwg-hello.css" /etc/nwg-hello/nwg-hello.css
 backup-install "$dir/greeter/wallpaper.png" /usr/share/nwg-hello/wallpaper.png
 
 # reflector
-backup-install /etc/pacman.d/mirrorlist /etc/pacman.d/backup/mirrorlist
+backup-install /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist-backup
 backup-install "$dir/reflector.conf" /etc/xdg/reflector/reflector.conf
 
 # Enable services
