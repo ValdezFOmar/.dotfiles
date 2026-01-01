@@ -9,6 +9,7 @@ local get_images = ya.sync(function()
     local images = { paths = {}, start_at = 1 } ---@type Images
     local directory = cx.active.current
     for _, file in ipairs(directory.files) do
+        ---@cast file fs__File
         local mime = file:mime()
         if mime and mime:sub(1, 5) == 'image' then
             table.insert(images.paths, tostring(file.url))
@@ -26,7 +27,6 @@ local function view_images(images)
     local cmd = Command('nsxiv')
         :arg('--null')
         :arg('--stdin')
-        :arg('--no-bar')
         :arg('--animate')
         :arg('--start-at')
         :arg(tostring(images.start_at))

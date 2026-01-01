@@ -18,7 +18,7 @@ max_height = 900
 cursor_blink = true
 
 [[opener.nsxiv]]
-run = 'nsxiv --animate "$@"'
+run = 'nsxiv --animate %s'
 desc = 'View Images with Nsxiv'
 for = 'linux'
 
