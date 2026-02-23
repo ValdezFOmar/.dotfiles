@@ -36,21 +36,24 @@ return {
     {
         'kylechui/nvim-surround',
         event = 'VeryLazy',
-        config = true,
+        version = '^4.0.0',
     },
     -- Lua LS config for neovim configuration
     {
         'folke/lazydev.nvim',
         ft = 'lua',
+        ---@module 'lazydev'
+        ---@type lazydev.Config
         opts = {
             library = {
                 'lazy.nvim',
-                'luvit-meta/library',
+                { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
             },
+            enabled = function(root)
+                return not vim.uv.fs_stat(vim.fs.joinpath(root, '.luarc.json'))
+            end,
         },
     },
-    -- Types for vim.uv, used by lazydev
-    { 'Bilal2453/luvit-meta', lazy = true },
     -- Autocomplete pairs parenthesis, brackets, quotes, etc.
     {
         'windwp/nvim-autopairs',
