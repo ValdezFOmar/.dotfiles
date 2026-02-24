@@ -6,6 +6,7 @@ Command line tools (formatters, linters, etc.):
 
 | Package      | Type              | Source |
 |--------------|-------------------|--------|
+| `clang-format` | Formatter       | pacman |
 | `pre-commit` | Git Hooks         | pacman |
 | `ruff`       | Formatter/Linter  | pacman |
 | `shellcheck` | Linter            | pacman |
@@ -19,6 +20,7 @@ languages in my projects:
 |-------------------------|-------------------------------|--------|
 | `basedpyright`          | basedpyright                  | pipx   |
 | `bashls`                | bash-language-server          | pacman |
+| `clangd`                | clang                         | pacman |
 | `cssls`                 | vscode-langservers-extracted  | aur    |
 | `emmet_language_server` | emmet-language-server         | aur    |
 | `eslint`                | (same as cssls)               | aur    |
@@ -32,6 +34,7 @@ languages in my projects:
 | `tombi`                 | tombi                         | pacman |
 | `ts_ls`                 | typescript-language-server    | pacman |
 | `ts_query_ls`           | ts_query_ls-bin               | aur    |
+| `yamlls`                | yaml-language-server          | pacman |
 
 ## Fonts and Language
 

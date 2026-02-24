@@ -97,5 +97,6 @@ wl-clipboard
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xorg-xrdb
+yaml-language-server
 yazi
 zip

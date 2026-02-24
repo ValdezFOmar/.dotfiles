@@ -253,6 +253,7 @@ lsp.config('ts_query_ls', {
 lsp.enable {
     'basedpyright',
     'bashls', -- needs 'shellcheck' and 'shfmt'
+    'clangd',
     'cssls',
     'eslint',
     'html',
@@ -261,8 +262,10 @@ lsp.enable {
     'marksman',
     'ruff',
     'rust_analyzer',
+    'tombi',
     'ts_ls',
     'ts_query_ls',
+    'yamlls',
 }
 
 autocmd('LspAttach', {
