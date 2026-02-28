@@ -3,6 +3,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Prevent script from being sourced multiple times
+[[ -n $_BONES_LOADED_BASHRC ]] && return
+readonly _BONES_LOADED_BASHRC=true
+
 source ~/.config/bash/env.bash
 source ~/.config/bash/aliases.bash
 source ~/.config/bash/completions.bash
