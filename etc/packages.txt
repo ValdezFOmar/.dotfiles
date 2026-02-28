@@ -87,6 +87,7 @@ ttf-cascadia-code-nerd
 typescript-language-server
 udiskie
 udisks2
+unrar-free
 unzip
 uwsm
 vlc
@@ -96,6 +97,7 @@ wireplumber
 wl-clipboard
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
+xdg-utils
 xorg-xrdb
 yaml-language-server
 yazi
