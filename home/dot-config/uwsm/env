@@ -57,7 +57,7 @@ export WINEPREFIX="$XDG_STATE_HOME/wine/default"
 #
 #   Path
 #
-# Sorted from lowest to highest priority
-export PATH="$CARGO_HOME/bin:$PATH"
-export PATH="$XDG_BIN_HOME:$PATH"
-export PATH="$HOME/bin:$PATH"
+# Sorted from highest to lowest priority
+export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$XDG_BIN_HOME"
+export PATH="$PATH:$CARGO_HOME/bin"

@@ -55,8 +55,9 @@ function set-prompt() {
     local gitprompt=''
     command -v __git_ps1 > /dev/null && gitprompt="$o\$(__git_ps1 '(%s) ')$n"
 
-    export PS1="$n$gitprompt$p$i\u@\h$n:$b\w\n\[\$(-set-exit-color)\]❯$n "
-    export PS2="\[\$(-set-exit-color)\]❯$n "
+    # Don't export the prompt, it interacts poorly with nested shells
+    PS1="$n$gitprompt$p$i\u@\h$n:$b\w\n\[\$(-set-exit-color)\]❯$n "
+    PS2="\[\$(-set-exit-color)\]❯$n "
 }
 
 set-prompt
