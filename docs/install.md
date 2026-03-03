@@ -187,15 +187,11 @@ A microcode package for the CPU is recommended.
 - `amd-ucode` for AMD processors.
 - `intel-ucode` for Intel processors.
 
-Drivers for the graphics card are needed. Get a list of drivers with:
+For GPU drivers, consult the relevant [ArchWiki page](https://wiki.archlinux.org/title/Graphics_processing_unit).
 
-```sh
-pacman -Ss xf86-video
-```
-
-> [!WARNING]
-> The Intel graphics driver may be buggy, consider using the default
-> drivers instead (no installation required and more than capable).
+> [!IMPORTANT]
+> DDX drivers (package name starting with *xf86-video*) are *NOT* needed
+> for Wayland and might cause issues with some GUIs (e.g. Kitty).
 
 ## Configure the system
 
@@ -307,7 +303,7 @@ GRUB_DISABLE_OS_PROBER=false
 
 Install and configure grub for EFI mode.
 
-> [!NOTE]
+> [!IMPORTANT]
 > `{device}` is a *device* name, **NOT** a *partition*
 
 ```sh
@@ -393,6 +389,10 @@ sudo systemctl kill --signal HUP systemd-logind
 ```
 
 ### Permissions for brightness devices
+
+> [!IMPORTANT]
+> There's no need to add udev rules if DBus is used to change the
+> monitors brightness (`brightnessctl` does this by default).
 
 Create `/etc/udev/rules.d/90-backlight.rules` and add the following
 configuration to be able to modify device brightness:
