@@ -87,8 +87,6 @@ ttf-cascadia-code-nerd
 typescript-language-server
 udiskie
 udisks2
-unrar-free
-unzip
 uwsm
 vlc
 waybar
@@ -101,4 +99,3 @@ xdg-utils
 xorg-xrdb
 yaml-language-server
 yazi
-zip

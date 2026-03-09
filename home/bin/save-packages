@@ -6,6 +6,7 @@ set -o nounset
 set -o pipefail
 
 readonly program=${0##*/}
+readonly pattern='^(intel-ucode|amd-ucode|zip|unzip|unrar-free)$' # use 7z (7zip) instead
 
 function error() {
     >&2 echo "$program: error: $*"
@@ -24,7 +25,7 @@ function main() {
 
     file=$destination/packages.txt
     echo "$program: saving to '$file'"
-    pacman --query --quiet --explicit --native | sed -E '/amd|intel|ucode|xf86-video/d' > "$file"
+    pacman --query --quiet --explicit --native | sed -E "/$pattern/d" > "$file"
 
     file=$destination/packages-aur.txt
     echo "$program: saving to '$file'"
