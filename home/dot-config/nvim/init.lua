@@ -10,6 +10,7 @@ local augroup = api.nvim_create_augroup
 local command = api.nvim_create_user_command
 
 -- Replace UI components
+vim.ui.input = ui.input
 vim.ui.select = ui.select
 
 -- Old language providers are slow, disable them:
@@ -45,6 +46,7 @@ vim.o.guicursor = table.concat({
 vim.o.title = true
 vim.o.titlestring = '%t - NVIM'
 vim.o.shortmess = vim.o.shortmess .. 'I'
+vim.o.confirm = true
 vim.o.wrap = false
 vim.o.number = true
 vim.o.relativenumber = true
