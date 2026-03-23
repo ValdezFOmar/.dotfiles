@@ -1,6 +1,6 @@
 grub-hook
 jmtpfs
-qogir-cursor-theme-git
+qogir-cursor-theme
 ts_query_ls-bin
 vscode-langservers-extracted
 wlogout
