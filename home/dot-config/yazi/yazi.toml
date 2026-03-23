@@ -17,11 +17,16 @@ max_height = 900
 [input]
 cursor_blink = true
 
-[[opener.nsxiv]]
-run = 'nsxiv --animate %s'
-desc = 'View Images with Nsxiv'
-for = 'linux'
+[opener]
+nsxiv = [
+  { run = 'uwsm app -- nsxiv --animate %s', desc = 'View with nsxiv', for = 'linux' }
+]
+mpv = [
+  { run = 'uwsm app -- mpv.desktop %s', desc = 'Play with mpv', for = 'linux' }
+]
 
-[[open.prepend_rules]]
-mime = 'image/*'
-use = ['nsxiv', 'open']
+[open]
+prepend_rules = [
+  { mime = 'image/*', use = ['nsxiv', 'open'] },
+  { mime = 'video/*', use = ['mpv', 'play', 'open'] },
+]
