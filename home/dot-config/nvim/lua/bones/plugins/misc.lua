@@ -4,7 +4,28 @@
 
 ---@type LazyPluginSpec[]
 return {
-    { 'neovim/nvim-lspconfig' },
+    {
+        'neovim/nvim-lspconfig',
+        config = function()
+            vim.lsp.enable {
+                'basedpyright',
+                'bashls', -- needs 'shellcheck' and 'shfmt'
+                'clangd',
+                'cssls',
+                'eslint',
+                'html',
+                'jsonls',
+                'lua_ls',
+                'marksman',
+                'ruff',
+                'rust_analyzer',
+                'tombi',
+                'ts_ls',
+                'ts_query_ls',
+                'yamlls',
+            }
+        end,
+    },
     {
         'stevearc/oil.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -45,10 +66,7 @@ return {
         ---@module 'lazydev'
         ---@type lazydev.Config
         opts = {
-            library = {
-                'lazy.nvim',
-                { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-            },
+            library = { 'lazy.nvim' },
             enabled = function(root)
                 return not vim.uv.fs_stat(vim.fs.joinpath(root, '.luarc.json'))
             end,

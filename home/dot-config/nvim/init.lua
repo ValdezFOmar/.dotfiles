@@ -45,13 +45,11 @@ vim.o.guicursor = table.concat({
 
 vim.o.title = true
 vim.o.titlestring = '%t - NVIM'
-vim.o.shortmess = vim.o.shortmess .. 'I'
 vim.o.confirm = true
 vim.o.wrap = false
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.numberwidth = 3
-vim.o.signcolumn = 'yes:1'
 vim.o.list = true
 vim.o.listchars = 'trail:⌷,tab:⟩ '
 vim.o.fillchars = 'eob:·'
@@ -79,6 +77,9 @@ vim.o.linebreak = true
 vim.o.breakindent = true
 vim.o.breakindentopt = 'list:3'
 
+-- :h package-nohlsearch
+vim.cmd 'packadd! nohlsearch'
+
 --- Keymaps ---
 
 -- copy/paste
@@ -95,8 +96,6 @@ map('n', 'gs', '<Nop>') -- map it to something more useful
 map('n', 'z=', ui.spell, { desc = 'Show and select spell suggestions' })
 map('n', '<C-d>', '<C-d>zz')
 map('n', '<C-u>', '<C-u>zz')
-map('n', '<M-n>', '<CMD>cnext<CR>', { desc = 'Next error in quickfix' })
-map('n', '<M-p>', '<CMD>cNext<CR>', { desc = 'Previous error in quickfix' })
 map('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Go to Normal mode in Terminal' })
 
 -- text editing
@@ -130,18 +129,23 @@ vim.diagnostic.config {
         max_width = ui.defaults.max_width,
     },
     signs = {
-        text = diagnostic_icons,
+        text = {
+            [vim.diagnostic.severity.INFO] = '',
+            [vim.diagnostic.severity.HINT] = '',
+            [vim.diagnostic.severity.WARN] = '',
+            [vim.diagnostic.severity.ERROR] = '',
+        },
         numhl = {
-            [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
-            [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
-            [vim.diagnostic.severity.WARN] = 'DiagnosticWarn',
-            [vim.diagnostic.severity.ERROR] = 'DiagnosticError',
+            [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+            [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+            [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+            [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
         },
     },
     virtual_lines = {
         current_line = true,
         format = function(diagnostic)
-            local icon = diagnostic_icons[diagnostic.severity]
+            local icon = diagnostic_icons[diagnostic.severity] or '⏺'
             return icon .. ' ' .. diagnostic.message
         end,
     },
@@ -198,8 +202,13 @@ do
         desc = 'Enable Tree-sitter features',
         group = augroup('bones.treesitter', {}),
         callback = function(ev)
-            local stats = vim.uv.fs_stat(api.nvim_buf_get_name(ev.buf))
+            local path = api.nvim_buf_get_name(ev.buf)
+            local stats = vim.uv.fs_stat(path)
+
             if stats and stats.size > MAX_FILE_SIZE then
+                vim.schedule(function()
+                    vim.notify('File too big, treesitter disabled: ' .. path, vim.log.levels.WARN)
+                end)
                 return
             end
 
@@ -252,35 +261,30 @@ lsp.config('ts_query_ls', {
     },
 })
 
-lsp.enable {
-    'basedpyright',
-    'bashls', -- needs 'shellcheck' and 'shfmt'
-    'clangd',
-    'cssls',
-    'eslint',
-    'html',
-    'jsonls',
-    'lua_ls',
-    'marksman',
-    'ruff',
-    'rust_analyzer',
-    'tombi',
-    'ts_ls',
-    'ts_query_ls',
-    'yamlls',
-}
+lsp.config('lua_ls', {
+    settings = {
+        Lua = {
+            diagnostics = {
+                disable = { 'redefined-local' },
+            },
+            type = {
+                checkTableShape = true,
+                castNumberToInteger = false,
+            },
+        },
+    },
+})
 
 autocmd('LspAttach', {
     group = augroup('bones.lsp', {}),
     desc = 'Set LSP mappings and options',
     callback = function(ev)
         local client = assert(lsp.get_client_by_id(ev.data.client_id))
-        local opts = { buffer = ev.buf }
+        local opts = { buf = ev.buf }
 
         if client:supports_method 'textDocument/foldingRange' then
-            local win = vim.api.nvim_get_current_win()
-            vim.wo[win][0].foldmethod = 'expr'
-            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+            vim.wo[0][0].foldmethod = 'expr'
+            vim.wo[0][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
         end
 
         if client:supports_method 'textDocument/hover' then
@@ -319,11 +323,20 @@ autocmd('LspAttach', {
 
 autocmd('CmdwinEnter', {
     group = augroup('bones.cmdwin', {}),
-    desc = 'Disable line numbers and signcolumn',
+    desc = 'Disable line numbers',
     callback = function()
         vim.wo[0][0].number = false
         vim.wo[0][0].relativenumber = false
-        vim.wo[0][0].signcolumn = 'auto'
+    end,
+})
+
+autocmd('FileType', {
+    group = augroup('bones.quickfix', {}),
+    desc = 'Disable line numbers in the quickfix window',
+    pattern = 'qf',
+    callback = function()
+        vim.wo[0][0].number = false
+        vim.wo[0][0].relativenumber = false
     end,
 })
 
@@ -334,12 +347,11 @@ autocmd({ 'BufNewFile', 'BufRead' }, {
         if fn.getcmdwintype() ~= '' then
             return -- Don't override <Enter> mappings when editing commands
         end
-        local bufnr = ev.buf
-        if not vim.bo[bufnr].modifiable then
+        if not vim.bo[ev.buf].modifiable then
             return
         end
-        map('n', '<S-Enter>', 'O<Esc>0"_D', { buffer = bufnr })
-        map('n', '<Enter>', 'o<Esc>0"_D', { buffer = bufnr })
+        map('n', '<Enter>', ']<Space>j', { remap = true, buf = ev.buf })
+        map('n', '<S-Enter>', '[<Space>k', { remap = true, buf = ev.buf })
     end,
 })
 
@@ -375,7 +387,7 @@ command('Executable', function()
     end
 
     local permissions = bit.band(mode, tonumber('777', 8))
-    notify(('File "%s" is now executable (%o)'):format(fs.basename(path), permissions))
+    notify(('File %q is now executable (%o)'):format(fs.basename(path), permissions))
 end, { desc = 'Make current file executable' })
 
 --- lazy.nvim ---

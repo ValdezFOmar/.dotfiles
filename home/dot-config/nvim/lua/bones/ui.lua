@@ -168,15 +168,15 @@ function M.select(items, opts, on_choice)
         end,
     })
 
-    vim.keymap.set('n', 'q', close, { buffer = buf, nowait = true })
-    vim.keymap.set('n', '<Esc>', close, { buffer = buf, nowait = true })
+    vim.keymap.set('n', 'q', close, { buf = buf, nowait = true })
+    vim.keymap.set('n', '<Esc>', close, { buf = buf, nowait = true })
     vim.keymap.set('n', '<Enter>', function()
         local row_index = api.nvim_win_get_cursor(win)[1]
         if row_index <= #items then
             selected_index = row_index
             close()
         end
-    end, { buffer = buf, nowait = true })
+    end, { buf = buf, nowait = true })
 end
 
 ---@class bones.ui.input.Opts
@@ -262,13 +262,13 @@ function M.input(opts, on_confirm)
         end,
     })
 
-    vim.keymap.set('n', 'q', close, { buffer = buf, nowait = true })
-    vim.keymap.set('n', '<Esc>', close, { buffer = buf, nowait = true })
+    vim.keymap.set('n', 'q', close, { buf = buf, nowait = true })
+    vim.keymap.set('n', '<Esc>', close, { buf = buf, nowait = true })
     vim.keymap.set({ 'n', 'i' }, '<Enter>', function()
         input = table.concat(api.nvim_buf_get_lines(buf, 0, -1, true), '\n')
         vim.cmd.stopinsert()
         close()
-    end, { buffer = buf, nowait = true })
+    end, { buf = buf, nowait = true })
 end
 
 local spell_on_choice = vim.schedule_wrap(function(_, i)
