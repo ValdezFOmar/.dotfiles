@@ -1,12 +1,5 @@
-local winid = vim.api.nvim_get_current_win()
-local wo = vim.wo[winid][0]
+vim.wo[0][0].scrolloff = 999
+vim.wo[0][0].cursorline = false
+vim.wo[0][0].virtualedit = 'all'
 
-local function toggle_cursorline()
-    wo.cursorline = not wo.cursorline
-end
-
-wo.scrolloff = 999
-wo.cursorline = false
-wo.virtualedit = 'all'
-
-vim.keymap.set('n', 's', toggle_cursorline, { buffer = true })
+vim.keymap.set('n', 'gd', '<C-]>', { buf = 0, desc = 'Jump to definition' })
