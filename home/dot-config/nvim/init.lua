@@ -21,9 +21,6 @@ vim.g.loaded_python_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 
--- Disabled because is very slow and blocks the editor,
--- use https://github.com/ribru17/ts_query_ls instead
-vim.g.query_lint_on = {} -- { 'InsertLeave', 'TextChanged' }
 vim.g.tex_flavor = 'latex' -- Recognize .tex files as LaTeX
 
 vim.g.mapleader = ' '
@@ -253,7 +250,7 @@ lsp.config('basedpyright', {
 lsp.config('ts_query_ls', {
     settings = {
         parser_install_directories = {
-            fs.joinpath(fn.getcwd(), 'parser'), -- useful for developing parsers
+            -- Project specific paths can be added in a `.tsqueryrc.json` file
             fs.joinpath(fn.stdpath 'data', 'site', 'parser'), -- nvim-treesitter
             fs.joinpath(vim.env.VIMRUNTIME, 'parser'), -- bundled parsers
         },
