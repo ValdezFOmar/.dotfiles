@@ -271,6 +271,24 @@ lsp.config('lua_ls', {
     },
 })
 
+vim.lsp.enable {
+    'basedpyright',
+    'bashls', -- needs 'shellcheck' and 'shfmt'
+    'clangd',
+    'cssls',
+    'eslint',
+    'html',
+    'jsonls',
+    'lua_ls',
+    'marksman',
+    'ruff',
+    'rust_analyzer',
+    'tombi',
+    'ts_ls',
+    'ts_query_ls',
+    'yamlls',
+}
+
 autocmd('LspAttach', {
     group = augroup('bones.lsp', {}),
     desc = 'Set LSP mappings and options',

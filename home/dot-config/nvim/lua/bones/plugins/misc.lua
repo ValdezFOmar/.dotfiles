@@ -4,28 +4,8 @@
 
 ---@type LazyPluginSpec[]
 return {
-    {
-        'neovim/nvim-lspconfig',
-        config = function()
-            vim.lsp.enable {
-                'basedpyright',
-                'bashls', -- needs 'shellcheck' and 'shfmt'
-                'clangd',
-                'cssls',
-                'eslint',
-                'html',
-                'jsonls',
-                'lua_ls',
-                'marksman',
-                'ruff',
-                'rust_analyzer',
-                'tombi',
-                'ts_ls',
-                'ts_query_ls',
-                'yamlls',
-            }
-        end,
-    },
+    { 'ValdezFOmar/info.nvim' },
+    { 'neovim/nvim-lspconfig' },
     {
         'stevearc/oil.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },

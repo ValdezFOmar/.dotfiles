@@ -5,7 +5,7 @@ if vim.bo.buftype == '' then
     vim.bo.textwidth = 72
     vim.wo[0][0].colorcolumn = '+1'
 
-    vim.api.nvim_buf_create_user_command(0, 'Wrap', function()
+    vim.api.nvim_buf_create_user_command(0, 'ToggleWrap', function()
         local wo = vim.wo[0][0]
         if wo.wrap then
             wo.wrap = false
