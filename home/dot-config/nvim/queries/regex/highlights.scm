@@ -1,8 +1,6 @@
 ; This is my own interpretation of regex highlights
 (group_name) @property
 
-(pattern_character) @string.regexp
-
 (class_character) @character
 
 (decimal_digits) @number

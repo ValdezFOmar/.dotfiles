@@ -198,21 +198,26 @@ do
         desc = 'Enable Tree-sitter features',
         group = augroup('bones.treesitter', {}),
         callback = function(ev)
-            local path = api.nvim_buf_get_name(ev.buf)
-            local stats = vim.uv.fs_stat(path)
+            local lang = vim.treesitter.language.get_lang(ev.match)
 
-            if stats and stats.size > MAX_FILE_SIZE then
+            -- check that parser can be loaded (parser exists)
+            if not lang or not vim.treesitter.language.add(lang) then
+                return
+            end
+
+            local stat = vim.uv.fs_stat(ev.file)
+            if stat and stat.size > MAX_FILE_SIZE then
+                local kb = math.floor(MAX_FILE_SIZE / 1024)
+                local path = fs.relpath(fn.getcwd(), ev.file) or ev.file
+                local msg = ('%s: treesitter not enabled, file too big (>%d KB)'):format(path, kb)
                 vim.schedule(function()
-                    vim.notify('File too big, treesitter disabled: ' .. path, vim.log.levels.WARN)
+                    vim.notify(msg, vim.log.levels.WARN)
                 end)
                 return
             end
 
-            if not pcall(vim.treesitter.start, ev.buf) then
-                return
-            end
+            vim.treesitter.start(ev.buf, lang)
 
-            local lang = vim.treesitter.get_parser(ev.buf):lang()
             local bo = vim.bo[ev.buf]
             local wo = vim.wo[0][0]
 

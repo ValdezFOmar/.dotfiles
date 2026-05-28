@@ -1,7 +1,4 @@
 ; My interpretations of lua pattern hightlights, similar to regex captures
-(pattern
-  (character) @string.regexp)
-
 "." @character.special
 
 (class) @constant.macro
