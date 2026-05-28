@@ -56,6 +56,7 @@ return {
             extensions = { 'fzf', 'lazy', 'mason' },
         }
 
+        vim.o.showcmd = false
         vim.o.showmode = false
     end,
 }

@@ -1,42 +1,41 @@
-local function hex_extmark_opts(_, _, data)
+---@param pattern string
+local function hexcolor(pattern)
     return {
-        virt_text = { { ' ██', data.hl_group } },
-        virt_text_pos = 'inline',
-        right_gravity = false,
+        pattern = pattern,
+        group = function(_, match)
+            return require('mini.hipatterns').compute_hex_color_group(match, 'fg')
+        end,
+        extmark_opts = function(_, _, data)
+            return {
+                priority = vim.hl.priorities.user,
+                virt_text = { { ' ', data.hl_group } },
+                virt_text_pos = 'inline',
+                right_gravity = false,
+            }
+        end,
     }
 end
 
 ---@type LazyPluginSpec
 return {
     'nvim-mini/mini.hipatterns',
+    init = function()
+        vim.api.nvim_create_autocmd('LspAttach', {
+            desc = 'Disable mini.hipatterns for servers that support document color',
+            group = vim.api.nvim_create_augroup('bones.hipatterns', {}),
+            callback = function(ev)
+                local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+                if client:supports_method 'textDocument/documentColor' then
+                    vim.b[ev.buf].minihipatterns_disable = true
+                    require('mini.hipatterns').disable(ev.buf)
+                end
+            end,
+        })
+    end,
     opts = {
         highlighters = {
-            hexcolor3 = {
-                pattern = function(buf)
-                    return vim.bo[buf].ft == 'css' and '#%x%x%x()()%f[%W]' or nil
-                end,
-                group = function(_, _, data)
-                    local m = data.full_match ---@type string
-                    local r, g, b = m:sub(2, 2), m:sub(3, 3), m:sub(4, 4)
-                    local color = '#' .. r .. r .. g .. g .. b .. b
-                    return MiniHipatterns.compute_hex_color_group(color, 'bg')
-                end,
-                extmark_opts = hex_extmark_opts,
-            },
-            hexcolor6 = {
-                pattern = '#%x%x%x%x%x%x()()%f[%W]',
-                group = function(_, _, data)
-                    return MiniHipatterns.compute_hex_color_group(data.full_match, 'fg')
-                end,
-                extmark_opts = hex_extmark_opts,
-            },
-            hexcolor8 = {
-                pattern = '#%x%x%x%x%x%x%x%x()()%f[%W]',
-                group = function(_, _, data)
-                    return MiniHipatterns.compute_hex_color_group(data.full_match:sub(1, 7), 'fg')
-                end,
-                extmark_opts = hex_extmark_opts,
-            },
+            hexcolor6 = hexcolor '#%x%x%x%x%x%x%f[%W]',
+            hexcolor8 = hexcolor '()#%x%x%x%x%x%x()%x%x%f[%W]',
         },
     },
 }

@@ -73,9 +73,6 @@ vim.o.linebreak = true
 vim.o.breakindent = true
 vim.o.breakindentopt = 'list:3'
 
--- :h package-nohlsearch
-vim.cmd 'packadd! nohlsearch'
-
 --- Keymaps ---
 
 -- copy/paste
@@ -111,41 +108,44 @@ map('n', '<M-H>', '<CMD>tabmove -1<CR>', { desc = 'Move tab to the left' })
 map('n', '<M-L>', '<CMD>tabmove +1<CR>', { desc = 'Move tab to the right' })
 
 --- Diagnostics ---
-local diagnostic_icons = {
-    [vim.diagnostic.severity.INFO] = ' ',
-    [vim.diagnostic.severity.HINT] = ' ',
-    [vim.diagnostic.severity.WARN] = ' ',
-    [vim.diagnostic.severity.ERROR] = ' ',
-}
+do
+    local icons = {
+        [vim.diagnostic.severity.INFO] = ' ',
+        [vim.diagnostic.severity.HINT] = ' ',
+        [vim.diagnostic.severity.WARN] = ' ',
+        [vim.diagnostic.severity.ERROR] = ' ',
+    }
 
-vim.diagnostic.config {
-    severity_sort = true,
-    float = {
-        source = 'if_many',
-        max_width = ui.defaults.max_width,
-    },
-    signs = {
-        text = {
-            [vim.diagnostic.severity.INFO] = '',
-            [vim.diagnostic.severity.HINT] = '',
-            [vim.diagnostic.severity.WARN] = '',
-            [vim.diagnostic.severity.ERROR] = '',
+    vim.diagnostic.config {
+        severity_sort = true,
+        float = {
+            source = 'if_many',
+            max_width = ui.defaults.max_width,
         },
-        numhl = {
-            [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
-            [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
-            [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
-            [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+        signs = {
+            text = {
+                [vim.diagnostic.severity.INFO] = '',
+                [vim.diagnostic.severity.HINT] = '',
+                [vim.diagnostic.severity.WARN] = '',
+                [vim.diagnostic.severity.ERROR] = '',
+            },
+            numhl = {
+                [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+                [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+                [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+                [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+            },
         },
-    },
-    virtual_lines = {
-        current_line = true,
-        format = function(diagnostic)
-            local icon = diagnostic_icons[diagnostic.severity] or '⏺'
-            return icon .. ' ' .. diagnostic.message
-        end,
-    },
-}
+        virtual_lines = {
+            current_line = true,
+            format = function(diagnostic)
+                local icon = icons[diagnostic.severity] or '⏺'
+                local text = vim.text.indent(2, diagnostic.message)
+                return icon .. text:sub(3)
+            end,
+        },
+    }
+end
 
 --- File types ---
 vim.filetype.add {
@@ -289,6 +289,8 @@ vim.lsp.enable {
     'yamlls',
 }
 
+lsp.document_color.enable(true, nil, { style = 'virtual' })
+
 autocmd('LspAttach', {
     group = augroup('bones.lsp', {}),
     desc = 'Set LSP mappings and options',
@@ -376,10 +378,20 @@ autocmd('TextYankPost', {
     end,
 })
 
-command('ToggleDiagnostics', function()
-    local filter = { bufnr = 0 }
+autocmd('InsertEnter', {
+    group = augroup('bones.nohlsearch', {}),
+    desc = "Clear search pattern of 'hlsearch' in Insert mode",
+    callback = function()
+        if vim.v.hlsearch == 1 then
+            api.nvim_feedkeys(vim.keycode '<CMD>nohlsearch<CR>', 'm', false)
+        end
+    end,
+})
+
+command('ToggleDiagnostics', function(args)
+    local filter = not args.bang and { bufnr = 0 } or nil
     vim.diagnostic.enable(not vim.diagnostic.is_enabled(filter), filter)
-end, { desc = 'Toggle diagnostics in current buffer' })
+end, { bang = true, desc = 'Toggle diagnostics in current buffer' })
 
 command('Executable', function()
     local bit = require 'bit'

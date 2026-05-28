@@ -34,9 +34,11 @@ local function new_layout(target, max)
 end
 
 ---@param prompt string
----@return string
-local function normalize_prompt(prompt)
-    return (' %s '):format(vim.trim(prompt):gsub('\n', ' '):gsub(':$', ''))
+---@return string prompt Formatted prompt
+---@return string title Prompt as a window title
+local function fmt_prompt(prompt)
+    prompt = vim.trim(prompt):gsub('\n', ' '):gsub(':$', '')
+    return prompt, (' %s '):format(prompt)
 end
 
 local select_ns = api.nvim_create_namespace 'bones.ui.select'
@@ -66,14 +68,16 @@ function M.select(items, opts, on_choice)
     vim.validate('opts.prompt', opts.prompt, 'string', true)
     vim.validate('opts.format_item', opts.format_item, 'callable', true)
     vim.validate('opts.kind', opts.kind, 'string', true)
+    -- TODO: support this feature
+    -- vim.validate('opts.preview', opts.preview, 'callable', true)
     vim.validate('on_choice', on_choice, 'callable')
 
-    local prompt = normalize_prompt(opts.prompt or 'Select one of')
+    local prompt, title = fmt_prompt(opts.prompt or 'Select one of')
     local format_item = opts.format_item or tostring
 
     local pad_width = string.len(#items)
     local lines = {} ---@type string[]
-    local max_line_len = #prompt
+    local max_line_len = #title
 
     for index, item in ipairs(items) do
         local pad = (' '):rep(pad_width - string.len(index))
@@ -83,6 +87,7 @@ function M.select(items, opts, on_choice)
     end
 
     local buf = api.nvim_create_buf(false, true)
+    api.nvim_buf_set_name(buf, prompt)
     api.nvim_buf_set_lines(buf, 0, -1, true, lines)
     vim.bo[buf].modifiable = false
     vim.bo[buf].readonly = true
@@ -92,6 +97,7 @@ function M.select(items, opts, on_choice)
         local space = 2 -- Spaces between the text and the client name
         for i, item in ipairs(items) do
             ---@cast item bones.ui.CodeAction
+            -- TODO: Add features/info from `item.action`
             local client = vim.lsp.get_client_by_id(item.ctx.client_id)
             if client then
                 local name = client.config.name or client.name
@@ -109,7 +115,7 @@ function M.select(items, opts, on_choice)
 
     local win_size = { width = max_line_len, height = #items }
     local win = api.nvim_open_win(buf, true, {
-        title = prompt,
+        title = title,
         title_pos = 'center',
         relative = 'editor',
         row = 0,
@@ -190,12 +196,19 @@ function M.input(opts, on_confirm)
     vim.validate('opts', opts, 'table', true)
     vim.validate('opts.prompt', opts.prompt, 'string', true)
     vim.validate('opts.default', opts.default, 'string', true)
+    -- TODO: support these features
+    -- vim.validate('opts.scope', opts.scope, 'string', true)
+    -- vim.validate('opts.highlight', opts.highlight, 'callable', true)
+    -- vim.validate('opts.completion', opts.completion, 'string', true)
     vim.validate('on_confirm', on_confirm, 'callable')
 
-    local prompt = normalize_prompt(opts.prompt or 'Input')
-    local max_line_len = math.max(#prompt, 30)
+    local prompt, title = fmt_prompt(opts.prompt or 'Input')
+    local max_line_len = math.max(#title, 30)
 
     local buf = api.nvim_create_buf(false, true)
+    api.nvim_buf_set_name(buf, prompt)
+    -- exclude underscore, helps with editing parts of an identifier
+    vim.bo[buf].iskeyword = vim.bo[buf].iskeyword .. ',^_'
 
     if opts.default then
         local lines = vim.split(opts.default, '\n')
@@ -204,9 +217,10 @@ function M.input(opts, on_confirm)
         end
         api.nvim_buf_set_lines(buf, 0, -1, false, lines)
     end
+
     local win_size = { width = max_line_len, height = 1 }
     local win = api.nvim_open_win(buf, true, {
-        title = prompt,
+        title = title,
         title_pos = 'left',
         relative = 'editor',
         row = 0,
@@ -277,6 +291,8 @@ local spell_on_choice = vim.schedule_wrap(function(_, i)
     end
 end)
 
+-- Remove for 0.13, as it will be done by default:
+-- https://github.com/neovim/neovim/pull/39478
 function M.spell()
     if vim.v.count > 0 then
         spell_on_choice(nil, vim.v.count)
