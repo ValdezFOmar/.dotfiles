@@ -13,7 +13,6 @@
       "keys": "blue",
       "title": "magenta"
     },
-    "separator": "\u001b[90m: ",
     "brightColor": false
   },
   "logo": {

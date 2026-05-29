@@ -14,7 +14,7 @@ local PLUGIN = {
 }
 
 -- Italics don't look good on termux, disable them
-local italic = vim.env.TERMUX_VERSION ~= nil and {} or { 'italic' }
+local italic = vim.fn.has 'termux' == 1 and {} or { 'italic' }
 
 ---@module 'catppuccin'
 ---@type CatppuccinOptions

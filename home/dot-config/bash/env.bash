@@ -17,7 +17,7 @@ function history-path() {
 # bash(1) "Shell Variables" section
 export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
 export HISTCONTROL=ignorespace,ignoredups,erasedups
-export HISTIGNORE='history*:ls .*:la .*:ll .*:cd .*:cd:exit:clear'
+export HISTIGNORE='history*:cd:exit:clear'
 export HISTFILE=$(history-path bash)
 
 # python 3.13+ only
@@ -52,13 +52,14 @@ export BAT_THEME=TwoDark
 
 # fzf
 export FZF_DEFAULT_OPTS="
---layout=reverse --border --prompt='choose❯ ' --pointer=❯ --marker=❯
+--layout=reverse --border --prompt='❯ ' --pointer='❯' --marker='❯'
+--gutter=' ' --gutter-raw=' '
 
---color=fg:#63677f,current-fg:white,selected-fg:magenta:bold,preview-fg:white
+--color=fg:white:dim,current-fg:white:regular,selected-fg:cyan:regular,preview-fg:white
 --color=bg:-1,current-bg:-1,border:bright-black
---color=hl:cyan,current-hl:cyan,query:white:regular
+--color=hl:bright-yellow:regular,current-hl:bright-yellow:regular,query:white:regular
 --color=prompt:blue:regular,label:blue,header:blue
---color=pointer:green,info:green,spinner:cyan,marker:magenta
+--color=pointer:green,info:green,spinner:cyan,marker:cyan
 
 --bind=alt-j:down,alt-k:up,alt-p:toggle-preview
 "

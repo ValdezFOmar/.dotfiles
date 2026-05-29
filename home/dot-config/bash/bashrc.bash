@@ -26,11 +26,11 @@ stty -ixon
 function -set-exit-color() {
     local exit=$?
     if ((exit == 0)); then
-        printf '\e[32m' # green
+        printf '\e[92m' # green
     elif ((exit == 130)); then
         printf '\e[93m' # yellow
     else
-        printf '\e[31m' # red
+        printf '\e[91m' # red
     fi
 }
 readonly -f -- -set-exit-color
@@ -45,19 +45,22 @@ function set-prompt() {
         fi
     done
 
-    local n i o b p
-    printf -v n '\[\e[0m\]'  # normal/reset
+    local r i y b m
+    printf -v r '\[\e[0m\]'  # reset
     printf -v i '\[\e[3m\]'  # italic
-    printf -v o '\[\e[33m\]' # orange
+    printf -v y '\[\e[33m\]' # yellow
     printf -v b '\[\e[34m\]' # blue
-    printf -v p '\[\e[35m\]' # purple
+    printf -v m '\[\e[35m\]' # magenta
 
     local gitprompt=''
-    command -v __git_ps1 > /dev/null && gitprompt="$o\$(__git_ps1 '(%s) ')$n"
+    command -v __git_ps1 > /dev/null && gitprompt="$y\$(__git_ps1 '(%s) ')$r"
+
+    local p='❯'
+    [[ $TERM == 'linux' ]] && p='>' i=''
 
     # Don't export the prompt, it interacts poorly with nested shells
-    PS1="$n$gitprompt$p$i\u@\h$n:$b\w\n\[\$(-set-exit-color)\]❯$n "
-    PS2="\[\$(-set-exit-color)\]❯$n "
+    PS1="$r$gitprompt$m$i\u@\h$r:$b\w\n\[\$(-set-exit-color)\]$p$r "
+    PS2="\[\$(-set-exit-color)\]$p$r "
 }
 
 set-prompt

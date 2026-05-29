@@ -48,7 +48,7 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.numberwidth = 3
 vim.o.list = true
-vim.o.listchars = 'trail:⌷,tab:⟩ '
+vim.o.listchars = 'tab:⟩ ,trail:⌷,nbsp:_'
 vim.o.fillchars = 'eob:·'
 vim.o.scrolloff = 8
 vim.o.sidescrolloff = 10
@@ -59,8 +59,7 @@ vim.o.ignorecase = true
 vim.o.inccommand = 'split'
 
 vim.o.foldtext = ''
-vim.o.foldlevel = 99
-vim.o.foldenable = true
+vim.o.foldlevelstart = 99
 
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
