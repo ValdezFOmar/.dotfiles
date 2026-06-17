@@ -1,5 +1,4 @@
 grub-hook
-jmtpfs
 qogir-cursor-theme
 ts_query_ls-bin
 vscode-langservers-extracted

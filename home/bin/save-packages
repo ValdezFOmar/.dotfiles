@@ -6,7 +6,7 @@ set -o nounset
 set -o pipefail
 
 readonly program=${0##*/}
-readonly pattern='^(intel-ucode|amd-ucode|zip|unzip|unrar-free)$' # use 7z (7zip) instead
+readonly pattern='^(intel-ucode|amd-ucode|vulkan-.+|zip|unzip|unrar-free)$' # use 7z (7zip) instead
 
 function error() {
     >&2 echo "$program: error: $*"
