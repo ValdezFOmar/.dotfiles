@@ -13,6 +13,7 @@ deepin-gtk-theme
 dunst
 efibootmgr
 entr
+eslint-language-server
 fastfetch
 fd
 firefox
@@ -89,6 +90,9 @@ udiskie
 udisks2
 uwsm
 vlc
+vscode-css-languageserver
+vscode-html-languageserver
+vscode-json-languageserver
 waybar
 wget
 wireplumber

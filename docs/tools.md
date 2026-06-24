@@ -18,23 +18,23 @@ languages in my projects:
 
 | nvim-lspconfig name     | Package                       | Source |
 |-------------------------|-------------------------------|--------|
-| `basedpyright`          | basedpyright                  | pipx   |
-| `bashls`                | bash-language-server          | pacman |
-| `clangd`                | clang                         | pacman |
-| `cssls`                 | vscode-langservers-extracted  | aur    |
-| `emmet_language_server` | emmet-language-server         | aur    |
-| `eslint`                | (same as cssls)               | aur    |
-| `html`                  | (same as cssls)               | aur    |
-| `jsonls`                | (same as cssls)               | aur    |
-| `lua_ls`                | lua-language-server           | pacman |
-| `marksman`              | marksman                      | pacman |
-| `ruff`                  | ruff                          | pacman |
-| `rust_analyzer`         | rustup                        | pacman |
-| `texlab`                | texlab                        | pacman |
-| `tombi`                 | tombi                         | pacman |
-| `ts_ls`                 | typescript-language-server    | pacman |
-| `ts_query_ls`           | ts_query_ls-bin               | aur    |
-| `yamlls`                | yaml-language-server          | pacman |
+| `basedpyright`          | `basedpyright`                | pipx   |
+| `bashls`                | `bash-language-server`        | pacman |
+| `clangd`                | `clang`                       | pacman |
+| `cssls`                 | `vscode-css-language-server`  | pacman |
+| `emmet_language_server` | `emmet-language-server`       | aur    |
+| `eslint`                | `eslint-language-server`      | pacman |
+| `html`                  | `vscode-html-language-server` | pacman |
+| `jsonls`                | `vscode-json-language-server` | pacman |
+| `lua_ls`                | `lua-language-server`         | pacman |
+| `marksman`              | `marksman`                    | pacman |
+| `ruff`                  | `ruff`                        | pacman |
+| `rust_analyzer`         | `rustup`                      | pacman |
+| `texlab`                | `texlab`                      | pacman |
+| `tombi`                 | `tombi`                       | pacman |
+| `ts_ls`                 | `typescript-language-server`  | pacman |
+| `ts_query_ls`           | `ts_query_ls-bin`             | aur    |
+| `yamlls`                | `yaml-language-server`        | pacman |
 
 ## Fonts and Language
 

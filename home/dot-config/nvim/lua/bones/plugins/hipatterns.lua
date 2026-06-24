@@ -25,6 +25,11 @@ return {
             group = vim.api.nvim_create_augroup('bones.hipatterns', {}),
             callback = function(ev)
                 local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+                -- Exclude `vscode-json-language-server` since its implementation of
+                -- document color is not that (generally) useful.
+                if client.name == 'jsonls' then
+                    return
+                end
                 if client:supports_method 'textDocument/documentColor' then
                     vim.b[ev.buf].minihipatterns_disable = true
                     require('mini.hipatterns').disable(ev.buf)
