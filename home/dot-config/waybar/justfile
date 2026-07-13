@@ -1,5 +1,5 @@
 [private]
-default:
+@default:
     just --list
 
 [doc("Reload config after each write")]

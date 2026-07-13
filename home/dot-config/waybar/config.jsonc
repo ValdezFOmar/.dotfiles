@@ -105,12 +105,10 @@
     "tooltip-format": "<tt>{calendar}</tt>",
     "calendar": {
       "mode": "month",
-      "weeks-pos": "right",
       "on-scroll": 1,
       "format": {
         "months": "<span color='#b0cede'><b>{}</b></span>",
         "days": "<span color='#4889ad'><b>{}</b></span>",
-        "weeks": "<span color='#8cb7cf'>{}</span>",
         "weekdays": "<span color='#8cb7cf'>{}</span>",
         "today": "<span color='#b0cede'><b><b>{}</b></b></span>"
       }
