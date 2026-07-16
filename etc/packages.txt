@@ -23,7 +23,6 @@ git
 gnome-keyring
 greetd
 grim
-grub
 gvfs
 gvfs-mtp
 htop
@@ -54,7 +53,6 @@ nsxiv
 nwg-hello
 nwg-look
 openssh
-os-prober
 pacman-contrib
 papirus-icon-theme
 pcmanfm

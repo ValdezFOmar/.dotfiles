@@ -1,4 +1,3 @@
-grub-hook
 qogir-cursor-theme
 ts_query_ls-bin
 wlogout

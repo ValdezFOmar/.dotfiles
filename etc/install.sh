@@ -34,4 +34,5 @@ systemctl enable \
     cpupower.service \
     greetd.service \
     paccache.timer \
-    reflector.timer
+    reflector.timer \
+    systemd-boot-update.service

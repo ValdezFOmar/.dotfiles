@@ -101,9 +101,10 @@ Ensure the system clock is accurate by inspecting the output of:
 timedatectl status
 ```
 
-### Partition the disks
+### Create partitions
 
-Partition using the `cfdisk` command, as it provides a TUI for partitioning.
+Create the partitions using the `cfdisk` command, as it provides a TUI
+for partitioning.
 
 ```sh
 cfdisk /dev/{disk-name}
@@ -111,46 +112,43 @@ cfdisk /dev/{disk-name}
 
 Choose a GPT label for UEFI and create the following 4 partitions:
 
-> [!IMPORTANT]
+> [!WARNING]
 > If a EFI partition already exists, use it instead of creating a new one.
 
-
-| Usage     | Partition               | Size       | Mount point  |
-|-----------|-------------------------|------------|--------------|
-| EFI       | `/dev/{efi-partition}`  | 1 GB       | `/mnt/boot`  |
-| swap      | `/dev/{swap-partition}` | +512 M     | N/A          |
-| root      | `/dev/{root-partition}` | ~50-100 GB | `/mnt`       |
-| home      | `/dev/{home-partition}` | Left space | `/mnt/home`  |
+| Usage | Partition               | Partition type   | Size    | Mount point  |
+|-------|-------------------------|------------------|---------|--------------|
+| ESP   | `/dev/{efi-partition}`  | EFI system       | 1-4 GB  | `/mnt/boot`  |
+| root  | `/dev/{root-partition}` | Linux filesystem | 100+ GB | `/mnt`       |
 
 
 ### Format partitions
 
 Format the partitions with the proper file system:
 
-> [!IMPORTANT]
+> [!WARNING]
 > If a EFI partition already exists, don't format it.
 
 ```sh
 mkfs.ext4 /dev/{root-partition}
-mkfs.ext4 /dev/{home-partition}
 mkfs.fat -F 32 /dev/{efi-partition}
-mkswap /dev/{swap-partition}
 ```
 
-### Mount the file systems
+### Mount partitions
 
 Use the `mount` command to mount the partitions:
 
 ```sh
 mount /dev/{root-partition} /mnt
 mount --mkdir /dev/{efi-partition} /mnt/boot
-mount --mkdir /dev/{home-partition} /mnt/home
 ```
 
-For the swap, just turn it on:
+### Swap file
+
+Create a swap file, as it is more flexible than using a swap partition:
 
 ```sh
-swapon /dev/{swap-partition}
+mkswap -U clear --size 4G --file /mnt/swapfile
+swapon /mnt/swapfile
 ```
 
 ## Installation
@@ -173,8 +171,6 @@ Packages required to bootstrap the system:
 - `base-devel`
 - `linux`
 - `linux-firmware`
-- `grub`
-- `os-prober`: if detection of other OSes is needed for `grub`
 - `efibootmgr`
 - `networkmanager`
 - `neovim`
@@ -217,6 +213,8 @@ Use the timezone `America/Tijuana` located at `/usr/share/zoneinfo/America/Tijua
 and enable network time synchronization:
 
 ```sh
+ln -sf /usr/share/zoneinfo/America/Tijuana /etc/localtime
+hwclock --systohc
 timedatectl set-ntp true
 timedatectl status
 ```
@@ -282,34 +280,59 @@ Uncomment the following line:
 Create and set the password for a new user:
 
 ```sh
-useradd -m -G wheel -s /bin/bash {username}
+useradd --create-home --group wheel {username}
 passwd {username}
 ```
 
-
 ### Boot loader
 
-#### Enable `os-prober`
+> [!NOTE]
+> See [`systemd-boot` wiki](https://wiki.archlinux.org/title/Systemd-boot).
 
-For dual booting, `os-prober` needs to be enabled to add systems from
-other partitions to the boot entry. Edit `/etc/default/grub` and
-uncomment the following line:
+Install `systemd-boot` with `bootctl install` and it will automatically
+found the EFI system partition at `/boot`. Configure the boot loader at
+`/boot/loader/loader.conf`:
 
-```ini
-GRUB_DISABLE_OS_PROBER=false
+```conf
+default arch.conf
+timeout 10
+auto-firmware on
+auto-poweroff on
 ```
 
-#### Install grub
-
-Install and configure grub for EFI mode.
+Since `systemd-boot` doesn't automatically create menu entries for
+booting Arch Linux, entries must be manually added as files under
+`/boot/loader/entries`.
 
 > [!IMPORTANT]
-> `{device}` is a *device* name, **NOT** a *partition*
+> Replace `{FS-UUID}` with the file system UUID of the root partition.
+> To get the UUID, run `lsblk -f`.
 
-```sh
-grub-install /dev/{device}
-grub-mkconfig -o /boot/grub/grub.cfg
+Default entry at `/boot/loader/entries/arch.conf`:
+
+```conf
+### Default entry for Arch Linux ###
+# Printing to console is slow, avoid that for a faster boot
+# https://wiki.archlinux.org/title/Improving_performance/Boot_process#Less_output_during_boot
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options root=UUID={FS-UUID} rw quiet loglevel=3 systemd.show_status=auto rd.udev.log_level=3
 ```
+
+Fallback entry at `/boot/loader/entries/arch-fallback.conf`:
+
+```conf
+title   Arch Linux (fallback initramfs)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux-fallback.img
+options root=UUID={FS-UUID} rw
+```
+
+> [!NOTE]
+> The Arch Linux ISO can be used as a rescue system.
+> See [Archiso on ESP](https://wiki.archlinux.org/title/Systemd-boot#Archiso_on_ESP).
+
 
 ### Console configuration
 
@@ -330,6 +353,7 @@ package (e.g. the one set in [Keyboard layout and font](#keyboard-layout-and-fon
 
 1. Exit the `chroot` environment with `exit`.
 2. Unmount the partitions `umount -R /mnt`.
+  - Use `fuser -v -m /mnt` to check for busy partitions.
 3. Type `reboot`.
 
 ## Post-installation

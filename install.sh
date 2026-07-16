@@ -46,8 +46,8 @@ xargs pipx install < "$dotfiles/etc/packages-pypi.txt"
 ya pkg install
 
 systemctl --user enable \
-    tldrcache.timer \
-    hyprpaper.service \
+    gcr-ssh-agent.socket \
     hypridle.service \
-    waybar.service \
-    gcr-ssh-agent.socket
+    hyprpaper.service \
+    tldrcache.timer \
+    waybar.service
