@@ -8,11 +8,12 @@ return {
     ---@type blink.cmp.Config
     opts = {
         keymap = {
-            ['<C-p>'] = { 'scroll_documentation_up', 'fallback' },
-            ['<C-n>'] = { 'scroll_documentation_down', 'fallback' },
+            preset = 'super-tab',
+            ['<C-y>'] = { 'select_and_accept', 'fallback' },
+            ['<C-k>'] = { 'select_prev', 'fallback_to_mappings' },
+            ['<C-j>'] = { 'select_next', 'fallback_to_mappings' },
             ['<M-k>'] = { 'select_prev', 'fallback_to_mappings' },
             ['<M-j>'] = { 'select_next', 'fallback_to_mappings' },
-            ['<Tab>'] = { 'select_and_accept', 'fallback_to_mappings' },
             ['<M-Tab>'] = { 'snippet_forward', 'fallback' },
         },
         snippets = { preset = 'luasnip' },
