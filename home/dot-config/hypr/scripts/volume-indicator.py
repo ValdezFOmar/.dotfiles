@@ -2,12 +2,11 @@
 
 
 import json
-import os
 import re
 import subprocess
 from typing import NamedTuple, Self, TypedDict
 
-SCRIPT_NAME = os.path.basename(__file__)
+PROGNAME = 'volume-indicator'
 
 
 class Event(TypedDict):
@@ -28,6 +27,7 @@ class SinkState(NamedTuple):
             ['/usr/bin/wpctl', 'get-volume', '@DEFAULT_SINK@'],
             capture_output=True,
             encoding='utf-8',
+            check=False,
         ).stdout.strip()
 
         match = cls._VOLUME_PATTERN.search(output)
@@ -38,18 +38,17 @@ class SinkState(NamedTuple):
 
 
 def send_notification(summary: str, body: str):
-    try:
-        subprocess.run(
-            [
-                '/usr/bin/notify-send',
-                f'--app-name={SCRIPT_NAME}',
-                '--hint=string:x-dunst-stack-tag:volume_indicator_notification',
-                summary,
-                body,
-            ]
-        )
-    except Exception:
-        pass
+    subprocess.run(
+        [
+            '/usr/bin/notify-send',
+            f'--app-name={PROGNAME}',
+            '--hint=string:x-dunst-stack-tag:volume_indicator_notification',
+            '--',
+            summary,
+            body,
+        ],
+        check=False,
+    )
 
 
 def display_indicator(state: SinkState):
@@ -65,14 +64,15 @@ def display_indicator(state: SinkState):
     subprocess.run(
         [
             '/usr/bin/notify-send',
-            f'--app-name={SCRIPT_NAME}',
+            f'--app-name={PROGNAME}',
             '--urgency=low',
             f'--icon={icon}',
             '--hint=string:x-dunst-stack-tag:volume_indicator',
             f'--hint=int:value:{state.volume}',
+            '--',
             f'{state.volume}%',
         ],
-        capture_output=True,
+        check=False,
     )
 
 
@@ -98,7 +98,7 @@ def main() -> int:
                     continue
                 display_indicator(state)
                 prev_state = state
-            except Exception as e:  # prevent exceptions from terminating the process
+            except (OSError, json.JSONDecodeError, subprocess.SubprocessError) as e:
                 send_notification('Error while trying to display volume', f'<tt>{e}</tt>')
 
     if process.returncode not in (0, 130):

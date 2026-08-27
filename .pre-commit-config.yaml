@@ -16,7 +16,7 @@ repos:
           (?x)^(
             assets/desktop\.png|
             assets/screenlock\.png|
-            home/\.config/hypr/wallpapers/portal-(water|light|menu)\.png
+            home/dot-config/hypr/wallpapers/portal-(water|light|menu)\.png
           )$
       - id: check-executables-have-shebangs
       - id: check-toml
@@ -38,3 +38,14 @@ repos:
     rev: v0.11.0.1
     hooks:
     -   id: shellcheck
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.4
+    hooks:
+      - id: ruff-check
+      - id: ruff-format
+
+  - repo: https://github.com/DetachHead/basedpyright-prek-mirror
+    rev: 1.39.10
+    hooks:
+        - id: basedpyright
