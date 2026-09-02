@@ -1,4 +1,5 @@
 local api = vim.api
+local strwidth = api.nvim_strwidth
 
 local M = {}
 
@@ -41,8 +42,6 @@ local function fmt_prompt(prompt)
     return prompt, (' %s '):format(prompt)
 end
 
-local select_ns = api.nvim_create_namespace 'bones.ui.select'
-
 ---@type bones.ui.Size
 local select_max_win_size = {
     width = M.defaults.max_width,
@@ -77,13 +76,13 @@ function M.select(items, opts, on_choice)
 
     local pad_width = string.len(#items)
     local lines = {} ---@type string[]
-    local max_line_len = #title
+    local max_line_len = strwidth(title)
 
     for index, item in ipairs(items) do
         local pad = (' '):rep(pad_width - string.len(index))
         local line = ('%s%d. %s'):format(pad, index, format_item(item)):gsub('\n', ' | ')
         lines[index] = line
-        max_line_len = math.max(max_line_len, #line)
+        max_line_len = math.max(max_line_len, strwidth(line))
     end
 
     local buf = api.nvim_create_buf(false, true)
@@ -92,26 +91,6 @@ function M.select(items, opts, on_choice)
     vim.bo[buf].modifiable = false
     vim.bo[buf].readonly = true
     vim.treesitter.start(buf, 'markdown')
-
-    if opts.kind == 'codeaction' then
-        local space = 2 -- Spaces between the text and the client name
-        for i, item in ipairs(items) do
-            ---@cast item bones.ui.CodeAction
-            -- TODO: Add features/info from `item.action`
-            local client = vim.lsp.get_client_by_id(item.ctx.client_id)
-            if client then
-                local name = client.config.name or client.name
-                api.nvim_buf_set_extmark(buf, select_ns, i - 1, 0, {
-                    virt_text = { { name, 'DiagnosticVirtualTextHint' } },
-                    virt_text_pos = 'eol_right_align',
-                    virt_lines_overflow = 'scroll',
-                })
-                -- Ideal length to fit both the text and client name
-                local len = #lines[i] + space + #name
-                max_line_len = math.max(max_line_len, len)
-            end
-        end
-    end
 
     local win_size = { width = max_line_len, height = #items }
     local win = api.nvim_open_win(buf, true, {
@@ -203,7 +182,7 @@ function M.input(opts, on_confirm)
     vim.validate('on_confirm', on_confirm, 'callable')
 
     local prompt, title = fmt_prompt(opts.prompt or 'Input')
-    local max_line_len = math.max(#title, 30)
+    local max_line_len = math.max(strwidth(title), 30)
 
     local buf = api.nvim_create_buf(false, true)
     api.nvim_buf_set_name(buf, prompt)
@@ -213,7 +192,7 @@ function M.input(opts, on_confirm)
     if opts.default then
         local lines = vim.split(opts.default, '\n')
         for _, line in ipairs(lines) do
-            max_line_len = math.max(max_line_len, math.ceil(#line * 1.5))
+            max_line_len = math.max(max_line_len, math.ceil(strwidth(line) * 1.5))
         end
         api.nvim_buf_set_lines(buf, 0, -1, false, lines)
     end

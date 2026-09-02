@@ -83,17 +83,21 @@ map('n', 'yp', '<CMD>let @@=expand("%:p")<CR>', { desc = "Copy current file's pa
 map({ 'n', 'x' }, '<leader>P', '"+p', { desc = 'Paste from clipboard' })
 
 -- editor
-map('n', 'L', vim.diagnostic.open_float)
+map('n', 'L', vim.diagnostic.open_float, { desc = 'Open float with diagnostics' })
 map('n', 'gs', '<Nop>') -- map it to something more useful
 map('n', 'z=', ui.spell, { desc = 'Show and select spell suggestions' })
 map('n', '<C-d>', '<C-d>zz')
 map('n', '<C-u>', '<C-u>zz')
 map('t', '<Esc>', [[<C-\><C-n>]], { desc = 'Go to Normal mode in Terminal' })
+map({ 'i', 's' }, '<C-S>', function()
+    lsp.buf.signature_help(ui.defaults)
+end, { desc = 'vim.lsp.buf.signature_help()' })
 
 -- text editing
 map('n', 'U', '<C-r>', { desc = 'Redo changes with `U`' })
 map('n', 'J', 'mzJ`z', { desc = 'Same as `J`, but does not move the cursor' })
 map('i', '<C-m>', require('bones.caps').toggle, { desc = 'Uppercase characters as you type' })
+map('n', 'grq', lsp.buf.format, { desc = 'vim.lsp.buf.format()' }) -- use `gq` in Visual mode
 
 -- indentation
 map('n', '<BS>', '<<', { desc = 'Remove 1 level of indentation' })
@@ -312,14 +316,6 @@ autocmd('LspAttach', {
                 lsp.buf.hover(ui.defaults)
             end, opts)
         end
-        if client:supports_method 'textDocument/signatureHelp' then
-            map({ 'i', 's' }, '<C-S>', function()
-                lsp.buf.signature_help(ui.defaults)
-            end, opts)
-        end
-        if client:supports_method 'textDocument/formatting' then
-            map('n', 'grq', lsp.buf.format, opts) -- use `gq` in Visual mode
-        end
 
         -- Use fzf-lua if available, else use neovim native implementations
         local ok, fzf = pcall(require, 'fzf-lua')
@@ -331,7 +327,7 @@ autocmd('LspAttach', {
             map('n', 'gd', definition, opts)
         end
         if client:supports_method 'textDocument/typeDefinition' then
-            map('n', 'gt', type_definition, opts)
+            map('n', 'grt', type_definition, opts)
         end
         if client:supports_method 'textDocument/references' then
             map('n', 'grr', references, opts)
@@ -355,6 +351,7 @@ autocmd('FileType', {
     desc = 'Disable line numbers in the quickfix window',
     pattern = 'qf',
     callback = function()
+        vim.wo[0][0].list = false
         vim.wo[0][0].number = false
         vim.wo[0][0].relativenumber = false
     end,
