@@ -21,11 +21,11 @@ languages in my projects:
 | `basedpyright`          | `basedpyright`                | pipx   |
 | `bashls`                | `bash-language-server`        | pacman |
 | `clangd`                | `clang`                       | pacman |
-| `cssls`                 | `vscode-css-language-server`  | pacman |
+| `cssls`                 | `vscode-css-languageserver`   | pacman |
 | `emmet_language_server` | `emmet-language-server`       | aur    |
 | `eslint`                | `eslint-language-server`      | pacman |
-| `html`                  | `vscode-html-language-server` | pacman |
-| `jsonls`                | `vscode-json-language-server` | pacman |
+| `html`                  | `vscode-html-languageserver`  | pacman |
+| `jsonls`                | `vscode-json-languageserver`  | pacman |
 | `lua_ls`                | `lua-language-server`         | pacman |
 | `marksman`              | `marksman`                    | pacman |
 | `ruff`                  | `ruff`                        | pacman |
