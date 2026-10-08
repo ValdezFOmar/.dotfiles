@@ -33,7 +33,6 @@ export PYENV_ROOT="$XDG_STATE_HOME/pyenv"
 # Use italics instead of underlines
 export MANROFFOPT=-P-i
 export MANPAGER='nvim +Man!'
-export MDCAT_PAGER='less --raw-control-chars --quit-if-one-screen'
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export PIPX_BIN_DIR=$XDG_BIN_HOME

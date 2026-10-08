@@ -5,8 +5,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# Print commands as they are executed
-set -o xtrace
+trap 'printf "\e[91mExit status %s at line %s:\n%s\n" "$?" "$LINENO" "$BASH_COMMAND"' ERR
 
 dotfiles=$(dirname "$(realpath "$0")")
 
@@ -23,7 +22,7 @@ mkdir --verbose --parents \
     ~/Videos \
     ~/archives \
     ~/projects \
-    ~/repos
+    ~/repos/pkgbuild
 
 stow --verbose --dotfiles --dir "$dotfiles" --target ~ --stow home
 
@@ -32,17 +31,19 @@ if ! [ -e ~/.bashrc ] || ! grep --silent --fixed-strings "$tag" ~/.bashrc; then
     printf '\n# %s\nsource ~/.config/bash/bashrc.bash\n' "$tag" >> ~/.bashrc
 fi
 
-if ! pacman --query --check --quiet paru; then
-    # Download the binary version to avoid compilation
-    git clone https://aur.archlinux.org/paru-bin.git ~/repos/paru-bin
-    pushd ~/repos/paru-bin
-    makepkg --syncdeps --install
-    popd
-fi
+# shellcheck disable=SC2024
+sudo pacman -S --needed - < "$dotfiles/etc/packages.txt"
 
-paru -S --needed - < "$dotfiles/etc/packages.txt"
-paru -S --needed - < "$dotfiles/etc/packages-aur.txt"
-xargs pipx install < "$dotfiles/etc/packages-pypi.txt"
+for repo in 'ts_query_ls-bin' 'qogir-cursor-theme'; do
+    dir="$HOME/repos/pkgbuild/$repo"
+    [[ -d $dir ]] || git clone "https://aur.archlinux.org/${repo}.git" "$dir"
+    (
+        cd "$dir"
+        makepkg --syncdeps --install --needed
+    )
+done
+
+pipx install basedpyright pdfly
 ya pkg install
 
 systemctl --user enable \

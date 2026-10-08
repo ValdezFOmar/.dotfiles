@@ -6,7 +6,7 @@ set -o nounset
 set -o pipefail
 
 readonly program=${0##*/}
-readonly pattern='^(intel-ucode|amd-ucode|vulkan-.+|zip|unzip|unrar-free)$' # use 7z (7zip) instead
+readonly pattern='^(intel-ucode|amd-ucode|vulkan-.+|xf86-.+|.*driver.*|zip|unzip|unrar-free)$' # use 7z (7zip) instead
 
 function error() {
     >&2 echo "$program: error: $*"
@@ -14,7 +14,6 @@ function error() {
 }
 
 function main() {
-    local file
     local destination=${1:-$HOME/.dotfiles/etc}
 
     if ! command -v pacman > /dev/null; then
@@ -23,13 +22,9 @@ function main() {
 
     [[ -d $destination ]] || mkdir --parents "$destination"
 
-    file=$destination/packages.txt
+    local file=$destination/packages.txt
     echo "$program: saving to '$file'"
     pacman --query --quiet --explicit --native | sed -E "/$pattern/d" > "$file"
-
-    file=$destination/packages-aur.txt
-    echo "$program: saving to '$file'"
-    pacman --query --quiet --explicit --foreign | sed -E '/paru/d' > "$file"
 }
 
 main "$@"

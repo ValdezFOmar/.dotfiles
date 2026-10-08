@@ -1,21 +1,17 @@
 # See dunst(5) for all configuration options
 
 [global]
-  monitor = 0
-  follow = none
-  # Sort messages by urgency
-  sort = yes
-  idle_threshold = 2m
-
   notification_limit = 6
-  indicate_hidden = yes
+
+  # Sort messages by urgency
+  sort = true
+  idle_threshold = 2m
 
   # Geometry
   width = (50, 400)
   height = (50, 300)
   origin = top-right
   offset = (10, 10)
-  scale = 0
   corner_radius = 12
 
   # Progress bar
@@ -24,10 +20,10 @@
   progress_bar_frame_width = 1
   progress_bar_min_width = 150
   progress_bar_max_width = 300
-  progress_bar_corner_radius = 3
+  progress_bar_corner_radius = 10
 
   # Spacing / Frame (Border)
-  gap_size = 5
+  gap_size = 10
   frame_width = 2
   frame_color = "#4889AD"
   separator_height = 3
@@ -35,45 +31,32 @@
 
   # Text
   font = Source Sans Pro
-  line_height = 0
   markup = full
   format = "<span size='110%'><b>%s</b></span> <span size='90%' color='#4889AD'>(%a)</span>\n%b"
   alignment = left
   vertical_alignment = center
-  show_age_threshold = -1
-  ellipsize = middle
-  ignore_newline = no
-  stack_duplicates = true
-  hide_duplicate_count = true
-  show_indicators = yes
 
   # Icons
-  icon_corner_radius = 0
-  text_icon_padding = 0
   enable_recursive_icon_lookup = true
   icon_theme = Papirus-Dark, Papirus, Adwaita
   icon_position = left
   min_icon_size = 48
-  max_icon_size = 128
-
-  # History
-  sticky_history = no
-  history_length = 20
+  max_icon_size = 48
 
   # Misc/Advanced
   dmenu = /usr/bin/fuzzel --dmenu
 
   # mouse
-  mouse_left_click = close_current
+  mouse_left_click = do_action, close_current
   mouse_middle_click = close_all
-  mouse_right_click = do_action, close_current
+  mouse_right_click = close_current
 
   # https://en.m.wikibooks.org/wiki/Regular_Expressions/POSIX-Extended_Regular_Expressions
   enable_posix_regex = true
 
 
 [experimental]
-  per_monitor_dpi = false
+  pause_on_mouse_over = true
 
 [urgency_low]
   background = "#19242AD0"

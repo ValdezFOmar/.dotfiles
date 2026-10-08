@@ -8,6 +8,7 @@
 alias sudo='sudo '
 
 alias grep='grep --color=auto'
+alias less='less --quit-if-one-screen'
 alias ls='ls --color=auto --group-directories-first'
 alias la='ls -AvF'
 alias ll='ls -Alvh'
