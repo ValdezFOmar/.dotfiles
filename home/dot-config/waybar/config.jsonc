@@ -26,7 +26,7 @@
     "format": "<span style=\"italic\">{}</span>"
   },
   "hyprland/language": {
-    "format": "  {}",
+    "format": " {}",
     "format-en": "English",
     "format-es": "Español",
     "keyboard-name": "at-translated-set-2-keyboard"
@@ -97,7 +97,7 @@
     }
   },
   "clock": {
-    "format": "{:%I:%M}  ",
+    "format": "{:%I:%M} ",
     "tooltip-format": "{:%c}"
   },
   "clock#date": {

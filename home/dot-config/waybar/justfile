@@ -4,7 +4,7 @@
 
 [doc("Reload config after each write")]
 watch:
-    printf 'style.css\nconfig.jsonc' | entr just reload
+    printf 'config.jsonc' | entr just reload
 
 [doc("Reload current config")]
 reload:

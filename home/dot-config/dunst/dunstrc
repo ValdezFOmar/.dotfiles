@@ -30,7 +30,7 @@
   separator_color = frame
 
   # Text
-  font = Source Sans Pro
+  font = Noto Sans
   markup = full
   format = "<span size='110%'><b>%s</b></span> <span size='90%' color='#4889AD'>(%a)</span>\n%b"
   alignment = left

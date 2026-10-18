@@ -1,4 +1,3 @@
-adobe-source-sans-fonts
 alsa-utils
 base
 base-devel
@@ -82,7 +81,7 @@ terminus-font
 tldr
 tree
 ttf-cascadia-code
-ttf-cascadia-code-nerd
+ttf-nerd-fonts-symbols
 typescript-language-server
 udiskie
 udisks2
