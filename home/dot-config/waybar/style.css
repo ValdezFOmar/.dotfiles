@@ -1,198 +1,142 @@
-@define-color color0 #1b3441;
-@define-color color1 #2a5065;
-@define-color color2 #396d89;
-@define-color color3 #4889ad;
-@define-color color4 #68a1c0;
-@define-color color5 #8cb7cf;
-@define-color color6 #b0cede;
-@define-color color7 #d4e4ed;
+/**
+ * GTK CSS documentation:
+ * - https://docs.gtk.org/gtk3/css-overview.html
+ * - https://docs.gtk.org/gtk3/css-properties.html
+ */
 
-@define-color background #19242A;
-@define-color base @color1;
-@define-color deactivated @color4;
-@define-color foreground @color6;
+/**
+ * Cyan palette taken from tailwindcss
+ */
+@define-color color0 #ecfeff;
+@define-color color1 #cefafe;
+@define-color color2 #a2f4fd;
+@define-color color3 #53eafd;
+@define-color color4 #00d3f2;
+@define-color color5 #00b8db;
+@define-color color6 #0092b8;
+@define-color color7 #007595;
+@define-color color8 #005f78;
+@define-color color9 #104e64;
+@define-color color10 #053345;
 
-@define-color green #5cc842;
-@define-color yellow #c8c642;
-@define-color red #c84442;
+@define-color yellow #fcc800;
+@define-color red #ff6467;
 
-/* General */
+@define-color fg @color0;
+@define-color bg @color10;
+@define-color border @color8;
+@define-color inactive @color6;
 
-* {
-    font-family: "Cascadia Mono", "Symbols Nerd Font", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-}
-
+/* Root element */
 window#waybar {
-    all: unset;
+    font-family: "Noto Sans", "Symbols Nerd Font", sans-serif;
+    font-size: 16px;
+    color: @fg;
+    background: transparent;
 }
 
-.modules-left {
-    padding: 0 4px;
-    margin-top: 10px;
-    margin-left: 10px;
-    border: 2px solid @base;
+.modules-left,
+.modules-center,
+.modules-right {
+    margin: 5px 5px 0;
+    padding: 0 15px;
+    border: 1px solid @border;
     border-radius: 10px;
-    background: alpha(@background, 0.8);
+    background: alpha(@bg, 0.6);
 }
 
 .modules-center {
-    padding: 0 4px;
-    margin-top: 10px;
-    border: 2px solid @base;
-    border-radius: 10px;
-    background: alpha(@background, 0.8);
+    margin: 5px 0 0;
 }
 
-.modules-right {
-    padding: 0 4px;
-    margin-top: 10px;
-    margin-right: 10px;
-    border: 2px solid @base;
-    border-radius: 10px;
-    background: alpha(@background, 0.8);
+.module {
+    padding: 5px 0;
 }
 
 tooltip {
-    border: 2px solid @base;
+    border: 1px solid @border;
     border-radius: 10px;
-    background: alpha(@color0, .9);
+    background: @bg;
 }
 
 tooltip label {
-    color: @foreground;
+    color: @color1;
 }
 
-#backlight,
-#battery,
-#clock,
-#clock.date,
-#cpu,
-#disk,
-#idle_inhibitor,
-#keyboard-state,
-#language,
-#network,
-#memory,
-#mode,
-#mpd,
-#pulseaudio,
-#scratchpad,
-#temperature,
-#tray,
-#window,
-#wireplumber {
-    padding: 6px 12px;
-    color: @foreground;
+/**
+ * Left modules
+ */
+
+#idle_inhibitor.deactivated {
+    color: @inactive;
+}
+
+#window {
+    border-left: 1px solid @border;
+    padding-left: 15px;
+}
+
+/**
+ * Center modules
+ */
+
+#workspaces button {
+    all: unset;
+    transition: color 0.3s ease-out;
+    color: alpha(@color4, 0.75);
+    margin-right: 15px;
+}
+
+#workspaces button:last-child {
+    margin-right: 0;
+}
+
+#workspaces button.empty {
+    color: @border;
+}
+
+#workspaces button.active,
+#workspaces button:hover {
+    color: @color0;
+}
+
+#workspaces button.urgent {
+    color: @red;
+}
+
+/**
+ * Right modules
+ */
+
+#tray {
+    border-right: 1px solid @border;
+    padding-right: 15px;
+}
+
+#wireplumber.muted {
+    color: @inactive;
+}
+
+#clock {
+    padding-left: 15px;
+    border-left: 1px solid @border;
 }
 
 /* Battery */
-#battery {
-    transition: all .3s ease;
-    background: none;
-}
-
-#battery.full-charge {
-    color: @green;
-    background: none;
-}
-
 #battery.charging {
     color: @yellow;
-    background: none;
 }
 
 @keyframes blink {
     to {
-        color: @color7;
+        color: @red;
     }
 }
 
-/* Using steps() instead of linear as a timing function to limit cpu usage */
 #battery.critical:not(.charging) {
-    color: @red;
-    background: none;
     animation-name: blink;
     animation-duration: 0.5s;
-    animation-timing-function: steps(12);
+    animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
     animation-direction: alternate;
-}
-
-
-/* Clock */
-#clock {
-    transition: all .3s ease;
-}
-
-
-/* Idle inhibitor */
-#idle_inhibitor {
-    color: @deactivated;
-}
-
-#idle_inhibitor.activated {
-    color: @foreground;
-}
-
-/* Keyboard state */
-#keyboard-state>label {
-    color: @deactivated;
-}
-
-#keyboard-state>label.locked {
-    color: @foreground;
-}
-
-
-#network {
-    transition: all .3s ease;
-}
-
-
-/*
- * Icon Tray
- */
-
-#tray {
-    transition: all .3s ease;
-    padding-right: 15px;
-    border-right: 2px solid @base;
-}
-
-#tray menu * {
-    padding: 0px 5px;
-    transition: all .3s ease;
-}
-
-#tray menu separator {
-    padding: 0px 5px;
-    transition: all .3s ease;
-}
-
-/* hyprland/window module - window title */
-#window {
-    border-left: 2px solid @base;
-    color: @foreground;
-}
-
-/* Wireplumber - Volume */
-#wireplumber.muted {
-    color: @deactivated;
-}
-
-
-/* Workspaces */
-#workspaces button {
-    all: unset;
-    padding: 0px 10px;
-    color: @color4;
-}
-
-#workspaces button.empty {
-    color: @base;
-}
-
-#workspaces button.active {
-    color: @color6;
 }

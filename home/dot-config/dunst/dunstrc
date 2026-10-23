@@ -1,18 +1,17 @@
 # See dunst(5) for all configuration options
 
 [global]
-  notification_limit = 6
+  notification_limit = 10
 
-  # Sort messages by urgency
-  sort = true
+  sort = update
   idle_threshold = 2m
 
   # Geometry
-  width = (50, 400)
-  height = (50, 300)
+  width = (200, 400)
+  height = (50, 200)
   origin = top-right
-  offset = (10, 10)
-  corner_radius = 12
+  offset = (5, 5)
+  corner_radius = 10
 
   # Progress bar
   progress_bar = true
@@ -23,23 +22,23 @@
   progress_bar_corner_radius = 10
 
   # Spacing / Frame (Border)
-  gap_size = 10
-  frame_width = 2
-  frame_color = "#4889AD"
+  gap_size = 5
+  frame_width = 1
+  frame_color = "#005f78"
   separator_height = 3
   separator_color = frame
 
   # Text
   font = Noto Sans
   markup = full
-  format = "<span size='110%'><b>%s</b></span> <span size='90%' color='#4889AD'>(%a)</span>\n%b"
+  format = "<b>%s</b><span size='90%'>\n%b</span>"
   alignment = left
   vertical_alignment = center
 
   # Icons
   enable_recursive_icon_lookup = true
   icon_theme = Papirus-Dark, Papirus, Adwaita
-  icon_position = left
+  icon_position = right
   min_icon_size = 48
   max_icon_size = 48
 
@@ -59,31 +58,32 @@
   pause_on_mouse_over = true
 
 [urgency_low]
-  background = "#19242AD0"
-  foreground = "#B0CEDE"
-  highlight = "#B0CEDE"
+  background = "#053345b2"
+  foreground = "#ecfeffb2"
+  frame_color = "#005f78"
+  highlight = "#005f78"
   timeout = 10
 
 [urgency_normal]
-  background = "#19242AD0"
-  foreground = "#B0CEDE"
-  frame_color = "#4889AD"
-  highlight = "#B0CEDE"
+  background = "#053345b2"
+  foreground = "#ecfeff"
+  frame_color = "#0092b8"
+  highlight = "#0092b8"
   timeout = 10
 
 [urgency_critical]
-  background = "#19242AD0"
-  foreground = "#B0CEDE"
-  frame_color = "#C84442"
-  highlight = "#C84442"
+  background = "#460809b2"
+  foreground = "#ecfeff"
+  frame_color = "#ff6467"
+  highlight = "#ff6467"
   timeout = 20
 
 
 # Rules
 [testing]
-  appname = notification-test-script
+  appname = testing
   history_ignore = yes
-  timeout = 5
+  timeout = 60
 
 [volume]
   stack_tag = volume_indicator
@@ -91,6 +91,10 @@
   icon_position = top
   alignment = center
   format = "<span size='120%'><b>%s</b></span>"
+  background = "#0000007f"
+  foreground = "#ecfeff"
+  frame_color = "#00000000"
+  highlight = "#ecfeff"
   timeout = 3s
 
 [battery]
@@ -102,7 +106,5 @@
 [battery-critical]
   msg_urgency = critical
   stack_tag = battery_state
-  # The notification never timeouts
-  timeout = 0
 
 # vim: ft=ini

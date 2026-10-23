@@ -1,10 +1,9 @@
 {
   "layer": "top",
-  "spacing": 2,
+  "spacing": 15,
   "reload_style_on_change": true,
   "modules-left": [
     "idle_inhibitor",
-    "keyboard-state",
     "hyprland/language",
     "hyprland/submap",
     "hyprland/window"
@@ -17,26 +16,23 @@
     "network",
     "battery",
     "wireplumber",
-    "backlight",
-    "clock",
-    "clock#date"
+    "clock"
   ],
   // --- Hyprland specific modules ---
   "hyprland/submap": {
     "format": "<span style=\"italic\">{}</span>"
   },
   "hyprland/language": {
-    "format": " {}",
+    "format": "<big></big> {}",
     "format-en": "English",
     "format-es": "Español",
     "keyboard-name": "at-translated-set-2-keyboard"
   },
   "hyprland/window": {
     "icon": true,
-    "icon-size": 14, // Should be the same as the font size in style.css
+    "icon-size": 16, // same size as 'font-size' in style.css
     "format": "{title}",
     "separate-outputs": true,
-    "max-length": 40,
     "rewrite": {
       "(.+) — Mozilla Firefox": "$1",
       "": "Hyprland"
@@ -49,9 +45,8 @@
     "move-to-monitor": true,
     "format": "{icon}",
     "format-icons": {
-      "urgent": "",
       "default": "",
-      "empty": "",
+      "urgent": "",
       "special": ""
     },
     "persistent-workspaces": {
@@ -65,15 +60,6 @@
     }
   },
   // --- General purpose modules ---
-  "backlight": {
-    "tooltip": false,
-    "format": "{percent}% {icon}",
-    "format-icons": [
-      "󰃞",
-      "󰃟",
-      "󰃠"
-    ]
-  },
   "battery": {
     "interval": 5,
     "states": {
@@ -82,37 +68,45 @@
       "warning": 30,
       "critical": 15
     },
-    "format": "{capacity}% {icon}",
-    "format-full": "{capacity}% {icon}",
-    "format-charging": "{capacity}% 󱊦",
+    "format": "{icon}",
+    "format-charging": "{icon}",
     "format-icons": {
-      "full-charge": "󱊣",
-      "good": "󱊢",
-      "warning": "󱊡",
-      "critical": "󱃍"
+      "default": [
+        "󰂎", //   0
+        "󰁺", //  10
+        "󰁻", //  20
+        "󰁼", //  30
+        "󰁽", //  40
+        "󰁾", //  50
+        "󰁿", //  60
+        "󰂀", //  70
+        "󰂁", //  80
+        "󰂂", //  90
+        "󰁹" // 100
+      ],
+      "charging": [
+        "󰢟", //   0
+        "󰢜", //  10
+        "󰂆", //  20
+        "󰂇", //  30
+        "󰂈", //  40
+        "󰢝", //  50
+        "󰂉", //  60
+        "󰢞", //  70
+        "󰂊", //  80
+        "󰂋", //  90
+        "󰂅" // 100
+      ]
     },
+    "tooltip-format": "{capacity}% ({timeTo})",
     "events": {
       "on-charging-100": "notify-send --urgency=normal --icon=battery-full --hint string:x-dunst-stack-tag:battery_state 'Full battery'",
       "on-discharging-critical": "notify-send --urgency=critical --icon=battery-empty --hint string:x-dunst-stack-tag:battery_state 'Low battery'"
     }
   },
   "clock": {
-    "format": "{:%I:%M} ",
-    "tooltip-format": "{:%c}"
-  },
-  "clock#date": {
-    "format": "{:%d %b} 󰃭",
-    "tooltip-format": "<tt>{calendar}</tt>",
-    "calendar": {
-      "mode": "month",
-      "on-scroll": 1,
-      "format": {
-        "months": "<span color='#b0cede'><b>{}</b></span>",
-        "days": "<span color='#4889ad'><b>{}</b></span>",
-        "weekdays": "<span color='#8cb7cf'>{}</span>",
-        "today": "<span color='#b0cede'><b><b>{}</b></b></span>"
-      }
-    }
+    "format": "{:%a %d %b  %I:%M %p}",
+    "tooltip-format": "{:%A %d %B %Y - %I:%M %p}"
   },
   "idle_inhibitor": {
     "format": "{icon}",
@@ -121,20 +115,12 @@
       "deactivated": ""
     }
   },
-  "keyboard-state": {
-    "capslock": true,
-    "format": "{name} {icon}",
-    "format-icons": {
-      "locked": "󰌾",
-      "unlocked": ""
-    }
-  },
   "network": {
-    "format-wifi": "{signalStrength}% {icon}",
+    "format-wifi": "{icon}",
     "format-ethernet": "{ipaddr}/{cidr}",
     "format-linked": "{ifname} (No IP)",
     "format-disconnected": "󰤮",
-    "format-alt": "{essid} ({ifname})",
+    "format-alt": "{signalStrength}% {icon}",
     "tooltip-format": "{essid} ({signalStrength}%)",
     "format-icons": [
       "󰤯",
@@ -149,7 +135,14 @@
     "reverse-direction": true
   },
   "wireplumber": {
-    "format": "{volume}% 󰕾",
-    "format-muted": "{volume}% 󰝟"
+    "format": "{icon}",
+    "format-muted": "",
+    "format-icons": [
+      "",
+      "",
+      ""
+    ],
+    "tooltip-format": "{volume}% ({node_name})",
+    "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle"
   }
 }

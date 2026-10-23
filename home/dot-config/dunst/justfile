@@ -1,23 +1,21 @@
-appname := 'notification-test-script'
+appname := 'testing'
 
 default: reload test
 
 watch:
-    printf dunstrc | entr -p -r just
+    printf 'dunstrc\njustfile' | entr -p -r just
 
 reload:
     dunstctl close-all
     dunstctl reload
 
 test:
-    @notify-send --app-name={{appname}} --hint int:value:12 --urgency=low 'Low Urgency' 'This is the body.'
-    @notify-send --app-name={{appname}} --hint int:value:52 --urgency=normal 'Normal Urgency' 'This is the body.'
-    @notify-send --app-name={{appname}} --hint int:value:100 --urgency=critical 'Critical Urgency' 'This is the body.'
+    @notify-send --app-name={{appname}} --hint int:value:10 --urgency=low 'Low Urgency' 'This is the body.'
+    @notify-send --app-name={{appname}} --hint int:value:50 --urgency=normal 'Normal Urgency' 'This is the body.'
+    @notify-send --app-name={{appname}} --hint int:value:75 --urgency=critical --icon=dialog-error 'Critical Urgency' 'This is the body.'
     @notify-send --app-name={{appname}} --urgency=normal 'Test title' 'Without bar'
-    @notify-send --app-name={{appname}} 'Notification 1'
+    @notify-send --app-name={{appname}} --icon=bluetooth 'Notification 1'
     @notify-send --app-name={{appname}} 'Notification 2'
-    @notify-send --app-name={{appname}} 'Notification 3'
-    @notify-send --app-name={{appname}} 'Notification 4'
     @notify-send --app-name={{appname}} \
         --action=First='Lorem impsum' \
         --action=Second='Dolor sit amet' \
