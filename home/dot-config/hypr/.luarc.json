@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
+  "workspace": {
+    "library": [
+      "/usr/share/hypr/stubs"
+    ]
+  },
+  "diagnostics": {
+    "disable": [
+      "redefined-local"
+    ]
+  },
+  "type": {
+    "checkTableShape": true,
+    "castNumberToInteger": false
+  }
+}

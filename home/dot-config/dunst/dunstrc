@@ -58,21 +58,21 @@
   pause_on_mouse_over = true
 
 [urgency_low]
-  background = "#053345b2"
+  background = "#05334599"
   foreground = "#ecfeffb2"
   frame_color = "#005f78"
   highlight = "#005f78"
   timeout = 10
 
 [urgency_normal]
-  background = "#053345b2"
+  background = "#05334599"
   foreground = "#ecfeff"
   frame_color = "#0092b8"
   highlight = "#0092b8"
   timeout = 10
 
 [urgency_critical]
-  background = "#460809b2"
+  background = "#46080999"
   foreground = "#ecfeff"
   frame_color = "#ff6467"
   highlight = "#ff6467"
@@ -91,20 +91,15 @@
   icon_position = top
   alignment = center
   format = "<span size='120%'><b>%s</b></span>"
-  background = "#0000007f"
+  background = "#45556c7f"
   foreground = "#ecfeff"
-  frame_color = "#00000000"
+  frame_color = "#45556c7f"
   highlight = "#ecfeff"
   timeout = 3s
 
 [battery]
   stack_tag = battery_state
-  set_stack_tag = battery_state
   history_ignore = true
   format = "<span size='120%'><b>%s</b></span>"
-
-[battery-critical]
-  msg_urgency = critical
-  stack_tag = battery_state
 
 # vim: ft=ini
