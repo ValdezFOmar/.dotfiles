@@ -30,7 +30,6 @@ hyprland
 hyprlock
 hyprpaper
 hyprpicker
-jdk-openjdk
 just
 kitty
 less

@@ -46,6 +46,14 @@ done
 pipx install basedpyright pdfly
 ya pkg install
 
+systemctl enable \
+    NetworkManager.service \
+    cpupower.service \
+    greetd.service \
+    paccache.timer \
+    reflector.timer \
+    systemd-boot-update.service
+
 systemctl --user enable \
     gcr-ssh-agent.socket \
     hypridle.service \

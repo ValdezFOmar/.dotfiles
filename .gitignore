@@ -15,3 +15,9 @@ venv/
 
 # yazi plugins
 **/yazi/flavors/
+
+# Generated files
+src/
+pkg/
+*.tar
+*.tar.*
