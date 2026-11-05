@@ -21,31 +21,30 @@ repos:
       - id: check-executables-have-shebangs
       - id: check-toml
       - id: check-yaml
-      - id: check-symlinks
 
   - repo: https://github.com/JohnnyMorganz/StyLua
-    rev: v2.5.2
+    rev: v2.6.0
     hooks:
-      - id: stylua-system
+      - id: stylua-github
         alias: stylua
 
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.13.1-1
+    rev: v3.14.1-1
     hooks:
       - id: shfmt
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.11.0.1
+    rev: v0.11.0.1-1
     hooks:
     -   id: shellcheck
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.4
+    rev: v0.17.3
     hooks:
       - id: ruff-check
       - id: ruff-format
 
   - repo: https://github.com/DetachHead/basedpyright-prek-mirror
-    rev: 1.39.10
+    rev: 1.40.2
     hooks:
         - id: basedpyright
