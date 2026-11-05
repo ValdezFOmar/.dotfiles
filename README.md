@@ -22,6 +22,7 @@ Dependencies:
 
 - `git`
 - `stow`
+- `just`
 
 On a fresh installation of Arch, clone this repository.
 
@@ -29,13 +30,11 @@ On a fresh installation of Arch, clone this repository.
 git clone https://github.com/ValdezFOmar/.dotfiles.git ~/.dotfiles
 ```
 
-Then run the installation script for user and system configurations, in
-that order:
+Then run the installation script for user and system configurations:
 
 ```sh
 cd ~/.dotfiles/
-./install.sh
-sudo ./etc/install.sh
+just install
 ```
 
 > [!WARNING]
@@ -46,5 +45,5 @@ sudo ./etc/install.sh
 > For only installing user configuration files run:
 >
 > ```bash
-> cd ~/.dotfiles && stow --verbose --dotfiles home
+> cd ~/.dotfiles && just install-user
 > ```

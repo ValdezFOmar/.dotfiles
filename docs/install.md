@@ -174,8 +174,9 @@ Packages required to bootstrap the system:
 - `efibootmgr`
 - `networkmanager`
 - `neovim`
-- `git`: required for `install.sh`
-- `stow`: required for `install.sh`
+- `git`: required for `justfile`
+- `stow`: required for `justfile`
+- `just`: required for `justfile`
 - `terminus-font`: for setting a bigger font in the Linux console
 
 A microcode package for the CPU is recommended.
